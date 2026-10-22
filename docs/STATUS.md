@@ -59,17 +59,20 @@ by the user. Nothing hardware-related is verified.
 - Capacity figures in STORAGE_PLAN.md are estimates until inspection runs on
   the drive.
 
+### Session 1, follow-up 2
+- Enclosure confirmed as a **Ugreen CM578** (HARDWARE.md). The inspector now
+  reports the USB vendor:product ID and bridge chip, and retries SMART with
+  the bridge-specific `smartctl -d` type. Tests: **14 passed**. The CM578's
+  bridge chip is unverified until Phase 1 runs.
+- GitHub `cloudelmore/survival-os` created by the owner, with the Claude
+  GitHub App installed. `main` pushed.
+
 ### Open questions
-1. USB enclosure make and model (bridge chip), recorded during Phase 1 Step 2.
-2. Locale, keyboard layout, and timezone (assumed `en_US.UTF-8`, US,
+1. Locale, keyboard layout, and timezone (assumed `en_US.UTF-8`, US,
    `America/New_York`).
 
 ### Exact next steps
-1. **User:** create an empty repository `cloudelmore/survival-os` on GitHub
-   (public, per the spec; no README or license, so the first push is clean).
-   Make sure the Claude GitHub App has access to it at
-   https://claude.ai/connect-github. Then ask Claude to push. The local
-   commits are pushed as-is.
+1. ~~Create the GitHub repository and push~~ (done).
 2. **User:** run Phase 1 Steps 1–3 from [phase1/hardware-and-boot.md](phase1/hardware-and-boot.md).
 3. **User, with explicit approval:** Steps 4–5 (Imager flash to the 990 Pro,
    first USB boot, `tune2fs -m 1`, re-inspection).

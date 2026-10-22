@@ -8,7 +8,7 @@ implementation prompt, this file wins.
 | Board | Raspberry Pi 5, 8 GB | none |
 | Display | Integrated 7-inch, 1280x800 | **Touch input is not required.** Keyboard and trackpad are the primary inputs. |
 | Input | Keyboard + trackpad | Full keyboard navigation is a hard requirement. Large targets stay for readability. |
-| Storage | 1 TB **Samsung 990 Pro** NVMe in an **external USB enclosure**, the only persistent storage | Connects over USB, not PCIe. It appears as `/dev/sdX`. Boot uses USB mass storage. |
+| Storage | 1 TB **Samsung 990 Pro** NVMe in an external **Ugreen CM578** USB enclosure, the only persistent storage | Connects over USB, not PCIe. It appears as `/dev/sdX`. Boot uses USB mass storage. |
 | Power | **Wall power via USB-C** | No solar or battery assumptions. Power status shows the input voltage, the negotiated supply current, and throttling history only. |
 
 ## Consequences for the design
@@ -29,8 +29,13 @@ implementation prompt, this file wins.
   inspection reports the negotiated current
   (`/proc/device-tree/chosen/power/max_current`).
 - **SMART:** health is read through the USB bridge with `smartctl` (the
-  `smartmontools` package). Whether the enclosure's bridge chip passes NVMe
-  SMART through is unverified until Phase 1 runs.
+  `smartmontools` package). The inspector reads the enclosure's USB
+  vendor:product ID to identify the bridge chip. If plain `smartctl` returns no
+  NVMe health, it retries with the matching device type (`sntrealtek`,
+  `sntasmedia`, `sntjmicron`). The CM578's bridge chip and its UAS and SMART
+  behavior are **unverified** until Phase 1 Step 2 reports the USB ID.
+- **Link speed:** the Pi 5's USB 3 ports run at 5 Gb/s, so a 10 Gb/s
+  enclosure is expected to report 5000 Mb/s. That is normal.
 - **Disconnect risk:** a bumped cable is equivalent to a power loss for the
   root filesystem. The power-loss-safety rules in ARCHITECTURE.md apply.
 - **Filesystem:** single ext4 root with reserved blocks lowered to 1%

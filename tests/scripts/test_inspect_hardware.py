@@ -103,6 +103,9 @@ def fake_pi(tmp_path: Path) -> Path:
     scsi = usbdev / "4-1:1.0/host0/target0:0:0/0:0:0:0"
     scsi.mkdir(parents=True)
     write(tmp_path, str(usbdev.relative_to(tmp_path) / "speed"), "5000\n")
+    write(tmp_path, str(usbdev.relative_to(tmp_path) / "idVendor"), "0bda\n")
+    write(tmp_path, str(usbdev.relative_to(tmp_path) / "idProduct"), "9210\n")
+    write(tmp_path, str(usbdev.relative_to(tmp_path) / "product"), "USB 10Gbps Device\n")
     drivers = tmp_path / "sys/bus/usb/drivers/uas"
     drivers.mkdir(parents=True)
     (usbdev / "4-1:1.0/driver").symlink_to(drivers)
@@ -179,6 +182,8 @@ def test_full_report_on_fake_pi(fake_pi):
     assert usb[0]["model"] == "Samsung SSD 990 PRO 1TB"
     assert usb[0]["usb_speed_mbps"] == 5000 and usb[0]["driver"] == "uas"
     assert usb[0]["smart"]["passed"] is True and usb[0]["smart"]["percentage_used"] == 1
+    assert usb[0]["usb_id"] == "0bda:9210" and usb[0]["bridge_chip"] == "Realtek RTL9210"
+    assert usb[0]["smart"]["smartctl_args"] == ["-j", "-a"]
     assert report["power"]["psu_max_current_ma"] == 5000
     assert not any("USB" in w or "Power supply" in w for w in report["warnings"])
     assert report["firmware"]["boot_order_decoded"] == [
@@ -284,3 +289,16 @@ def test_script_is_read_only_by_construction():
         assert forbidden not in src
     # The only write is the user-requested --output report file.
     assert src.count("write_text(") == 1
+
+
+def test_smart_falls_back_to_bridge_device_type(fake_pi):
+    """Auto-detect gives no NVMe health; the RTL9210 device type does."""
+    nvme_json = fake_runner()(["smartctl", "-j", "-a", "/dev/sda"]).stdout
+    runner = fake_runner({
+        "smartctl -j -a /dev/sda": ih.CmdResult(True, 1, json.dumps(
+            {"smart_status": {}, "device": {"type": "scsi"}})),
+        "smartctl -j -a -d sntrealtek /dev/sda": ih.CmdResult(True, 0, nvme_json),
+    })
+    usb = ih.Inspector(root=fake_pi, runner=runner).collect()["storage"]["usb_disks"][0]
+    assert usb["smart"]["percentage_used"] == 1
+    assert usb["smart"]["smartctl_args"] == ["-j", "-a", "-d", "sntrealtek"]

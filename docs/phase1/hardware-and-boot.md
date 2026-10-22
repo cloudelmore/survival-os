@@ -38,8 +38,10 @@ negotiated supply current, throttling history, network interfaces, and SSH
 state.
 
 It never writes to disks, EEPROM, I2C, or config. Paste the **summary and
-warnings** into the Phase 1 review. Also note the USB enclosure's make and
-model by hand.
+warnings** into the Phase 1 review. The `USB disk` line shows the
+enclosure's (Ugreen CM578) USB ID and bridge chip. If it says `unknown`,
+also paste the output of `lsusb` so the bridge can be added to the
+inspector's table.
 
 ## Step 3: kiosk trial on the SD system
 

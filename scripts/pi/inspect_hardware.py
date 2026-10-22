@@ -71,6 +71,17 @@ INPUT_PROP_DIRECT = 1
 KEY_A = 30
 KEY_Z = 44
 
+# USB-to-NVMe bridge chips and the smartctl device type that reads NVMe SMART
+# through them. Keyed by "idVendor:idProduct" of the USB device.
+NVME_BRIDGES = {
+    "0bda:9210": ("Realtek RTL9210", "sntrealtek"),
+    "0bda:9220": ("Realtek RTL9220", "sntrealtek"),
+    "174c:2362": ("ASMedia ASM2362", "sntasmedia"),
+    "174c:2364": ("ASMedia ASM2364", "sntasmedia"),
+    "152d:0562": ("JMicron JMS562", "sntjmicron"),
+    "152d:0583": ("JMicron JMS583", "sntjmicron"),
+}
+
 
 @dataclass
 class CmdResult:
@@ -266,15 +277,20 @@ class Inspector:
                 "size_bytes": dev.get("size"),
                 "usb_speed_mbps": link["speed_mbps"],
                 "driver": link["driver"],
+                "usb_id": link["usb_id"],
+                "usb_product": link["product"],
+                "bridge_chip": None,
                 "smart": None,
             }
-            smart = self.cmd("smartctl", "-j", "-a", f"/dev/{name}")
-            # smartctl's exit status is a bitmask; parse whatever JSON it gave.
-            if smart.available and smart.stdout.strip().startswith("{"):
-                try:
-                    entry["smart"] = smart_summary(json.loads(smart.stdout))
-                except json.JSONDecodeError:
-                    pass
+            bridge = NVME_BRIDGES.get(link["usb_id"] or "")
+            attempts = [["smartctl", "-j", "-a", f"/dev/{name}"]]
+            if bridge:
+                entry["bridge_chip"] = bridge[0]
+                attempts.append(["smartctl", "-j", "-a", "-d", bridge[1], f"/dev/{name}"])
+            for argv in attempts:
+                entry["smart"] = self.smart(argv)
+                if entry["smart"] and entry["smart"].get("percentage_used") is not None:
+                    break
             speed = entry["usb_speed_mbps"]
             if speed is not None and speed < 5000:
                 self.warnings.append(
@@ -287,6 +303,16 @@ class Inspector:
                 )
             disks.append(entry)
         return disks
+
+    def smart(self, argv: list[str]) -> dict | None:
+        r = self.run(argv)
+        # smartctl's exit status is a bitmask; parse whatever JSON it gave.
+        if not (r.available and r.stdout.strip().startswith("{")):
+            return None
+        try:
+            return {**smart_summary(json.loads(r.stdout)), "smartctl_args": argv[1:-1]}
+        except json.JSONDecodeError:
+            return None
 
     def capacity(self, mount: str) -> dict | None:
         try:
@@ -460,7 +486,7 @@ def read_be_u32(path: Path) -> int | None:
 
 def usb_link_info(device: Path) -> dict:
     """Walk up from /sys/block/sdX/device to the USB interface and device."""
-    info = {"speed_mbps": None, "driver": None}
+    info = {"speed_mbps": None, "driver": None, "usb_id": None, "product": None}
     try:
         node = device.resolve(strict=True)
     except OSError:
@@ -476,6 +502,17 @@ def usb_link_info(device: Path) -> dict:
             try:
                 info["speed_mbps"] = int(float(speed.read_text().strip()))
             except ValueError:
+                pass
+            # The same USB device directory carries the vendor/product IDs.
+            try:
+                vid = (d / "idVendor").read_text().strip()
+                pid = (d / "idProduct").read_text().strip()
+                info["usb_id"] = f"{vid}:{pid}".lower()
+            except OSError:
+                pass
+            try:
+                info["product"] = (d / "product").read_text().strip()
+            except OSError:
                 pass
         if info["speed_mbps"] is not None and info["driver"] is not None:
             break
@@ -623,6 +660,7 @@ def summarize(r: dict) -> str:
         lines.append(
             f"  USB disk:     {u['name']} {u['model']} {gb(u['size_bytes'])} "
             f"{u['usb_speed_mbps']} Mb/s {u['driver']} "
+            f"bridge {u['usb_id']} ({u['bridge_chip'] or 'unknown'}) "
             f"SMART passed={smart.get('passed')} used={smart.get('percentage_used')}%"
         )
     cap = s["root_capacity"]
