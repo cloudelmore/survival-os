@@ -6,15 +6,21 @@ enclosure, the deck runs on wall power over USB-C, and touch is not required.
 Steps marked **APPROVAL GATE** must not be done until you have explicitly
 decided to do them. No script in this repository performs them automatically.
 
-## Step 1: boot Pi OS Lite from a test SD card
+## Step 1: boot Pi OS Lite from a test SD card or USB flash drive
 
-1. **Unplug the USB NVMe enclosure** so nothing can touch it.
+Either medium works. A USB flash drive must be **USB 3, in a blue port**; a
+USB 2 stick makes installs and the kiosk trial sluggish. The deck already boots
+from USB, so USB boot is enabled.
+
+1. **Unplug the USB NVMe enclosure.** With two bootable USB drives attached at
+   power-on, the Pi may boot either one, including the old Ubuntu.
 2. On Windows, use Raspberry Pi Imager → *Raspberry Pi 5* → *Raspberry Pi OS
-   Lite (64-bit)*. Confirm it says Debian 13 / trixie. In OS customisation, set
+   Lite (64-bit)* → Storage: the SD card or flash drive (check the size).
+   Confirm it says Debian 13 / trixie. In OS customisation, set
    the hostname, user, locale, keyboard, timezone, and SSH with public-key
    authentication only (see
    [windows-wsl2-setup.md](../dev/windows-wsl2-setup.md)).
-3. Power the Pi from the 5 V / 5 A USB-C supply, boot from the card, and
+3. Power the Pi from the 5 V / 5 A USB-C supply, boot from the test medium, and
    confirm SSH from WSL: `ssh <user>@<pi-host>`.
 
 ## Step 2: hardware inspection (read-only)
@@ -22,7 +28,8 @@ decided to do them. No script in this repository performs them automatically.
 On the Pi, install the SMART tool once (needed to read health data through the
 USB bridge): `sudo apt-get install -y smartmontools`.
 
-Plug the USB NVMe enclosure into a **blue USB 3 port**. It is not mounted and
+**After the Pi has booted**, plug the USB NVMe enclosure into the other **blue
+USB 3 port**. It is not mounted and
 is not written to. Then, from WSL:
 
 ```bash
@@ -43,7 +50,7 @@ enclosure's (Ugreen CM578) USB ID and bridge chip. If it says `unknown`,
 also paste the output of `lsusb` so the bridge can be added to the
 inspector's table.
 
-## Step 3: kiosk trial on the SD system
+## Step 3: kiosk trial on the test system
 
 On the **Pi's own keyboard**, logged in on tty1:
 
@@ -82,14 +89,14 @@ nothing to keep.
 
 ## Step 5: first boot from USB
 
-1. Remove the SD card and keep it as the recovery card. Connect the enclosure
+1. Remove the test SD card or flash drive and keep it. Connect the enclosure
    to a blue USB 3 port and power on.
 2. The factory `BOOT_ORDER` (`0xf41`: SD, then USB, then retry) boots the USB
    drive when no card is inserted. Pi OS expands the root filesystem on first
    boot.
 3. Only if it does not boot **and** Step 2 showed a `BOOT_ORDER` without
    `4` (USB): changing the boot order is an **APPROVAL GATE**:
-   `sudo rpi-eeprom-config --edit` from the SD system, set
+   `sudo rpi-eeprom-config --edit` from the test system, set
    `BOOT_ORDER=0xf41`, then reboot.
 4. Apply the 1% reserved-block decision (this changes one superblock field and
    is safe on a mounted filesystem):
@@ -105,7 +112,9 @@ nothing to keep.
 
 ## Recovery
 
-- Insert the Step 1 SD card. SD is first in the factory boot order, so it
+- If Step 1 used a flash drive, unplug the 990 Pro and boot from the flash
+  drive. Better: keep a Pi OS SD card as the recovery medium.
+- Insert a Pi OS SD card. SD is first in the factory boot order, so it
   boots even with the USB drive attached.
 - If the EEPROM is misconfigured, use Raspberry Pi Imager → *Misc utility
   images* → *Bootloader (Pi 5)* to write a card that restores the default

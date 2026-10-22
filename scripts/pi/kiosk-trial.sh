@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SURVIVAL OS - Phase 1 kiosk trial (run on a TEST SD-card boot of Pi OS Lite).
+# SURVIVAL OS - Phase 1 kiosk trial (run on a TEST SD or flash-drive boot of Pi OS Lite).
 #
 # Launches Chromium in kiosk mode under a Wayland compositor against a local
 # test page (checks rotation, trackpad, keyboard; touch is optional), and
