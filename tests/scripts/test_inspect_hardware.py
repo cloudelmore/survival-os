@@ -82,7 +82,7 @@ def fake_pi(tmp_path: Path) -> Path:
         'PRETTY_NAME="Debian GNU/Linux 13 (trixie)"\nID=debian\nVERSION_CODENAME=trixie\n',
     )
     write(tmp_path, "/proc/bus/input/devices", "\n".join([TOUCH, KEYBOARD, TOUCHPAD, MOUSE]))
-    write(tmp_path, "/proc/mounts", "/dev/nvme0n1p2 / ext4 rw,noatime 0 0\n")
+    write(tmp_path, "/proc/mounts", "/dev/sda2 / ext4 rw,noatime 0 0\n")
     drm = "/sys/class/drm/card1-DSI-1"
     write(tmp_path, f"{drm}/status", "connected\n")
     write(tmp_path, f"{drm}/enabled", "enabled\n")
@@ -98,6 +98,20 @@ def fake_pi(tmp_path: Path) -> Path:
     write(tmp_path, "/sys/class/net/wlan0/operstate", "down\n")
     (tmp_path / "sys/class/net/wlan0/wireless").mkdir()
     write(tmp_path, "/sys/class/power_supply/usb/type", "USB\n")
+    # Samsung 990 Pro in a USB 3 enclosure: sda -> SCSI device under a UAS interface
+    usbdev = tmp_path / "sys/devices/platform/axi/1000120000.pcie/xhci-hcd.1/usb4/4-1"
+    scsi = usbdev / "4-1:1.0/host0/target0:0:0/0:0:0:0"
+    scsi.mkdir(parents=True)
+    write(tmp_path, str(usbdev.relative_to(tmp_path) / "speed"), "5000\n")
+    drivers = tmp_path / "sys/bus/usb/drivers/uas"
+    drivers.mkdir(parents=True)
+    (usbdev / "4-1:1.0/driver").symlink_to(drivers)
+    (tmp_path / "sys/block/sda").mkdir(parents=True)
+    (tmp_path / "sys/block/sda/device").symlink_to(scsi)
+    # 5 A PD supply negotiated (device-tree big-endian u32, mA)
+    dt_power = tmp_path / "proc/device-tree/chosen/power"
+    dt_power.mkdir(parents=True)
+    (dt_power / "max_current").write_bytes((5000).to_bytes(4, "big"))
     write(tmp_path, "/boot/firmware/config.txt", "dtparam=pciex1\ndtoverlay=vc4-kms-v3d\narm_64bit=1\n")
     return tmp_path
 
@@ -115,6 +129,27 @@ def fake_runner(overrides: dict[str, ih.CmdResult] | None = None):
             True, 0, "[all]\nBOOT_UART=1\nBOOT_ORDER=0xf416\nPCIE_PROBE=1\n"
         ),
         "systemctl is-enabled ssh": ih.CmdResult(True, 0, "enabled\n"),
+        "vcgencmd get_config usb_max_current_enable": ih.CmdResult(
+            True, 0, "usb_max_current_enable=0\n"
+        ),
+        "lsblk -J -b -o NAME,SIZE,TYPE,MODEL,TRAN,FSTYPE,FSVER,LABEL,PARTLABEL,MOUNTPOINTS": ih.CmdResult(
+            True, 0, json.dumps({"blockdevices": [
+                {"name": "sda", "size": 1000204886016, "type": "disk",
+                 "model": "Samsung SSD 990 PRO 1TB", "tran": "usb", "children": [
+                     {"name": "sda1", "type": "part", "fstype": "vfat"},
+                     {"name": "sda2", "type": "part", "fstype": "ext4"}]},
+                {"name": "mmcblk0", "size": 31914983424, "type": "disk", "tran": None},
+            ]}),
+        ),
+        # smartctl exits non-zero (bitmask) even when it returns data
+        "smartctl -j -a /dev/sda": ih.CmdResult(True, 4, json.dumps({
+            "model_name": "Samsung SSD 990 PRO 1TB",
+            "device": {"type": "sntrealtek"},
+            "smart_status": {"passed": True},
+            "temperature": {"current": 38},
+            "power_on_time": {"hours": 120},
+            "nvme_smart_health_information_log": {"percentage_used": 1, "media_errors": 0},
+        })),
     }
     canned.update(overrides or {})
 
@@ -139,6 +174,13 @@ def test_full_report_on_fake_pi(fake_pi):
     }
     assert report["display"]["connectors"][0]["name"] == "card1-DSI-1"
     assert report["storage"]["nvme"][0]["pcie_link_width"] == "1"
+    usb = report["storage"]["usb_disks"]
+    assert len(usb) == 1 and usb[0]["name"] == "sda"
+    assert usb[0]["model"] == "Samsung SSD 990 PRO 1TB"
+    assert usb[0]["usb_speed_mbps"] == 5000 and usb[0]["driver"] == "uas"
+    assert usb[0]["smart"]["passed"] is True and usb[0]["smart"]["percentage_used"] == 1
+    assert report["power"]["psu_max_current_ma"] == 5000
+    assert not any("USB" in w or "Power supply" in w for w in report["warnings"])
     assert report["firmware"]["boot_order_decoded"] == [
         "NVMe", "SD card", "USB mass storage", "Restart loop",
     ]
@@ -146,18 +188,38 @@ def test_full_report_on_fake_pi(fake_pi):
     assert report["power"]["battery_telemetry_available"] is False
     # 0x50000 = under-voltage occurred + throttling occurred -> one warning
     assert any("Under-voltage has occurred" in w for w in report["warnings"])
-    assert not any("touchscreen" in w for w in report["warnings"])
+    assert not any("keyboard" in w or "trackpad" in w for w in report["warnings"])
     assert "dtparam=pciex1" in report["display"]["config_txt_display_lines"]
 
 
-def test_portrait_display_and_missing_nvme_boot_warn(fake_pi):
+def test_portrait_display_and_missing_usb_boot_warn(fake_pi):
     write(fake_pi, "/sys/class/drm/card1-DSI-1/modes", "720x1280\n")
     runner = fake_runner(
-        {"rpi-eeprom-config": ih.CmdResult(True, 0, "BOOT_ORDER=0xf41\n")}
+        {"rpi-eeprom-config": ih.CmdResult(True, 0, "BOOT_ORDER=0xf61\n")}
     )
     w = ih.Inspector(root=fake_pi, runner=runner).collect()["warnings"]
     assert any("portrait 720x1280" in x for x in w)
-    assert any("does not include NVMe" in x and "approval" in x for x in w)
+    assert any("does not include USB mass storage" in x and "approval" in x for x in w)
+
+
+def test_default_boot_order_is_fine_for_usb_boot(fake_pi):
+    runner = fake_runner({"rpi-eeprom-config": ih.CmdResult(True, 0, "BOOT_ORDER=0xf41\n")})
+    w = ih.Inspector(root=fake_pi, runner=runner).collect()["warnings"]
+    assert not any("BOOT_ORDER" in x for x in w)
+
+
+def test_usb2_link_weak_psu_and_no_touch_is_ok(fake_pi):
+    usbdev = next(fake_pi.glob("sys/devices/**/usb4/4-1"))
+    (usbdev / "speed").write_text("480\n")
+    (fake_pi / "proc/device-tree/chosen/power/max_current").write_bytes((3000).to_bytes(4, "big"))
+    devices = (fake_pi / "proc/bus/input/devices").read_text()
+    (fake_pi / "proc/bus/input/devices").write_text(devices.replace("PROP=2", "PROP=0"))
+    report = ih.Inspector(root=fake_pi, runner=fake_runner()).collect()
+    w = report["warnings"]
+    assert any("480 Mb/s (USB 2)" in x for x in w)
+    assert any("600 mA" in x for x in w)
+    assert "touchscreen" not in {d["kind"] for d in report["input_devices"]}
+    assert not any("touch" in x.lower() for x in w)
 
 
 def test_tolerates_missing_everything(tmp_path):

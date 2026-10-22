@@ -6,8 +6,12 @@ partitions, I2C buses, or system configuration. It only reads /proc,
 /sys, /etc, /boot/firmware, and runs informational commands.
 
 Runs with the Python 3 standard library only (Pi OS Lite ships python3).
-Running it with sudo adds NVMe SMART data; everything else works as a
-normal user.
+Running it with sudo adds SMART data and the ext4 superblock; everything
+else works as a normal user.
+
+Hardware baseline (docs/HARDWARE.md): the 1 TB Samsung 990 Pro sits in an
+external USB enclosure, so it appears as a USB disk (sdX), not as
+/sys/class/nvme. Touch input is not required.
 
 Usage:
     python3 inspect_hardware.py                  # human-readable summary
@@ -169,12 +173,12 @@ class Inspector:
         connected = [c for c in connectors if c["status"] == "connected"]
         for c in connected:
             mode = c["preferred_mode"]
-            if mode == "720x1280":
+            if mode in ("720x1280", "800x1280"):
                 self.warnings.append(
-                    f"{c['name']} is natively portrait 720x1280 (e.g. Touch Display 2); "
-                    "the kiosk must rotate output and touch input to reach 1280x800-class landscape."
+                    f"{c['name']} is natively portrait {mode}; "
+                    "the kiosk must rotate the output to landscape."
                 )
-            elif mode and mode not in ("1280x800", "800x1280"):
+            elif mode and mode != "1280x800":
                 self.warnings.append(
                     f"{c['name']} preferred mode is {mode}, not the expected 1280x800."
                 )
@@ -190,10 +194,11 @@ class Inspector:
 
     def input_devices(self) -> list[dict]:
         devices = parse_input_devices(self.read("/proc/bus/input/devices") or "")
-        if not any(d["kind"] == "touchscreen" for d in devices):
-            self.warnings.append("No touchscreen input device detected.")
+        # Touch is optional; keyboard + trackpad are the primary inputs.
         if not any(d["kind"] == "keyboard" for d in devices):
             self.warnings.append("No keyboard input device detected.")
+        if not any(d["kind"] in ("touchpad", "pointer") for d in devices):
+            self.warnings.append("No trackpad or mouse detected.")
         return devices
 
     def storage(self) -> dict:
@@ -227,8 +232,9 @@ class Inspector:
                     except json.JSONDecodeError:
                         pass
                 nvme.append(entry)
-        if not nvme:
-            self.warnings.append("No NVMe controller detected under /sys/class/nvme.")
+        usb_disks = self.usb_disks(lsblk)
+        if not nvme and not usb_disks:
+            self.warnings.append("No NVMe controller or USB disk detected.")
         root_dev = None
         for line in (self.read("/proc/mounts") or "").splitlines():
             parts = line.split()
@@ -241,10 +247,46 @@ class Inspector:
         return {
             "lsblk": lsblk,
             "nvme": nvme,
+            "usb_disks": usb_disks,
             "root_mount": root_dev,
             "root_ext4_superblock": ext4 or None,
             "root_capacity": self.capacity("/"),
         }
+
+    def usb_disks(self, lsblk: dict | None) -> list[dict]:
+        disks = []
+        for dev in (lsblk or {}).get("blockdevices", []):
+            if dev.get("type") != "disk" or dev.get("tran") != "usb":
+                continue
+            name = dev["name"]
+            link = usb_link_info(self.path(f"/sys/block/{name}/device"))
+            entry = {
+                "name": name,
+                "model": (dev.get("model") or "").strip() or None,
+                "size_bytes": dev.get("size"),
+                "usb_speed_mbps": link["speed_mbps"],
+                "driver": link["driver"],
+                "smart": None,
+            }
+            smart = self.cmd("smartctl", "-j", "-a", f"/dev/{name}")
+            # smartctl's exit status is a bitmask; parse whatever JSON it gave.
+            if smart.available and smart.stdout.strip().startswith("{"):
+                try:
+                    entry["smart"] = smart_summary(json.loads(smart.stdout))
+                except json.JSONDecodeError:
+                    pass
+            speed = entry["usb_speed_mbps"]
+            if speed is not None and speed < 5000:
+                self.warnings.append(
+                    f"USB disk {name} is linked at {speed} Mb/s (USB 2). "
+                    "Use one of the Pi's blue USB 3 ports and a USB 3 cable."
+                )
+            if entry["driver"] == "usb-storage":
+                self.warnings.append(
+                    f"USB disk {name} uses usb-storage, not UAS; expect lower throughput."
+                )
+            disks.append(entry)
+        return disks
 
     def capacity(self, mount: str) -> dict | None:
         try:
@@ -285,7 +327,18 @@ class Inspector:
         batteries = [s for s in supplies if s["type"] == "Battery"]
         dev = self.path("/dev")
         i2c = sorted(p.name for p in dev.glob("i2c-*")) if dev.is_dir() else []
+        psu_ma = read_be_u32(self.path("/proc/device-tree/chosen/power/max_current"))
+        usb_max = self.cmd_text("vcgencmd", "get_config", "usb_max_current_enable")
+        usb_max_enabled = bool(usb_max and usb_max.strip().endswith("=1"))
+        if psu_ma is not None and psu_ma < 5000 and not usb_max_enabled:
+            self.warnings.append(
+                f"Power supply negotiated {psu_ma} mA (< 5 A): the Pi limits all USB "
+                "ports to 600 mA combined, which may not be enough for the USB NVMe "
+                "enclosure. Use a 5 V / 5 A USB-C PD supply (official 27 W)."
+            )
         return {
+            "psu_max_current_ma": psu_ma,
+            "usb_max_current_enable": usb_max_enabled,
             "throttled": throttled,
             "pmic_ext5v_volts": ext5v,
             "soc_temp": temp,
@@ -303,10 +356,11 @@ class Inspector:
         settings = parse_kv(cfg or "")
         boot_order = settings.get("BOOT_ORDER")
         decoded = decode_boot_order(boot_order) if boot_order else None
-        if decoded is not None and "NVMe" not in decoded:
+        if decoded is not None and "USB mass storage" not in decoded:
             self.warnings.append(
-                f"BOOT_ORDER {boot_order} does not include NVMe. "
-                "Changing it needs your explicit approval (approval gate)."
+                f"BOOT_ORDER {boot_order} does not include USB mass storage, so the "
+                "external NVMe cannot boot. Changing it needs your explicit approval "
+                "(approval gate)."
             )
         return {
             "bootloader_version": self.cmd_text("vcgencmd", "bootloader_version"),
@@ -393,6 +447,52 @@ def parse_kv(text: str) -> dict[str, str]:
             k, v = line.split("=", 1)
             out[k.strip()] = v.strip()
     return out
+
+
+def read_be_u32(path: Path) -> int | None:
+    """Device-tree integer properties are big-endian u32."""
+    try:
+        raw = path.read_bytes()
+    except OSError:
+        return None
+    return int.from_bytes(raw[:4], "big") if len(raw) >= 4 else None
+
+
+def usb_link_info(device: Path) -> dict:
+    """Walk up from /sys/block/sdX/device to the USB interface and device."""
+    info = {"speed_mbps": None, "driver": None}
+    try:
+        node = device.resolve(strict=True)
+    except OSError:
+        return info
+    for d in [node, *node.parents]:
+        drv = d / "driver"
+        if info["driver"] is None and drv.is_symlink():
+            name = Path(os.readlink(drv)).name
+            if name in ("uas", "usb-storage"):
+                info["driver"] = name
+        speed = d / "speed"
+        if info["speed_mbps"] is None and speed.is_file():
+            try:
+                info["speed_mbps"] = int(float(speed.read_text().strip()))
+            except ValueError:
+                pass
+        if info["speed_mbps"] is not None and info["driver"] is not None:
+            break
+    return info
+
+
+def smart_summary(data: dict) -> dict:
+    health = data.get("nvme_smart_health_information_log") or {}
+    return {
+        "model": data.get("model_name"),
+        "device_type": (data.get("device") or {}).get("type"),
+        "passed": (data.get("smart_status") or {}).get("passed"),
+        "temperature_c": (data.get("temperature") or {}).get("current"),
+        "percentage_used": health.get("percentage_used"),
+        "power_on_hours": (data.get("power_on_time") or {}).get("hours"),
+        "media_errors": health.get("media_errors"),
+    }
 
 
 def parse_dumpe2fs(text: str) -> dict[str, int]:
@@ -518,6 +618,13 @@ def summarize(r: dict) -> str:
             f"  NVMe:         {n['model']} fw {n['firmware_rev']} "
             f"link {n['pcie_link_speed']} x{n['pcie_link_width']}"
         )
+    for u in s["usb_disks"]:
+        smart = u["smart"] or {}
+        lines.append(
+            f"  USB disk:     {u['name']} {u['model']} {gb(u['size_bytes'])} "
+            f"{u['usb_speed_mbps']} Mb/s {u['driver']} "
+            f"SMART passed={smart.get('passed')} used={smart.get('percentage_used')}%"
+        )
     cap = s["root_capacity"]
     if cap:
         lines.append(
@@ -527,6 +634,10 @@ def summarize(r: dict) -> str:
     lines.append(f"  Bootloader:   {(fw['bootloader_version'] or 'n/a').splitlines()[0]}")
     lines.append(f"  BOOT_ORDER:   {fw['boot_order_raw']} -> {fw['boot_order_decoded']}")
     lines.append(f"  EXT5V input:  {pw['pmic_ext5v_volts']} V   temp: {pw['soc_temp']}")
+    lines.append(
+        f"  PSU:          {pw['psu_max_current_ma']} mA negotiated, "
+        f"usb_max_current_enable={pw['usb_max_current_enable']}"
+    )
     lines.append(f"  Battery telemetry exposed to Linux: {pw['battery_telemetry_available']}")
     lines.append(f"  Throttled:    {pw['throttled']}")
     lines.append(f"  SSH enabled:  {r['services']['ssh_enabled']}")
@@ -534,7 +645,7 @@ def summarize(r: dict) -> str:
         lines.append("Warnings:")
         lines.extend(f"  - {w}" for w in r["warnings"])
     if not r["running_as_root"]:
-        lines.append("(Run with sudo to include NVMe SMART health data.)")
+        lines.append("(Run with sudo to include SMART health and ext4 superblock data.)")
     return "\n".join(lines)
 
 

@@ -11,6 +11,7 @@ All sizes are decimal GB (10^9 bytes) unless marked GiB. The figures below are
 |---|---|
 | Typical 1 TB NVMe | 1,000,204,886,016 bytes = 1,000.2 GB = 931.5 GiB |
 | Boot partition (FAT32, Pi OS) | 0.5 GiB |
+| Drive | Samsung 990 Pro 1 TB in a USB enclosure (exact byte count from Phase 1 inspection) |
 
 ## Usable capacity estimates (single ext4 root, Pi OS default layout)
 
@@ -32,7 +33,10 @@ Takeaways:
 - A′ recovers about 40 GB for free. Root keeps 1% (about 10 GB) so logs and
   package upgrades still work on a nearly full disk.
 - B adds partitioning complexity and two floors for little gain.
-  **Recommendation: layout A, optionally A′ (open question in STATUS.md).**
+  **Decision (2026-10-22): layout A′, a single ext4 root with 1% reserved
+  blocks.** Expected usable is about 972 GB, the floor about 146 GB, leaving
+  about 826 GB of room. Applied with `tune2fs -m 1` in Phase 1 Step 5; the
+  installer and image builder do the same in Phases 8–9.
 
 ## Budget categories (caps from spec §5)
 

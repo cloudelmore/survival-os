@@ -6,7 +6,9 @@ tooling listed in [STATUS.md](STATUS.md).
 
 ## Goals in one paragraph
 
-A Raspberry Pi 5 (8 GB, one 1 TB NVMe, 7-inch touchscreen) boots Raspberry Pi
+A Raspberry Pi 5 (8 GB, one 1 TB Samsung 990 Pro NVMe in an external USB
+enclosure, 7-inch 1280x800 display, keyboard + trackpad, wall power over USB-C;
+see [HARDWARE.md](HARDWARE.md)) boots Raspberry Pi
 OS Lite 64-bit (Debian 13 trixie) straight into a full-screen browser that
 shows the SURVIVAL OS dashboard. Everything (search, document viewers, Kiwix,
 maps, optional AI) is served from `127.0.0.1` with no network dependency.
@@ -17,7 +19,7 @@ acquisition.
 
 ```mermaid
 flowchart LR
-  subgraph Display["7-inch touchscreen"]
+  subgraph Display["7-inch display, keyboard + trackpad"]
     K["Kiosk: Wayland compositor + browser<br/>(Phase 2 decision)"]
   end
   K -->|http://127.0.0.1| W["Front web server<br/>static frontend + reverse proxy<br/>(Phase 2 decision)"]
@@ -83,7 +85,8 @@ journald logs, and the least privileges it needs.
 
 | Area | Choice | Status |
 |---|---|---|
-| Base OS | Raspberry Pi OS Lite 64-bit, Debian 13 trixie | fixed by spec |
+| Base OS | Raspberry Pi OS Lite 64-bit, Debian 13 trixie, booted from the USB NVMe | fixed by spec |
+| Filesystem | single ext4 root, reserved blocks 1% | decided 2026-10-22 |
 | Kiosk compositor | `cage` (single-app kiosk) vs `labwc` (Pi OS default) | Phase 2 decision; `scripts/pi/kiosk-trial.sh` measures both |
 | Kiosk browser | Chromium (Pi-tuned build, Wayland, GPU accel) | Phase 2 decision; Firefox ESR is the fallback |
 | Front web server | nginx-light or Caddy | Phase 2 decision |
@@ -96,14 +99,15 @@ journald logs, and the least privileges it needs.
 
 ## Repository tree (target)
 
-Phase 2 creates the remaining directories. Present today: `docs/`,
-`scripts/`, `tests/`.
+Phase 2 creates the remaining directories. Present today: `LICENSE`,
+`NOTICE`, `docs/`, `scripts/`, `tests/`.
 
 ```
 survival-os/
-├── README.md  LICENSE  CONTRIBUTING.md  SECURITY.md  CHANGELOG.md
+├── README.md  LICENSE (Apache-2.0)  NOTICE  CONTRIBUTING.md  SECURITY.md  CHANGELOG.md
 ├── docs/
 │   ├── STATUS.md              # cross-session progress (read first)
+│   ├── HARDWARE.md            # confirmed hardware baseline
 │   ├── ARCHITECTURE.md  STORAGE_PLAN.md  RISKS.md  MILESTONES.md
 │   ├── dev/                   # Windows + WSL2 setup
 │   ├── phase1/                # hardware inspection, SD trial, NVMe flash

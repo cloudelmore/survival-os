@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# SURVIVAL OS - Phase 1 kiosk trial (run on a TEST SD/USB boot of Pi OS Lite).
+# SURVIVAL OS - Phase 1 kiosk trial (run on a TEST SD-card boot of Pi OS Lite).
 #
 # Launches Chromium in kiosk mode under a Wayland compositor against a local
-# test page, and samples memory use so Phase 2 can choose the compositor on
-# measured numbers. Nothing is enabled at boot and no system config changes;
-# the only persistent effect is the optional apt install.
+# test page (checks rotation, trackpad, keyboard; touch is optional), and
+# samples memory use so Phase 2 can choose the compositor on measured numbers.
+# Nothing is enabled at boot and no system config changes; the only persistent
+# effect is the optional apt install.
 #
 # Run from the Pi's local console (tty1), NOT over SSH: the compositor needs
 # the local seat.
