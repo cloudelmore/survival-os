@@ -1,0 +1,28 @@
+# Never commit content payloads, weights, or private data (spec section 9)
+*.zim
+*.pmtiles
+*.mbtiles
+*.gguf
+*.mp4
+*.webm
+*.mkv
+*.img
+*.img.xz
+*.iso
+*.part
+reports/
+content/
+data/
+.env
+*.pem
+*.key
+id_*
+
+# Tooling
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+node_modules/
+dist/
+build/

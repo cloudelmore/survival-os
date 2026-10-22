@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SURVIVAL OS kiosk trial</title>
+<style>
+  :root { color-scheme: dark; --bg: #0e1110; --fg: #d9e4dc; --accent: #7fd18b; --muted: #8a9a8e; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+    font: 18px/1.4 system-ui, sans-serif; overflow: hidden; touch-action: none; }
+  main { padding: 24px 96px; }
+  h1 { margin: 0 0 8px; font-size: 26px; color: var(--accent); }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; }
+  dt { color: var(--muted); }
+  .corner { position: fixed; width: 88px; height: 88px; border: 2px solid var(--accent);
+    display: grid; place-items: center; font-size: 14px; }
+  .corner.hit { background: var(--accent); color: var(--bg); }
+  #tl { top: 0; left: 0; } #tr { top: 0; right: 0; } #bl { bottom: 0; left: 0; } #br { bottom: 0; right: 0; }
+  #dot { position: fixed; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%;
+    background: #e8c547; pointer-events: none; display: none; }
+  p.hint { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="corner" id="tl">TL</div><div class="corner" id="tr">TR</div>
+<div class="corner" id="bl">BL</div><div class="corner" id="br">BR</div>
+<div id="dot"></div>
+<main>
+  <h1>SURVIVAL OS kiosk trial</h1>
+  <p class="hint">Tap each corner box. The yellow dot must sit under your finger. Type on the keyboard and move the trackpad.</p>
+  <dl>
+    <dt>Viewport (CSS px)</dt><dd id="vp"></dd>
+    <dt>Screen</dt><dd id="scr"></dd>
+    <dt>Device pixel ratio</dt><dd id="dpr"></dd>
+    <dt>Last pointer</dt><dd id="ptr">none</dd>
+    <dt>Touch points</dt><dd id="touch">none</dd>
+    <dt>Last key</dt><dd id="key">none</dd>
+    <dt>Corners hit</dt><dd id="corners">0 / 4</dd>
+  </dl>
+  <p class="hint">Exit: Ctrl+W closes the browser and the compositor. Ctrl+Alt+F2 switches to a text console.</p>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const hit = new Set();
+  function size() {
+    $("vp").textContent = innerWidth + " x " + innerHeight;
+    $("scr").textContent = screen.width + " x " + screen.height + " (" + (screen.orientation ? screen.orientation.type : "n/a") + ")";
+    $("dpr").textContent = devicePixelRatio;
+  }
+  addEventListener("resize", size); size();
+  addEventListener("pointerdown", (e) => {
+    $("ptr").textContent = e.pointerType + " @ " + Math.round(e.clientX) + ", " + Math.round(e.clientY);
+    const d = $("dot"); d.style.display = "block"; d.style.left = e.clientX + "px"; d.style.top = e.clientY + "px";
+    const c = e.target.closest(".corner");
+    if (c) { c.classList.add("hit"); hit.add(c.id); $("corners").textContent = hit.size + " / 4"; }
+  });
+  addEventListener("pointermove", (e) => {
+    $("ptr").textContent = e.pointerType + " @ " + Math.round(e.clientX) + ", " + Math.round(e.clientY);
+  });
+  addEventListener("touchstart", (e) => { $("touch").textContent = e.touches.length; }, { passive: true });
+  addEventListener("keydown", (e) => { $("key").textContent = e.key + " (" + e.code + ")"; });
+</script>
+</body>
+</html>
