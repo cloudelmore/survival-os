@@ -2,7 +2,7 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 3 (Dashboard), installed and booting. Device checks by the user are outstanding.
+**Current phase:** 3 (Dashboard) complete except the trackpad check. Next is Phase 4.
 **Last updated:** 2026-10-30 (Phase 3 session)
 
 ## Completed work
@@ -42,9 +42,11 @@ Pi changes, approved by the user: nginx-light installed with `nginx.service` mas
 | Strict content policy in Chromium | Pass, page and fonts render identically |
 | Render at 1280x800 | Pass, headless on the Pi |
 
-Not tested: anything by hand at the device with this build, the power dialog's layout on the
-screen, shutdown (needs a person to power back on), trackpad (swapped out), the
-`survival.maintenance=1` boot flag, the repeated-crash fallback, `--uninstall`, and power loss.
+User device checks, 2026-10-31: all passed, reported as "all good". They covered keyboard, touch,
+setting a PIN, maintenance mode and return, Ctrl+Alt+F2 and F1, shutdown and power-on, and the
+power dialog on screen.
+
+Not tested: trackpad (swapped out), the `survival.maintenance=1` boot flag, the repeated-crash fallback, `--uninstall`, and power loss.
 
 ### Phase 2 (Foundation)
 
@@ -254,9 +256,8 @@ built yet. This refines the brief's dark field-computer look:
 - All assets are original. Use no Oregon Trail name, artwork or game graphics in this public repo.
 - Any pixel font must have a license that allows bundling, and ships locally.
 
-## Next steps (finish Phase 3)
+## Next steps
 
-1. User checks the dashboard at the device: keyboard, touch, setting a PIN, Ctrl+Alt+F2 and back,
-   maintenance mode, and shutdown.
-2. Decide about the slow firmware stage. Trying USB first needs an EEPROM change, an approval gate.
-3. Then close Phase 3. Next is Phase 4 (Search).
+1. Boot order: user decides on the measured EEPROM proposal. An approval gate.
+2. Phase 4 (Search) starts only after the user says so.
+3. Test the trackpad when it is reconnected.
