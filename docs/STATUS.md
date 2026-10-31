@@ -9,7 +9,7 @@ Read this first at the start of every session.
 
 ### Phase 2 (Foundation)
 
-- Repository reconciled onto the existing `cloudelmore/survival-os` history. Not yet pushed.
+- Repository reconciled onto the existing `cloudelmore/survival-os` history and pushed to `main`.
 - Backend: FastAPI health endpoint and static dashboard serving, on loopback.
 - Manifests: JSON Schema, 13 storage budgets, validator for the rules a schema cannot express. The
   catalog is empty until Phase 5, so no field is written from memory.
@@ -34,7 +34,7 @@ Read this first at the start of every session.
 | Remote assets in frontend build | None. URLs present are React error links and XML namespaces |
 | Nothing autostarts | Pass, 0 survival units enabled |
 | Crash recovery, two browser kills | Pass, 3.5 s and 3.0 s |
-| CI workflow | **Unverified**, it has not run because nothing is pushed |
+| CI workflow | Pass, first run on `e694b4f` |
 
 Not tested: touch, keyboard and VT switching on the NVMe system, long-duration kiosk stability,
 power-loss recovery, operation with all network interfaces disabled.
