@@ -14,7 +14,7 @@ Where this table differs from the owner baseline below, the measurement wins.
 | Boot | Boots from the drive with no SD or stick. `BOOT_ORDER=0xf461` (SD, NVMe, USB) | Baseline assumed `0xf41`. No change was needed |
 | Supply | `max_current` is 5000 mA, `usb_max_current_enable=1`. Not current-limited | Confirms the device-tree value is populated |
 | Keyboard | Logitech K270. A trackpad exists but is swapped out, so support both | |
-| Power source | **Unresolved.** The Rev. 2 brief says solar, this file says wall power. No battery or solar telemetry found | Needs the owner's answer |
+| Power source | Wall power over USB-C, confirmed by the owner 2026-10-30. No solar | Overrides the Rev. 2 brief |
 
 UAS and SMART through this bridge are unverified. Touch is working hardware, so the design should
 not break it, even though keyboard navigation is the requirement.

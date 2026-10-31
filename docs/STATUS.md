@@ -83,7 +83,7 @@ power-loss recovery, operation with all network interfaces disabled.
 | EEPROM | 2025-05-08. Update available (2026-09-25). Not applied, approval gate |
 | EEPROM config | `BOOT_ORDER=0xf461` (SD, NVMe, USB, repeat), `PCIE_PROBE=1` |
 | Power | `get_throttled=0x0`, EXT5V about 5.13 V, about 48 C at idle |
-| Solar telemetry | None found. No system battery, no I2C device nodes listed |
+| Power source | Wall power, confirmed by the user. No system battery |
 
 Telemetry rules for Phase 3:
 - `hidpp_battery_0` is the keyboard battery (`scope=Device`). Never show it as system power.
@@ -166,14 +166,13 @@ The earlier inspector has not been run on this hardware, so its SMART handling s
 ## Unverified
 
 - Cause of the reboot.
-- Solar controller presence on any bus.
 
 ## Open questions for the user
 
-1. Power: the Rev. 2 brief says solar charging, and HARDWARE.md says wall power with no solar.
-   Which is right? Status display and battery features depend on it.
+None open.
 
-Answered: the Pi should boot from the NVMe eventually; USB is only a temporary system for
+Answered: power is wall power over USB-C with no solar, so show input voltage, supply current and
+throttling only. The Pi should boot from the NVMe eventually; USB is only a temporary system for
 testing and flashing, and the existing boot order already favours NVMe. Passwordless sudo is
 acceptable during development. A trackpad exists; the user
 swapped it for the keyboard, so it may return and both inputs stay supported.
@@ -220,7 +219,6 @@ built yet. This refines the brief's dark field-computer look:
 
 Phase 3 (Dashboard) starts only after the user's review.
 
-0. Confirm the Phase 2 reconciliation, and approve the push.
 1. Build the homepage in the agreed retro style, with original assets and a licensed pixel font.
 2. Add production kiosk auto-launch. This installs a boot service on the Pi, so ask first.
 3. Add system status, using real telemetry only, and offline navigation.
