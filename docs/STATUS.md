@@ -46,7 +46,7 @@ Pi changes, approved by the user: nginx-light installed with `nginx.service` mas
 
 User report, 2026-10-31: "all good", with no itemised results. The Pi's logs show that no PIN was
 set, maintenance mode was not entered, and no shutdown occurred after the 00:14 reboot, so those
-checks were not run. Keyboard and touch leave no trace, so they are unconfirmed either way.
+checks were not run. The user then confirmed that keyboard and touch work on the device.
 
 Maintenance, PIN and reboot passed in remote API tests only. They still need testing on the device.
 
@@ -265,8 +265,8 @@ built yet. This refines the brief's dark field-computer look:
 
 1. User runs the device checks: PIN, maintenance mode and return, Ctrl+Alt+F2 and F1, shutdown
    and power-on. Shutdown also gives the first real cold-boot time.
-2. EEPROM proposal, an approval gate: set `BOOT_ORDER=0xf14` (USB, then SD) and remove
-   `PCIE_PROBE=1`, as no PCIe storage is planned. Expected gain is seconds at most, within the
-   first 12.2 s. It will not touch the 68 s reboot gap.
+2. EEPROM: approved by the user 2026-10-31, to apply after the shutdown test gives a baseline. Set
+   `BOOT_ORDER=0xf14` (USB, then SD), remove `PCIE_PROBE=1`, reboot, and compare cold boot times.
+   Expected gain is seconds at most, within the first 12.2 s. It will not touch the 68 s gap.
 3. Phase 4 (Search) starts after Phase 3 closes and the user says so.
 4. Test the trackpad when it is reconnected.
