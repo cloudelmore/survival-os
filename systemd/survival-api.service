@@ -1,0 +1,23 @@
+[Unit]
+Description=SURVIVAL OS API
+
+[Service]
+User=survival
+Group=survival
+SupplementaryGroups=video
+WorkingDirectory=/opt/survival-os
+Environment=SURVIVAL_STATE_DIR=/var/lib/survival-os
+Environment=SURVIVAL_STATIC_DIR=/opt/survival-os/frontend
+Environment=SURVIVAL_ACTIONS_ENABLED=1
+ExecStart=/opt/survival-os/venv/bin/uvicorn survival_os.main:app --host 127.0.0.1 --port 8081 --log-level warning
+Restart=on-failure
+RestartSec=2
+StateDirectory=survival-os
+StateDirectoryMode=0700
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

@@ -21,6 +21,7 @@ validate:
 
 build:
 	cd frontend && npm run build
+	scripts/dev/check-offline-build.sh
 
 deploy: build
 	scripts/dev/dev-deploy.sh

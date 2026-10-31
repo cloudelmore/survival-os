@@ -1,0 +1,197 @@
+/* Original Apple II-style theme. Long reference text will use a separate readable font. */
+:root {
+  --black: #000000;
+  --panel: #101410;
+  --green: #4ae04a;
+  --orange: #ff9a3c;
+  --purple: #d58cff;
+  --purple-dim: #4b2a66;
+  --blue: #66b8ff;
+  --white: #ffffff;
+  --title: "Press Start 2P", monospace;
+  --body: "VT323", monospace;
+  font-size: 22px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  background: var(--black);
+  color: var(--green);
+  font-family: var(--body);
+  line-height: 1.15;
+  overflow: hidden;
+}
+
+h1, h2 {
+  font-family: var(--title);
+  font-weight: 400;
+  margin: 0;
+}
+
+button {
+  border-radius: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+button:focus-visible, input:focus-visible {
+  outline: 4px solid var(--white);
+  outline-offset: -4px;
+}
+
+.pixel-icon { flex: none; image-rendering: pixelated; }
+
+.screen { display: flex; flex-direction: column; height: 100%; }
+
+.masthead {
+  align-items: baseline;
+  border-bottom: 4px solid var(--green);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.masthead h1 { color: var(--white); font-size: 1.3rem; }
+.masthead p { color: var(--orange); margin: 0; }
+
+.menu {
+  display: grid;
+  flex: 1;
+  gap: 4px 12px;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  min-height: 0;
+  padding: 0.5rem 1rem 0;
+}
+
+.menu-item {
+  align-items: center;
+  background: var(--black);
+  border: 2px solid transparent;
+  display: flex;
+  font-size: 1.45rem;
+  gap: 0.7rem;
+  min-height: 56px;
+  padding: 0 0.6rem;
+  text-align: left;
+}
+
+.menu-item:hover { border-color: var(--green); }
+.menu-item:focus-visible { background: var(--panel); color: var(--white); }
+.menu-key { color: var(--orange); font-family: var(--title); font-size: 1rem; }
+
+.horizon { display: block; flex: none; height: 44px; width: 100%; }
+
+.footer {
+  align-items: center;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+.link-button {
+  background: none;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  font-size: 1.05rem;
+  min-height: 44px;
+  padding: 0 0.7rem;
+}
+
+.page-header {
+  align-items: center;
+  border-bottom: 4px solid var(--green);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+}
+
+.page-header h1 { color: var(--white); flex: 1; font-size: 1.05rem; }
+
+.page-body {
+  flex: 1;
+  font-size: 1.25rem;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.5rem 1rem;
+}
+
+.page-body p { margin: 0.6rem 0; }
+
+.notice { color: var(--orange); font-family: var(--title); font-size: 0.85rem; }
+
+.status-columns { display: grid; gap: 0 2rem; grid-template-columns: 1fr 1fr; }
+.status-columns dl { margin: 0; }
+
+.status-row {
+  border-bottom: 1px solid var(--purple-dim);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.12rem 0;
+}
+
+.status-row dt { color: var(--white); }
+.status-row dd { margin: 0; text-align: right; }
+
+.warn { color: var(--orange); }
+
+.big-button {
+  background: var(--panel);
+  border: 2px solid var(--green);
+  display: block;
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  min-height: 48px;
+  padding: 0 0.9rem;
+  width: 100%;
+}
+
+.big-button:disabled { border-color: var(--purple-dim); color: var(--purple); cursor: default; }
+
+.power-dialog {
+  background: var(--black);
+  border: 4px solid var(--green);
+  color: var(--green);
+  max-height: 96vh;
+  overflow: auto;
+  padding: 0.75rem 1rem;
+  width: 440px;
+}
+
+.power-dialog::backdrop { background: rgb(0 0 0 / 70%); }
+.power-dialog h2 { color: var(--white); font-size: 0.8rem; margin-bottom: 0.5rem; }
+.power-dialog label { color: var(--white); display: block; }
+.power-dialog p { margin: 0.4rem 0; }
+
+.pin-input {
+  background: var(--panel);
+  border: 2px solid var(--green);
+  color: var(--white);
+  font: inherit;
+  font-size: 1.3rem;
+  height: 44px;
+  letter-spacing: 0.3em;
+  margin: 0.25rem 0;
+  padding: 0 0.5rem;
+  width: 100%;
+}
+
+.keypad {
+  display: grid;
+  gap: 4px;
+  grid-auto-rows: 44px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.keypad button { background: var(--panel); border: 2px solid var(--green); }
+
+@media (min-height: 760px) {
+  :root { font-size: 27px; }
+  .power-dialog { width: 560px; }
+}

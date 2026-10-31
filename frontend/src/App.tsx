@@ -1,32 +1,60 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Home } from "./Home";
+import { Page } from "./Page";
+import { PowerDialog } from "./PowerDialog";
+import { SECTIONS } from "./sections";
+import { StatusPage } from "./StatusPage";
 
-type Health = { status: string; version: string };
+const sectionFromHash = () => window.location.hash.replace(/^#\/?/, "") || null;
 
-// Foundation placeholder only. The dashboard and its visual design arrive in Phase 3.
 export function App() {
-  const [health, setHealth] = useState<Health | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [current, setCurrent] = useState(sectionFromHash);
+  const [power, setPower] = useState(false);
+  const last = useRef<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/health")
-      .then((response) => {
-        if (!response.ok) throw new Error(String(response.status));
-        return response.json();
-      })
-      .then(setHealth)
-      .catch(() => setFailed(true));
+    const onHash = () => setCurrent(sectionFromHash());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
+  const open = useCallback((id: string) => {
+    last.current = id;
+    window.location.hash = `/${id}`;
+  }, []);
+  const back = useCallback(() => { window.location.hash = "/"; }, []);
+  const openPower = useCallback(() => setPower(true), []);
+  const closePower = useCallback(() => setPower(false), []);
+
+  useEffect(() => {
+    if (!current) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !document.querySelector("dialog[open]")) back();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [current, back]);
+
+  const section = SECTIONS.find((item) => item.id === current);
+
   return (
-    <main style={{ fontFamily: "monospace", padding: "2rem" }}>
-      <h1>SURVIVAL OS</h1>
-      {failed && <p role="alert">Backend unavailable</p>}
-      {health && (
-        <p>
-          Backend {health.status}, version {health.version}
-        </p>
+    <>
+      {section ? (
+        <Page id={section.id} title={section.title} onBack={back}>
+          {section.phase === undefined ? (
+            <StatusPage onPower={openPower} />
+          ) : (
+            <>
+              <p>{section.summary}</p>
+              <p className="notice">NOT INSTALLED YET</p>
+              <p>This section arrives in development phase {section.phase}.</p>
+            </>
+          )}
+        </Page>
+      ) : (
+        <Home onOpen={open} onPower={openPower} lastSection={last.current} />
       )}
-      {!failed && !health && <p>Checking backend</p>}
-    </main>
+      {power && <PowerDialog onClose={closePower} />}
+    </>
   );
 }

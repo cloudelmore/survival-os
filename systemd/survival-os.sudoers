@@ -1,0 +1,2 @@
+# Keep in step with ACTIONS in backend/survival_os/admin.py.
+survival ALL=(root) NOPASSWD: /usr/bin/systemctl poweroff, /usr/bin/systemctl reboot, /usr/bin/systemctl start survival-maintenance.target

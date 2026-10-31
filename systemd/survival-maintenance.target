@@ -1,0 +1,5 @@
+[Unit]
+Description=SURVIVAL OS maintenance console
+Conflicts=survival-kiosk.service
+After=survival-kiosk.service
+Wants=getty@tty1.service

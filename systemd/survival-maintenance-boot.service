@@ -1,0 +1,10 @@
+[Unit]
+Description=Enter maintenance mode when survival.maintenance=1 is on the kernel command line
+ConditionKernelCommandLine=survival.maintenance=1
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl --no-block start survival-maintenance.target
+
+[Install]
+WantedBy=multi-user.target

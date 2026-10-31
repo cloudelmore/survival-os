@@ -1,0 +1,34 @@
+[Unit]
+Description=SURVIVAL OS kiosk
+After=survival-web.service systemd-user-sessions.service getty@tty1.service
+Conflicts=getty@tty1.service
+ConditionKernelCommandLine=!survival.maintenance=1
+# After repeated crashes, give up and offer a console rather than loop forever.
+StartLimitIntervalSec=120
+StartLimitBurst=10
+OnFailure=survival-maintenance.target
+
+[Service]
+User=kiosk
+Group=kiosk
+PAMName=login
+TTYPath=/dev/tty1
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+UtmpIdentifier=tty1
+UtmpMode=user
+Environment=XDG_SESSION_TYPE=wayland
+# The profile lives in RAM, so a power cut cannot corrupt it or trigger a restore prompt.
+RuntimeDirectory=survival-kiosk
+ExecStartPre=/usr/bin/chvt 1
+# -s keeps Ctrl+Alt+F2 working, the way out to a text console.
+ExecStart=/usr/bin/cage -s -- /usr/bin/chromium --ozone-platform=wayland --kiosk --no-first-run --no-default-browser-check --noerrdialogs --disable-translate --password-store=basic --user-data-dir=/run/survival-kiosk/profile http://127.0.0.1:8080/
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
