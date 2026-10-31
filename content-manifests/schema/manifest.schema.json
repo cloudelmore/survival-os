@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "survival-os/manifest.schema.json",
+  "title": "SURVIVAL OS catalog entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "publisher", "format", "budget_category", "destination",
+               "source_url", "license", "publication_date", "size_bytes", "sha256",
+               "redistribution"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "title": {"type": "string", "minLength": 1},
+    "publisher": {"type": "string", "minLength": 1},
+    "format": {
+      "enum": ["zim", "pdf", "epub", "html", "text", "markdown", "pmtiles", "map-data",
+               "video", "kolibri-video", "kolibri", "model", "mixed"]
+    },
+    "wikimedia_project": {"type": "boolean"},
+    "budget_category": {
+      "enum": ["os_apps", "wikimedia_zim", "maps", "medical_survival", "video",
+               "ai_indexes", "personal", "engineering", "natural_sciences",
+               "radio", "mechanical", "navigation_weather", "education"]
+    },
+    "also_fits": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "category_reason": {"type": "string", "minLength": 1},
+    "destination": {"type": "string", "minLength": 1},
+    "source_url": {"$ref": "#/$defs/verifiable_string"},
+    "license": {"$ref": "#/$defs/verifiable_string"},
+    "publication_date": {"$ref": "#/$defs/verifiable_string"},
+    "size_bytes": {
+      "allOf": [
+        {"$ref": "#/$defs/verifiable"},
+        {"properties": {"value": {"type": ["integer", "null"], "minimum": 0}}}
+      ]
+    },
+    "sha256": {
+      "allOf": [
+        {"$ref": "#/$defs/verifiable"},
+        {"properties": {"value": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"}}}
+      ]
+    },
+    "redistribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_image_allowed"],
+      "properties": {
+        "base_image_allowed": {"type": "boolean"},
+        "notes": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "verifiable": {
+      "type": "object",
+      "required": ["value", "status"],
+      "properties": {
+        "value": {},
+        "status": {"enum": ["verified", "unverified"]},
+        "verified_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}"}
+      }
+    },
+    "verifiable_string": {
+      "allOf": [
+        {"$ref": "#/$defs/verifiable"},
+        {"properties": {"value": {"type": ["string", "null"], "minLength": 1}}}
+      ]
+    }
+  }
+}

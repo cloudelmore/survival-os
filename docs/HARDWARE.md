@@ -1,5 +1,26 @@
 # Hardware baseline
 
+## Measured on the real device (2026-10-30)
+
+Where this table differs from the owner baseline below, the measurement wins.
+
+| Item | Measured | Differs from baseline |
+|---|---|---|
+| Display | 7-inch HDMI panel, native **1024x600**, the only mode reported | Baseline said 1280x800 |
+| Touch | USB `QDtech MPI5001`, works, no calibration needed | Baseline said not required. Keep it working, but keyboard remains the hard requirement |
+| Drive | **Samsung 970 EVO Plus 1 TB** | Baseline said 990 Pro |
+| Enclosure | Ugreen CM578, Realtek RTL9210 bridge, `0bda:9210` | Confirms the enclosure, identifies the bridge |
+| Link | **USB 2, 480 Mb/s**, `usb-storage`, about 35 MB/s. Owner accepted this for now. USB 3 lines do not connect, cable or plug suspected | Baseline expected 5 Gb/s with UAS |
+| Boot | Boots from the drive with no SD or stick. `BOOT_ORDER=0xf461` (SD, NVMe, USB) | Baseline assumed `0xf41`. No change was needed |
+| Supply | `max_current` is 5000 mA, `usb_max_current_enable=1`. Not current-limited | Confirms the device-tree value is populated |
+| Keyboard | Logitech K270. A trackpad exists but is swapped out, so support both | |
+| Power source | **Unresolved.** The Rev. 2 brief says solar, this file says wall power. No battery or solar telemetry found | Needs the owner's answer |
+
+UAS and SMART through this bridge are unverified. Touch is working hardware, so the design should
+not break it, even though keyboard navigation is the requirement.
+
+## Owner baseline (2026-10-22)
+
 Confirmed by the project owner on 2026-10-22. Where it differs from the Rev. 2
 implementation prompt, this file wins.
 

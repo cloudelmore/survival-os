@@ -1,13 +1,12 @@
-# SURVIVAL OS architecture (first-session draft)
+# SURVIVAL OS architecture
 
-Status: **draft**. Items marked *(Phase 2 decision)* stay open until they are
-measured on the real Pi 5. Nothing here is implemented yet except the Phase 1
-tooling listed in [STATUS.md](STATUS.md).
+Status: **draft**. Implemented so far: the Phase 1 tooling, the backend health endpoint, a
+placeholder page, the manifest validator and the dev loop. See [STATUS.md](STATUS.md).
 
 ## Goals in one paragraph
 
-A Raspberry Pi 5 (8 GB, one 1 TB Samsung 990 Pro NVMe in an external USB
-enclosure, 7-inch 1280x800 display, keyboard + trackpad, wall power over USB-C;
+A Raspberry Pi 5 (8 GB, one 1 TB NVMe in an external USB
+enclosure, 7-inch 1024x600 display, keyboard or trackpad, and touch;
 see [HARDWARE.md](HARDWARE.md)) boots Raspberry Pi
 OS Lite 64-bit (Debian 13 trixie) straight into a full-screen browser that
 shows the SURVIVAL OS dashboard. Everything (search, document viewers, Kiwix,
@@ -20,9 +19,9 @@ acquisition.
 ```mermaid
 flowchart LR
   subgraph Display["7-inch display, keyboard + trackpad"]
-    K["Kiosk: Wayland compositor + browser<br/>(Phase 2 decision)"]
+    K["Kiosk: cage -s + Chromium"]
   end
-  K -->|http://127.0.0.1| W["Front web server<br/>static frontend + reverse proxy<br/>(Phase 2 decision)"]
+  K -->|http://127.0.0.1| W["Front web server<br/>static frontend + reverse proxy<br/>nginx-light"]
   W -->|/| FE["React/TS dashboard<br/>pdf.js, epub.js, MapLibre<br/>all assets bundled"]
   W -->|/api| API["FastAPI backend (uvicorn)<br/>search, content mgr, status, power"]
   W -->|/kiwix| KX["kiwix-serve<br/>ZIM archives"]
@@ -72,12 +71,36 @@ journald logs, and the least privileges it needs.
   local admin PIN set at first boot. LAN sharing is off, SSH is disabled in the
   release image, and there are no credentials in Git or the image.
 
+## Kiosk decision (Phase 2)
+
+**Choice: `cage -s` running Chromium.** Measured on the target Pi 5 from NVMe, 2026-10-30, using
+the same local page. Each pairing ran once, except cage with Chromium, which ran twice.
+
+| Stack | Memory added after 30 s | Compositor RSS | WebGL renderer reported |
+|---|---|---|---|
+| cage + Chromium | 135 and 251 MiB | 81 MiB | V3D 7.1 through ANGLE |
+| labwc + Chromium | 222 MiB | 96 MiB | V3D 7.1 through ANGLE |
+| cage + Firefox | 1001 MiB | 84 MiB | "Generic Renderer" |
+
+- Chromium over Firefox: about a fifth of the memory, and it confirms the GPU for MapLibre.
+  Firefox may mask its renderer name, so hardware rendering there is unconfirmed, not disproved.
+- cage over labwc: the two runs of cage differ by more than cage and labwc do, so memory does not
+  separate them. cage wins on simplicity: it shows one application, needs no configuration, and
+  exits when the browser does, which leaves restart handling to systemd.
+- Stability: with `Restart=always`, two forced browser kills recovered in 3.5 s and 3.0 s.
+  Long-duration stability is untested.
+
+Requirements for the kiosk unit:
+
+- Pass `-s`. Without it, cage blocks Ctrl+Alt+F2, the way out to a text console.
+- Handle resize. The window is smaller at first load, then reaches 1024x600.
+
 ## Maintenance path out of the kiosk (planned, Phase 3)
 
 1. Dashboard → System → **Maintenance mode**: switches to
    `survival-maintenance.target`, which stops the kiosk and starts a getty on tty1.
 2. Keyboard: **Ctrl+Alt+F2** switches to a text console at any time (VT
-   switching via the seat). Phase 1 verifies this on the real hardware.
+   switching). Verified on the real hardware; it needs `cage -s`.
 3. Boot-time escape: adding `survival.maintenance=1` to `cmdline.txt` (from
    another computer) boots without the kiosk.
 
@@ -87,9 +110,9 @@ journald logs, and the least privileges it needs.
 |---|---|---|
 | Base OS | Raspberry Pi OS Lite 64-bit, Debian 13 trixie, booted from the USB NVMe | fixed by spec |
 | Filesystem | single ext4 root, reserved blocks 1% | decided 2026-10-22 |
-| Kiosk compositor | `cage` (single-app kiosk) vs `labwc` (Pi OS default) | Phase 2 decision; `scripts/pi/kiosk-trial.sh` measures both |
-| Kiosk browser | Chromium (Pi-tuned build, Wayland, GPU accel) | Phase 2 decision; Firefox ESR is the fallback |
-| Front web server | nginx-light or Caddy | Phase 2 decision |
+| Kiosk compositor | `cage -s` | decided in Phase 2, measured |
+| Kiosk browser | Chromium, Wayland, GPU acceleration | decided in Phase 2, measured |
+| Front web server | nginx-light | decided in Phase 2: a small Debian package that handles static files, range requests and proxying. Not measured; confirm in Phase 3 |
 | Backend | Python 3.13 (trixie), FastAPI, uvicorn, SQLite FTS5 | fixed by spec |
 | Frontend | React + TypeScript + Vite, pdf.js, epub.js, MapLibre GL JS | fixed by spec |
 | ZIM | `kiwix-tools` (Debian package or upstream ARM64 build) | Phase 5; verify version |

@@ -2,10 +2,10 @@
 
 A fully offline knowledge appliance for a Raspberry Pi 5 cyberdeck. It runs
 Raspberry Pi OS Lite 64-bit (Debian 13 trixie) and boots straight into a
-keyboard-and-trackpad dashboard with library search, document viewers, Wikipedia (Kiwix),
+dashboard for keyboard, trackpad and touch, with library search, document viewers, Wikipedia (Kiwix),
 offline maps, and optional local AI.
 
-> **Status: Phase 1 (environment) in progress. Not usable yet.**
+> **Status: Phase 2 (foundation) complete. Not usable yet.**
 > See [docs/STATUS.md](docs/STATUS.md) for what works and what is still unverified.
 
 ## What exists today
@@ -16,6 +16,9 @@ offline maps, and optional local AI.
 | `scripts/dev/pi-remote-inspect.sh` | Runs the hardware inspection on the Pi over SSH and saves the report |
 | `scripts/pi/inspect_hardware.py` | Read-only Pi 5 hardware/boot/storage/power inspection, including the USB-attached NVMe (stdlib Python) |
 | `scripts/pi/kiosk-trial.sh` | Non-persistent kiosk trial (cage or labwc + Chromium) with memory sampling |
+| `backend/`, `frontend/` | Health endpoint and placeholder page, the start of the application |
+| `content-manifests/` | Catalog schema, the 13 storage budgets, and validation (catalog entries arrive in Phase 5) |
+| `Makefile`, `scripts/dev/dev-*.sh` | Test, deploy to the Pi, and show the page on its screen |
 | `docs/` | Architecture, storage plan, risks, milestones, setup and Phase 1 guides |
 
 ## Quick start (dev PC, WSL2)
@@ -23,7 +26,8 @@ offline maps, and optional local AI.
 ```bash
 scripts/dev/wsl2-bootstrap.sh --dry-run
 scripts/dev/wsl2-bootstrap.sh
-python3 -m pytest
+make setup
+make test
 scripts/dev/pi-remote-inspect.sh --sudo <user>@<pi-host>
 ```
 

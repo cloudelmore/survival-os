@@ -1,3 +1,5 @@
+> Phase 1 is complete. This guide is kept for reference; the drive used was a 970 EVO Plus.
+
 # Phase 1: hardware inspection, kiosk trial, flash to the USB NVMe
 
 Baseline: [HARDWARE.md](../HARDWARE.md). The 990 Pro is in an external USB

@@ -88,7 +88,7 @@ trap 'kill $sampler 2>/dev/null || true; rm -rf "$profile" "$cfgdir"' EXIT
 echo "Starting $comp + $browser. Memory log: $memlog"
 start=$(date +%s)
 case "$comp" in
-  cage)  cage -- sh -c "$launch" ;;
+  cage)  cage -s -- sh -c "$launch" ;;
   labwc) labwc -C "$cfgdir" -s "sh -c '$launch'" ;;
   *) echo "unsupported compositor: $comp" >&2; exit 2 ;;
 esac

@@ -26,3 +26,9 @@ __pycache__/
 node_modules/
 dist/
 build/
+
+# Added in Phase 2
+*.tsbuildinfo
+*.egg-info/
+.env.*
+.claude/

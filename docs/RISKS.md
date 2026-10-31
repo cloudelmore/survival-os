@@ -1,5 +1,17 @@
 # Risks
 
+Updates from real hardware, 2026-10-30:
+
+- R1 closed: the panel is landscape 1024x600.
+- R2 occurred: the link is USB 2 at about 35 MB/s, accepted by the owner for now.
+- R3 supply limit ruled out: the Pi reports a 5 A supply. Abrupt power loss remains a risk.
+- R4 measured: see the decision in ARCHITECTURE.md.
+- R13 closed: sessions now run on the dev PC with SSH to the Pi.
+- New: one unexplained reboot occurred on the old USB stick system. Its cause is unknown, stick
+  I/O stalls are the leading suspect, and journald is now persistent. See STATUS.md.
+- New: journald is volatile in the stock image, so crash evidence is lost. Phase 8 must set a
+  bounded persistent journal.
+
 | # | Risk | Impact | Mitigation / how we find out |
 |---|---|---|---|
 | R1 | The 7-inch panel may report a portrait-native mode. (Touch has been dropped from the requirements.) | Wrong rotation | Phase 1 inspection reports DRM modes. Rotation goes in compositor config (`--rotate` in the trial). |

@@ -1,5 +1,8 @@
 # Storage plan
 
+**Measured 2026-10-30, after `tune2fs -m 1`:** filesystem 984 GB, usable 974 GB, 15% floor about
+146 GB, room about 828 GB. That matches layout A′ below and holds all 800 GB of caps.
+
 All sizes are decimal GB (10^9 bytes) unless marked GiB. The figures below are
 **estimates**. They get replaced with measured values from
 `scripts/pi/inspect_hardware.py` (`storage.root_capacity`,
@@ -11,7 +14,7 @@ All sizes are decimal GB (10^9 bytes) unless marked GiB. The figures below are
 |---|---|
 | Typical 1 TB NVMe | 1,000,204,886,016 bytes = 1,000.2 GB = 931.5 GiB |
 | Boot partition (FAT32, Pi OS) | 0.5 GiB |
-| Drive | Samsung 990 Pro 1 TB in a USB enclosure (exact byte count from Phase 1 inspection) |
+| Drive | Samsung 970 EVO Plus 1 TB in a USB enclosure |
 
 ## Usable capacity estimates (single ext4 root, Pi OS default layout)
 
