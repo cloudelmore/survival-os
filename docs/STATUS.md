@@ -2,7 +2,7 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 3 (Dashboard) complete except the trackpad check. Next is Phase 4.
+**Current phase:** 3 (Dashboard), installed and booting. Device checks are outstanding.
 **Last updated:** 2026-10-30 (Phase 3 session)
 
 ## Completed work
@@ -34,7 +34,9 @@ Pi changes, approved by the user: nginx-light installed with `nginx.service` mas
 | Dry run on the Pi changes nothing | Pass |
 | Ports after reboot | Only 22 outward; 8080 and 8081 on loopback; no port 80 |
 | Boots to the dashboard | Pass, one reboot through the API, unattended |
-| Linux startup | 30.3 s. The Pi was reachable about 119 s after the request, cause of the gap unmeasured |
+| Linux startup | 30.3 s, kiosk started 23 s after the kernel |
+| Firmware | Started the OS at 19.2 s, of which 12.2 s came before its log begins |
+| Reboot gap | 87 s from the last journal line to kernel start, so about 68 s is not firmware. Cause unknown; likely the late shutdown stage, which logs nothing |
 | Browser killed twice | Pass, back in 3 s each time |
 | Wrong PIN refused, right PIN accepted | Pass |
 | Maintenance mode through the API | Pass: kiosk stops, getty starts on tty1, and it returns |
@@ -42,11 +44,14 @@ Pi changes, approved by the user: nginx-light installed with `nginx.service` mas
 | Strict content policy in Chromium | Pass, page and fonts render identically |
 | Render at 1280x800 | Pass, headless on the Pi |
 
-User device checks, 2026-10-31: all passed, reported as "all good". They covered keyboard, touch,
-setting a PIN, maintenance mode and return, Ctrl+Alt+F2 and F1, shutdown and power-on, and the
-power dialog on screen.
+User report, 2026-10-31: "all good", with no itemised results. The Pi's logs show that no PIN was
+set, maintenance mode was not entered, and no shutdown occurred after the 00:14 reboot, so those
+checks were not run. Keyboard and touch leave no trace, so they are unconfirmed either way.
 
-Not tested: trackpad (swapped out), the `survival.maintenance=1` boot flag, the repeated-crash fallback, `--uninstall`, and power loss.
+Maintenance, PIN and reboot passed in remote API tests only. They still need testing on the device.
+
+Not tested: PIN entry and the power dialog on screen, maintenance mode from the screen, shutdown
+and power-on, trackpad (swapped out), the `survival.maintenance=1` boot flag, the repeated-crash fallback, `--uninstall`, and power loss.
 
 ### Phase 2 (Foundation)
 
@@ -258,6 +263,10 @@ built yet. This refines the brief's dark field-computer look:
 
 ## Next steps
 
-1. Boot order: user decides on the measured EEPROM proposal. An approval gate.
-2. Phase 4 (Search) starts only after the user says so.
-3. Test the trackpad when it is reconnected.
+1. User runs the device checks: PIN, maintenance mode and return, Ctrl+Alt+F2 and F1, shutdown
+   and power-on. Shutdown also gives the first real cold-boot time.
+2. EEPROM proposal, an approval gate: set `BOOT_ORDER=0xf14` (USB, then SD) and remove
+   `PCIE_PROBE=1`, as no PCIe storage is planned. Expected gain is seconds at most, within the
+   first 12.2 s. It will not touch the 68 s reboot gap.
+3. Phase 4 (Search) starts after Phase 3 closes and the user says so.
+4. Test the trackpad when it is reconnected.
