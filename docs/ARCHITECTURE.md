@@ -1,7 +1,7 @@
 # SURVIVAL OS architecture
 
-Status: **draft**. Implemented so far: the Phase 1 tooling, the backend health endpoint, a
-placeholder page, the manifest validator and the dev loop. See [STATUS.md](STATUS.md).
+Status: **draft**. Implemented so far: the Phase 1 tooling, the dashboard, system status, power
+controls, the kiosk and web services, and the manifest validator. See [STATUS.md](STATUS.md).
 
 ## Goals in one paragraph
 
@@ -67,8 +67,8 @@ journald logs, and the least privileges it needs.
 - **AI is optional and removable.** The library never calls the LLM. AI answers
   must cite retrieved passages. Medical, wild-edible, and electrical-safety
   content always comes from sourced documents, never from model output.
-- **Secure defaults.** All services listen on loopback. Admin endpoints need a
-  local admin PIN set at first boot. LAN sharing is off, SSH is disabled in the
+- **Secure defaults.** All services listen on loopback. Admin actions need a
+  local admin PIN, set at first use, and refuse cross-site requests. LAN sharing is off, SSH is disabled in the
   release image, and there are no credentials in Git or the image.
 
 ## Kiosk decision (Phase 2)
@@ -95,7 +95,11 @@ Requirements for the kiosk unit:
 - Pass `-s`. Without it, cage blocks Ctrl+Alt+F2, the way out to a text console.
 - Handle resize. The window is smaller at first load, then reaches 1024x600.
 
-## Maintenance path out of the kiosk (planned, Phase 3)
+## Maintenance path out of the kiosk
+
+See [MAINTENANCE.md](MAINTENANCE.md).
+
+## Original maintenance plan
 
 1. Dashboard → System → **Maintenance mode**: switches to
    `survival-maintenance.target`, which stops the kiosk and starts a getty on tty1.
@@ -112,7 +116,7 @@ Requirements for the kiosk unit:
 | Filesystem | single ext4 root, reserved blocks 1% | decided 2026-10-22 |
 | Kiosk compositor | `cage -s` | decided in Phase 2, measured |
 | Kiosk browser | Chromium, Wayland, GPU acceleration | decided in Phase 2, measured |
-| Front web server | nginx-light | decided in Phase 2: a small Debian package that handles static files, range requests and proxying. Not measured; confirm in Phase 3 |
+| Front web server | nginx-light | decided in Phase 2: a small Debian package that handles static files, range requests and proxying. In use since Phase 3 |
 | Backend | Python 3.13 (trixie), FastAPI, uvicorn, SQLite FTS5 | fixed by spec |
 | Frontend | React + TypeScript + Vite, pdf.js, epub.js, MapLibre GL JS | fixed by spec |
 | ZIM | `kiwix-tools` (Debian package or upstream ARM64 build) | Phase 5; verify version |

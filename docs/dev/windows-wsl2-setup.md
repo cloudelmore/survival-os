@@ -90,32 +90,25 @@ sudo visudo -c
 
 Set `SURVIVAL_HOST` to use a different SSH host name.
 
-The Pi needs `cage` and `chromium` for the kiosk step, and `python3-venv` for the backend:
-
-```
-sudo apt-get install --no-install-recommends cage chromium python3-venv
-```
-
-Node 24 LTS is required (see `.nvmrc`). Debian's Node is too old, so install the official tarball
-under `~/.local` after checking it against `SHASUMS256.txt`.
-
-Commands:
+## Commands
 
 | Command | What it does |
 |---|---|
 | `make setup` | Create the Python environment and install frontend packages |
 | `make test` | Run backend tests, frontend tests and type checks, and validate manifests |
-| `make deploy` | Build, sync to `~/survival-os-dev` on the Pi, restart the backend, check it |
+| `make deploy` | Build, run the installer on the Pi, restart the services, check them |
 | `make check` | Check the backend and page on the Pi |
-| `make kiosk` | Show the deployed page on the Pi's screen |
-| `make kiosk-stop` | Stop the kiosk and return to the console |
+| `make kiosk` | Restart the kiosk, which reloads the page |
+| `make kiosk-stop` | Stop the kiosk until the next reboot |
 
-The backend and kiosk run as transient units, so they stop at reboot and nothing autostarts. The
-backend listens on loopback only. To view it from the PC, use a tunnel, then open
-<http://127.0.0.1:8080>:
+The Pi runs the production services, listening on loopback only. To view them from the PC, use a
+tunnel, then open <http://127.0.0.1:8080>:
 
 ```
 ssh -L 8080:127.0.0.1:8080 survival
 ```
 
 Frontend-only work can use `cd frontend && npm run dev`, with the tunnel providing the API.
+
+Node 24 LTS is required (see `.nvmrc`). Debian's Node is too old, so install the official tarball
+under `~/.local` after checking it against `SHASUMS256.txt`.

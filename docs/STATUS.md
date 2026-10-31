@@ -2,10 +2,49 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 2 (Foundation) complete, awaiting user review. Next is Phase 3.
-**Last updated:** 2026-10-30 (Phase 2 session)
+**Current phase:** 3 (Dashboard), installed and booting. Device checks by the user are outstanding.
+**Last updated:** 2026-10-30 (Phase 3 session)
 
 ## Completed work
+
+### Phase 3 (Dashboard)
+
+- Original retro dashboard with ten sections, bundled OFL fonts and hand-made pixel icons.
+- Keyboard: number keys, arrows, Enter, Esc, P for power. Touch and pointer work throughout.
+- System status from real telemetry. No battery figure exists anywhere.
+- Admin PIN, chosen at first use, for shutdown, reboot and maintenance. Five failures lock it for
+  60 s. Cross-site requests are refused. The on-screen keypad works without a keyboard.
+- Production services: `survival-api`, `survival-web` (nginx-light), `survival-kiosk`, and
+  `survival-maintenance.target`. The browser profile is in RAM.
+- Installer with `--dry-run`, `--apply`, `--enable`, `--disable`, `--uninstall`.
+- CI-ready offline build check. `make deploy` now uses the installer.
+- Docs: MAINTENANCE.md. Font licenses in docs/licenses.
+
+Pi changes, approved by the user: nginx-light installed with `nginx.service` masked, users
+`survival` and `kiosk`, `/opt/survival-os`, `/etc/sudoers.d/survival-os`, services enabled at boot,
+`getty@tty1` disabled. `labwc`, `firefox` and `bc` from Phase 2 remain and can be removed.
+
+### Phase 3 test results
+
+| Check | Result |
+|---|---|
+| Python tests | 68 passed |
+| Frontend tests and type check | 12 passed, clean |
+| Offline build check | Pass |
+| Dry run on the Pi changes nothing | Pass |
+| Ports after reboot | Only 22 outward; 8080 and 8081 on loopback; no port 80 |
+| Boots to the dashboard | Pass, one reboot through the API, unattended |
+| Linux startup | 30.3 s. The Pi was reachable about 119 s after the request, cause of the gap unmeasured |
+| Browser killed twice | Pass, back in 3 s each time |
+| Wrong PIN refused, right PIN accepted | Pass |
+| Maintenance mode through the API | Pass: kiosk stops, getty starts on tty1, and it returns |
+| Service account sudo | Pass: only the three listed commands |
+| Strict content policy in Chromium | Pass, page and fonts render identically |
+| Render at 1280x800 | Pass, headless on the Pi |
+
+Not tested: anything by hand at the device with this build, the power dialog's layout on the
+screen, shutdown (needs a person to power back on), trackpad (swapped out), the
+`survival.maintenance=1` boot flag, the repeated-crash fallback, `--uninstall`, and power loss.
 
 ### Phase 2 (Foundation)
 
@@ -215,11 +254,9 @@ built yet. This refines the brief's dark field-computer look:
 - All assets are original. Use no Oregon Trail name, artwork or game graphics in this public repo.
 - Any pixel font must have a license that allows bundling, and ships locally.
 
-## Next steps (Phase 3)
+## Next steps (finish Phase 3)
 
-Phase 3 (Dashboard) starts only after the user's review.
-
-1. Build the homepage in the agreed retro style, with original assets and a licensed pixel font.
-2. Add production kiosk auto-launch. This installs a boot service on the Pi, so ask first.
-3. Add system status, using real telemetry only, and offline navigation.
-4. Add maintenance-mode exit, then retest touch, keyboard and VT switching on the NVMe system.
+1. User checks the dashboard at the device: keyboard, touch, setting a PIN, Ctrl+Alt+F2 and back,
+   maintenance mode, and shutdown.
+2. Decide about the slow firmware stage. Trying USB first needs an EEPROM change, an approval gate.
+3. Then close Phase 3. Next is Phase 4 (Search).

@@ -24,13 +24,14 @@ build:
 	scripts/dev/check-offline-build.sh
 
 deploy: build
-	scripts/dev/dev-deploy.sh
+	scripts/dev/dev-install.sh --apply
+	scripts/dev/dev-check.sh
 
 check:
 	scripts/dev/dev-check.sh
 
 kiosk:
-	scripts/dev/dev-kiosk.sh start
+	ssh $${SURVIVAL_HOST:-survival} sudo -n systemctl restart survival-kiosk
 
 kiosk-stop:
-	scripts/dev/dev-kiosk.sh stop
+	ssh $${SURVIVAL_HOST:-survival} sudo -n systemctl stop survival-kiosk
