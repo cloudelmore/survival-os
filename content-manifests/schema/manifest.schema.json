@@ -13,9 +13,22 @@
     "publisher": {"type": "string", "minLength": 1},
     "format": {
       "enum": ["zim", "pdf", "epub", "html", "text", "markdown", "pmtiles", "map-data",
-               "video", "kolibri-video", "kolibri", "model", "mixed"]
+               "video", "kolibri-video", "kolibri", "model", "firmware", "mixed"]
     },
     "wikimedia_project": {"type": "boolean"},
+    "summary": {"type": "string"},
+    "archive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["keep"],
+      "properties": {"keep": {"type": "array", "items": {"type": "string"}}}
+    },
+    "kiwix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {"name": {"type": "string"}, "flavour": {"type": "string"}}
+    },
     "budget_category": {
       "enum": ["os_apps", "wikimedia_zim", "maps", "medical_survival", "video",
                "ai_indexes", "personal", "engineering", "natural_sciences",

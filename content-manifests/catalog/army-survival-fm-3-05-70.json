@@ -1,0 +1,36 @@
+{
+  "id": "army-survival-fm-3-05-70",
+  "title": "Survival (FM 3-05.70, 2002)",
+  "summary": "Long-form Army survival manual: food, water, shelter, plants and navigation.",
+  "publisher": "US Army",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/army-survival-fm-3-05-70.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/fm-3-05.70-survival-2002/FM%203-05.70%20Survival%20%202002.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2002-05",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 21019230,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "76905fc16b14b2a57eb646adb6f3c238dcfb161d66ff1103a2a7b702e20e0f32",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

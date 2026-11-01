@@ -44,6 +44,46 @@ export const setPin = (pin: string) => send("/api/admin/pin", { pin });
 export const runAction = (action: Action, pin: string) =>
   send("/api/system/action", { action, pin });
 
+export type Installed = {
+  id: string; title: string; category: string; bytes: number; version: string;
+  checksum_source: string;
+};
+export type ContentEntry = {
+  id: string; title: string; publisher: string; format: string; category: string; summary: string;
+  bytes: number | null; bytes_status: string; license: string | null; license_status: string;
+  checksum_status: string; date: string | null; installed: Installed | null;
+  update: { version: string; bytes: number } | null;
+};
+export type ContentJob = {
+  id: number; action: string; target: string; state: string; phase: string; bytes_done: number;
+  bytes_total: number; error: string | null;
+};
+export type ContentOverview = {
+  entries: ContentEntry[];
+  imported: Installed[];
+  jobs: ContentJob[];
+  storage: {
+    usable: number; available: number; floor: number; headroom: number; used: number;
+    warning: boolean;
+    categories: { id: string; name: string; cap_bytes: number; used_bytes: number }[];
+  };
+};
+export type KiwixBook = { id: string; title: string; category: string; name: string };
+export type UsbFile = { path: string; bytes: number; format: string };
+export type ContentAction = "install" | "update" | "remove" | "validate";
+
+export const getContent = () => load<ContentOverview>("/api/content");
+export const getKiwixBooks = () => load<{ books: KiwixBook[] }>("/api/content/kiwix");
+export const getUsb = () => load<{ mounted: boolean; files: UsbFile[] }>("/api/content/usb");
+export const contentAction = (action: ContentAction, id: string, pin: string) =>
+  send("/api/content/action", { action, id, pin });
+export const checkUpdates = (pin: string) => send("/api/content/check-updates", { pin });
+export const cancelJob = (id: number) => send(`/api/content/jobs/${id}/cancel`, {});
+export const usbAction = (action: "mount" | "unmount", pin: string) =>
+  send(`/api/content/usb/${action}`, { pin });
+export const importFile = (path: string, category: string, pin: string) =>
+  send("/api/content/import", { path, category, pin });
+
 export type SnippetPart = { text: string; hit: boolean };
 export type SearchResult = {
   document_id: number;

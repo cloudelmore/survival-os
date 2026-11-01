@@ -1,0 +1,43 @@
+{
+  "id": "gardenology",
+  "title": "Gardenology",
+  "summary": "A complete plant and garden encyclopedia",
+  "publisher": "Gardenology",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "gardenology_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/gardenology.org_en_all_2026-09.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/gardenology.org_en_all_2026-09.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-09-09",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 112499438,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "796c4930a18174ef39c2f7aa676d9773d4d9c0f7c9f0eeae9a9338889edfd6c9",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Growing food."
+}

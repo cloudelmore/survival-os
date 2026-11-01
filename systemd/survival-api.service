@@ -9,6 +9,7 @@ WorkingDirectory=/opt/survival-os
 Environment=SURVIVAL_STATE_DIR=/var/lib/survival-os
 Environment=SURVIVAL_STATIC_DIR=/opt/survival-os/frontend
 Environment=SURVIVAL_ACTIONS_ENABLED=1
+Environment=SURVIVAL_CATALOG_DIR=/opt/survival-os/content-manifests
 ExecStart=/opt/survival-os/venv/bin/uvicorn survival_os.main:app --host 127.0.0.1 --port 8081 --log-level warning
 Restart=on-failure
 RestartSec=2

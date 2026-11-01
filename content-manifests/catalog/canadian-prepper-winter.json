@@ -1,0 +1,43 @@
+{
+  "id": "canadian-prepper-winter",
+  "title": "Canadian prepper",
+  "summary": "Winter Prepping: Prepare for winter survival and emergencies Community source, not official guidance. Do not rely on it for medical, electrical or wild food decisions.",
+  "publisher": "Youtube Channel \u201cCanadian Prepper\u201d",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "video",
+  "kiwix": {
+    "name": "canadian-prepper_en_winterprepping",
+    "flavour": ""
+  },
+  "destination": "zim/canadian-prepper_en_winterprepping_2026-08.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/videos/canadian-prepper_en_winterprepping_2026-08.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-08-26",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 1341548037,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "e23febf7dad71818a18a0d46aa24aa8876e5accd6eebe03d0a9fea932d133a79",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "All video goes to Educational videos."
+}

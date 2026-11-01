@@ -118,7 +118,8 @@ export function LibrarySearch() {
       </form>
       <IndexerLine status={status} />
       <p className="library-scope">
-        Searches the document library only. Encyclopedias have their own search under Knowledge.
+        Searches the document library only. Encyclopedias have their own search.{" "}
+        {text.trim() && <a href={`#/kiwix?${new URLSearchParams({ q: text, from: "library-search" })}`}>Search them for this</a>}
       </p>
       {error && <p className="notice">SEARCH FAILED. TRY AGAIN.</p>}
       {response && !response.total && <p className="notice">NO MATCHES</p>}

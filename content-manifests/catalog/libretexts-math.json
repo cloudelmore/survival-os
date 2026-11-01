@@ -1,0 +1,42 @@
+{
+  "id": "libretexts-math",
+  "title": "Mathematics LibreTexts",
+  "summary": "Mathematics courses and bookshelves from LibreTexts.org",
+  "publisher": "LibreTexts",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "education",
+  "kiwix": {
+    "name": "libretexts.org_en_math",
+    "flavour": ""
+  },
+  "destination": "zim/libretexts.org_en_math_2026-01.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/libretexts/libretexts.org_en_math_2026-01.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-01-16",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 830646230,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "7a07f9a4c7ad1ca51c300d573bc74df27a5556f7c4c6fe9407bc337ad9b7b4c8",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

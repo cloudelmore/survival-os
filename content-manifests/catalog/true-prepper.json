@@ -1,0 +1,43 @@
+{
+  "id": "true-prepper",
+  "title": "True prepper",
+  "summary": "Prepping Your Way Community source, not official guidance. Do not rely on it for medical, electrical or wild food decisions.",
+  "publisher": "-",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "trueprepper.com_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/trueprepper.com_en_all_2026-05.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/trueprepper.com_en_all_2026-05.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-05-04",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 1423584895,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "64ddae8ca29ca24db23fae403f12af510f3f3119e09933974e91c899b41be940",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Preparedness website with its own full-text search."
+}

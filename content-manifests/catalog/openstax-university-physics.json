@@ -1,0 +1,36 @@
+{
+  "id": "openstax-university-physics",
+  "title": "University Physics, All Volumes",
+  "summary": "University physics textbook.",
+  "publisher": "OpenStax",
+  "format": "pdf",
+  "budget_category": "education",
+  "destination": "education/openstax-university-physics.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/cnx-org-col12105/openstax-university-physics-all-volumes.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 252127046,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "391bae6e741f1fabf469bf2d6641f3ee3f67ecb961f58d76bfe4fbb55d00425c",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

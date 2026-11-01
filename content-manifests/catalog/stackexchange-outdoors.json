@@ -1,0 +1,43 @@
+{
+  "id": "stackexchange-outdoors",
+  "title": "The Great Outdoors Q&A",
+  "summary": "Stack Exchange Q&A for everything being outdoors enjoying nature and wilderness",
+  "publisher": "Stack Exchange",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "outdoors.stackexchange.com_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/outdoors.stackexchange.com_en_all_2026-10.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/stack_exchange/outdoors.stackexchange.com_en_all_2026-10.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-20",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 141820374,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "73752057bd2253af6cf80c69caf0def158bcf378188f0fbc7ab8ed07bbbe9bc5",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "General outdoor survival questions."
+}

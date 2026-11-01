@@ -1,0 +1,42 @@
+{
+  "id": "libretexts-engineering",
+  "title": "Engineering LibreTexts",
+  "summary": "Engineering courses and bookshelves from LibreTexts.org",
+  "publisher": "LibreTexts",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "engineering",
+  "kiwix": {
+    "name": "libretexts.org_en_eng",
+    "flavour": ""
+  },
+  "destination": "zim/libretexts.org_en_eng_2025-01.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/libretexts/libretexts.org_en_eng_2025-01.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-01-16",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 678394631,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "3d4b25d03082172f4793625163b366a7d21655a5f8868d0758a9c3649ce9d5c2",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

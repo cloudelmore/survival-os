@@ -1,0 +1,36 @@
+{
+  "id": "esp32-technical-reference",
+  "title": "ESP32 Technical Reference Manual",
+  "summary": "Full hardware reference for the ESP32.",
+  "publisher": "Espressif",
+  "format": "pdf",
+  "budget_category": "engineering",
+  "destination": "engineering/esp32-technical-reference.pdf",
+  "source_url": {
+    "value": "https://documentation.espressif.com/esp32_technical_reference_manual_en.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 10193172,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "1007b90e6fafc16541d693d7444b63e1c5b01e46e60cce9b6810e02340a64b82",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Checksum computed from the publisher's file. A rolling document may change and fail this check, so refresh it then."
+  }
+}

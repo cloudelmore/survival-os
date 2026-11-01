@@ -1,0 +1,36 @@
+{
+  "id": "micropython-docs",
+  "title": "MicroPython Documentation",
+  "summary": "Python for microcontrollers, including ESP32.",
+  "publisher": "MicroPython",
+  "format": "pdf",
+  "budget_category": "engineering",
+  "destination": "engineering/micropython-docs.pdf",
+  "source_url": {
+    "value": "https://docs.micropython.org/en/latest/micropython-docs.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 5585259,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "e3443f526affaaf12738d1af3ceaa6b67d2b7eb423f345f8b0eeab6cf3b060c4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Checksum computed from the publisher's file. A rolling document may change and fail this check, so refresh it then."
+  }
+}

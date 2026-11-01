@@ -1,0 +1,42 @@
+{
+  "id": "nhs-medicines",
+  "title": "NHS' Medicines A to Z",
+  "summary": "How medicines work, how and when to take them",
+  "publisher": "-",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "nhs.uk_en_medicines",
+    "flavour": ""
+  },
+  "destination": "zim/nhs.uk_en_medicines_2026-09b.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/zimit/nhs.uk_en_medicines_2026-09b.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-09-18",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 15322705,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "349f7bc833aa1cfedd1cdd10fbb9ae575aac63b22e17639bfaee6568b6668b62",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

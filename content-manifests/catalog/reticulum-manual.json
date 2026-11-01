@@ -1,0 +1,36 @@
+{
+  "id": "reticulum-manual",
+  "title": "Reticulum Network Stack Manual 1.5.5",
+  "summary": "Off-grid networking over LoRa, packet radio and more.",
+  "publisher": "Mark Qvist",
+  "format": "pdf",
+  "budget_category": "radio",
+  "destination": "radio/reticulum-manual.pdf",
+  "source_url": {
+    "value": "https://release-assets.githubusercontent.com/github-production-release-asset/128066037/519e7122-d4b8-4bca-b168-9bd303148cb3?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-11-01T03%3A45%3A37Z&rscd=attachment%3B+filename%3DReticulum.Manual.pdf&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-11-01T02%3A45%3A09Z&ske=2026-11-01T03%3A45%3A37Z&sks=b&skv=2018-11-09&sig=ALBNwXjbUEU8aHesFI3KiN7BMC%2F6CY93X4B0mfzg7Bo%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc5MzUwMTYyNywibmJmIjoxNzkzNTAxMzI3LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.1mj4U_qynsS6lnjGeKAqm16nMenwVyYDdcCVjSZuApM&response-content-disposition=attachment%3B%20filename%3DReticulum.Manual.pdf&response-content-type=application%2Foctet-stream",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 6682489,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "33ad80f0f831c7eab91ee31c4ad21fc1cd573656d23de7c882bcfed1d4534584",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Checksum computed from the publisher's file. A rolling document may change and fail this check, so refresh it then."
+  }
+}

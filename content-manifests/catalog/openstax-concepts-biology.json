@@ -1,0 +1,36 @@
+{
+  "id": "openstax-concepts-biology",
+  "title": "Concepts of Biology",
+  "summary": "Introductory biology textbook.",
+  "publisher": "OpenStax",
+  "format": "pdf",
+  "budget_category": "education",
+  "destination": "education/openstax-concepts-biology.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/conceptsof-biology-web-textbook/ConceptsofBiology-WEB%20%28textbook%29.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2024-01-08",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 153179709,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "4bcdb952816e98c587460c606cdd7838e860308a9a1ba2a33bbd80e033b5e494",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

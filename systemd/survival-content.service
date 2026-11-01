@@ -1,0 +1,22 @@
+[Unit]
+Description=SURVIVAL OS content worker
+After=network-online.target
+
+# Started on request. It finishes the queue and exits, so it holds no network use at rest.
+[Service]
+Type=exec
+User=survival
+Group=survival
+WorkingDirectory=/opt/survival-os
+Environment=SURVIVAL_STATE_DIR=/var/lib/survival-os
+Environment=SURVIVAL_CATALOG_DIR=/opt/survival-os/content-manifests
+ExecStart=/opt/survival-os/venv/bin/python -m survival_os.acquire
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+MemoryMax=512M
+StateDirectory=survival-os
+StateDirectoryMode=0700
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes

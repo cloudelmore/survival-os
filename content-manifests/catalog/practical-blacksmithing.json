@@ -1,0 +1,38 @@
+{
+  "id": "practical-blacksmithing",
+  "title": "Practical Blacksmithing, Volume 1",
+  "summary": "Forging and smithing techniques, collected from working smiths. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "M. T. Richardson",
+  "format": "pdf",
+  "budget_category": "mechanical",
+  "destination": "mechanical/practical-blacksmithing.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/practicalblacksm00rich/practicalblacksm00rich.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": "No known US copyright restrictions: The Library of Congress is unaware of any copyright restrictions for this item.",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "publication_date": {
+    "value": "1888",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 15361642,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "efdc2b0398227b74b8324b0999410d5c91b6c3b30afef8e908603a665777e9bd",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. Checksum computed from the Internet Archive file, whose published MD5 matched."
+  }
+}

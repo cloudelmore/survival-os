@@ -1,0 +1,37 @@
+{
+  "id": "nws-spotter-guide",
+  "title": "Weather Spotter's Field Guide",
+  "summary": "Identifying and reporting severe weather. A supplement to spotter training, not a substitute.",
+  "publisher": "US National Weather Service",
+  "format": "pdf",
+  "budget_category": "navigation_weather",
+  "destination": "navigation_weather/nws-spotter-guide.pdf",
+  "source_url": {
+    "value": "https://www.weather.gov/media/owlie/SGJune6-11(1).pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": "Public domain, per the NWS disclaimer",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 27871046,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "831b7506ec3713400c03fad75b43f5d550de080b33d3b2b113a54d5bee8bd5df",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. No checksum is published, so this one was computed from the publisher's file on the verified date."
+  }
+}

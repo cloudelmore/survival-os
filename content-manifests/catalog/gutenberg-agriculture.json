@@ -1,0 +1,43 @@
+{
+  "id": "gutenberg-agriculture",
+  "title": "Project Gutenberg Library",
+  "summary": "Agriculture",
+  "publisher": "gutenberg.org",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "gutenberg_en_lcc-s",
+    "flavour": ""
+  },
+  "destination": "zim/gutenberg_en_lcc-s_2026-03.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/gutenberg/gutenberg_en_lcc-s_2026-03.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-03-06",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 4532683039,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "3012dfb7936d5bc8a5c3bdd0c9f864cd81e9514c28c40afc548415fd95272fcc",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Farming, hunting, trapping and food production."
+}

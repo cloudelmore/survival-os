@@ -1,0 +1,42 @@
+{
+  "id": "libretexts-chemistry",
+  "title": "Chemistry LibreTexts",
+  "summary": "Chemistry courses and bookshelves from LibreTexts.org",
+  "publisher": "LibreTexts",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "education",
+  "kiwix": {
+    "name": "libretexts.org_en_chem",
+    "flavour": ""
+  },
+  "destination": "zim/libretexts.org_en_chem_2025-01.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/libretexts/libretexts.org_en_chem_2025-01.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-01-16",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 2182916266,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "83ba2fbfe36d72abe919661de5548103bb6674749bc26531cd61f83d8a825764",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

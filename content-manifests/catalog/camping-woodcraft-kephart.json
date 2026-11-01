@@ -1,0 +1,38 @@
+{
+  "id": "camping-woodcraft-kephart",
+  "title": "The Book of Camping and Woodcraft",
+  "summary": "Classic guide to wilderness travel, camp craft and bushcraft. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "Horace Kephart",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/camping-woodcraft-kephart.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/bookofcampingwoo02keph/bookofcampingwoo02keph.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": "No known US copyright restrictions: The Library of Congress is unaware of any copyright restrictions for this item.",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "publication_date": {
+    "value": "1912",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 19690596,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "bb3c05ecb14f7e3893f4537c093bc67fada0eba55bb4b15cb6609e9b5314848f",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. Checksum computed from the Internet Archive file, whose published MD5 matched."
+  }
+}

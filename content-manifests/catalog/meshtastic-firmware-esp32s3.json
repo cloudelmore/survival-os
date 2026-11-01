@@ -1,0 +1,37 @@
+{
+  "id": "meshtastic-firmware-esp32s3",
+  "title": "Meshtastic Firmware 2.7.26.54e0d8d for ESP32-S3",
+  "summary": "Firmware for ESP32-S3 boards, for flashing with no internet. See Flashing in the Meshtastic documentation.",
+  "publisher": "Meshtastic",
+  "format": "firmware",
+  "budget_category": "radio",
+  "destination": "firmware/firmware-esp32s3-2.7.26.54e0d8d.zip",
+  "source_url": {
+    "value": "https://github.com/meshtastic/firmware/releases/download/v2.7.26.54e0d8d/firmware-esp32s3-2.7.26.54e0d8d.zip",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-06-24",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 170272165,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "339650ced8b8c859751f04be69c6af845fea96baca1327518f199afd2595a9d4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Checksum published by GitHub for this release."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "meshtastic-firmware-nrf52840",
+  "title": "Meshtastic Firmware 2.7.26.54e0d8d for nRF52840",
+  "summary": "Firmware for nRF52840 boards, for flashing with no internet. See Flashing in the Meshtastic documentation.",
+  "publisher": "Meshtastic",
+  "format": "firmware",
+  "budget_category": "radio",
+  "destination": "firmware/firmware-nrf52840-2.7.26.54e0d8d.zip",
+  "source_url": {
+    "value": "https://github.com/meshtastic/firmware/releases/download/v2.7.26.54e0d8d/firmware-nrf52840-2.7.26.54e0d8d.zip",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-06-24",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 46259773,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "69ae5c1f38474e32d815dc8bc54291944fb1eb2bf0c3bd0abf5513cb078de5b2",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Checksum published by GitHub for this release."
+  }
+}

@@ -16,10 +16,13 @@ APP=/opt/survival-os
 ETC=/etc/systemd/system
 SUDOERS=/etc/sudoers.d/survival-os
 UNITS=(survival-api.service survival-web.service survival-kiosk.service
-       survival-indexer.service survival-maintenance.target survival-maintenance-boot.service)
+       survival-indexer.service survival-kiwix.service survival-content.service
+       survival-usb.service survival-maintenance.target survival-maintenance-boot.service)
 BOOT_UNITS=(survival-api.service survival-web.service survival-kiosk.service
-            survival-indexer.service survival-maintenance-boot.service)
-PACKAGES=(nginx-light cage chromium python3-venv)
+            survival-indexer.service survival-kiwix.service
+            survival-maintenance-boot.service)
+PACKAGES=(nginx-light libnginx-mod-http-subs-filter cage chromium python3-venv kiwix-tools esptool
+          python3-meshtastic)
 
 MODE="${1:---dry-run}"
 DRY=0
@@ -62,6 +65,9 @@ apply() {
     "$SRC/search/" "$APP/search/"
   run rsync -a --delete "$SRC/frontend/dist/" "$APP/frontend/"
   run install -m 644 "$SRC/systemd/nginx.conf" "$APP/nginx.conf"
+  run rsync -a --delete "$SRC/content-manifests/" "$APP/content-manifests/"
+  run install -d -m 755 "$APP/bin"
+  run install -m 755 -o root -g root "$SRC/installers/survival-usb" "$APP/bin/survival-usb"
   [ -x "$APP/venv/bin/python" ] || run python3 -m venv "$APP/venv"
   run "$APP/venv/bin/python" -m pip install -q --disable-pip-version-check "$APP/search" "$APP/backend"
   for unit in "${UNITS[@]}"; do
@@ -71,7 +77,7 @@ apply() {
   run install -m 440 "$SRC/systemd/survival-os.sudoers" "$SUDOERS"
   run systemctl daemon-reload
   run systemctl restart survival-api.service survival-web.service
-  run systemctl try-restart survival-indexer.service
+  run systemctl try-restart survival-indexer.service survival-kiwix.service
   echo "Installed. Nothing starts at boot until --enable."
 }
 
@@ -89,8 +95,8 @@ disable() {
 
 uninstall() {
   disable
-  run systemctl stop survival-kiosk.service survival-indexer.service survival-web.service \
-    survival-api.service
+  run systemctl stop survival-kiosk.service survival-indexer.service survival-kiwix.service \
+    survival-content.service survival-usb.service survival-web.service survival-api.service
   for unit in "${UNITS[@]}"; do
     run rm -f "$ETC/$unit"
   done

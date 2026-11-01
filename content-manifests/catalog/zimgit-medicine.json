@@ -1,0 +1,42 @@
+{
+  "id": "zimgit-medicine",
+  "title": "Medical Library",
+  "summary": "A collection of books pertaining to field and emergency medicine.",
+  "publisher": "Various",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "zimgit-medicine_en",
+    "flavour": ""
+  },
+  "destination": "zim/zimgit-medicine_en_2024-08.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/zimgit-medicine_en_2024-08.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2024-08-29",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 70179585,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "a86c31b93e9800aae2cd812ef18cbf9c087a7537784c62fbc259db7f9f9d18c0",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

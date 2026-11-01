@@ -1,0 +1,43 @@
+{
+  "id": "wikivet",
+  "title": "WikiVet",
+  "summary": "The free veterinary medicine encyclopedia",
+  "publisher": "Wikivet",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "wikivet.net_en_all",
+    "flavour": "maxi"
+  },
+  "destination": "zim/wikivet.net_en_all_maxi_2026-07a.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/wikivet.net_en_all_maxi_2026-07a.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-07-09",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 56980345,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "e61ac3cd607bfb85ea2256d0c75b5d741149421d8b1bf486a569c347adcab66a",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Animal health for livestock and working animals."
+}

@@ -31,6 +31,7 @@ beforeEach(() => {
     if (path === "/api/status") return new Response(JSON.stringify(STATUS));
     if (path === "/api/admin/state") return new Response(JSON.stringify(admin));
     if (path === "/api/admin/pin") return new Response(null, { status: 204 });
+    if (path === "/api/content/kiwix") return new Response(JSON.stringify({ books: [] }));
     return actionResponse;
   });
 });
@@ -87,7 +88,7 @@ it("says plainly when a section has no content", async () => {
   render(<App />);
   key("1");
   await heading("Knowledge");
-  expect(screen.getByText("NOT INSTALLED YET")).toBeTruthy();
+  expect(await screen.findByText("NOTHING INSTALLED HERE YET")).toBeTruthy();
 });
 
 it("shows real telemetry and no battery", async () => {

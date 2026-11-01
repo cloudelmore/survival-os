@@ -1,0 +1,36 @@
+{
+  "id": "venison-field-to-table",
+  "title": "Proper Care and Handling of Venison From Field to Table",
+  "summary": "Extension guide to field dressing, skinning and storing venison.",
+  "publisher": "College of Agricultural Sciences extension bulletin",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/venison-field-to-table.pdf",
+  "source_url": {
+    "value": "https://ccfruitandnuts.ucanr.edu/sites/default/files/2020-09/335822.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 29198,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "161a1b93cf44582dbedd907cf6527494a66a29333ce8783ae4ac25dc71ddc53b",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. No checksum is published, so this one was computed from the publisher's file."
+  }
+}

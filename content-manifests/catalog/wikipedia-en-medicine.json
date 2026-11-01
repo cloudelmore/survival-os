@@ -1,0 +1,42 @@
+{
+  "id": "wikipedia-en-medicine",
+  "title": "WikiMed Medical Encyclopedia",
+  "summary": "The largest medical encyclopedia, from Wikipedia",
+  "publisher": "Wikipedia",
+  "format": "zim",
+  "wikimedia_project": true,
+  "budget_category": "wikimedia_zim",
+  "kiwix": {
+    "name": "wikipedia_en_medicine",
+    "flavour": "maxi"
+  },
+  "destination": "zim/wikipedia_en_medicine_maxi_2026-10.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_maxi_2026-10.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-10",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 1864210320,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "9a1570f2f346aa18694ee520e0483f19b7447f69e0970e2f727c53ccf0dcc7d6",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

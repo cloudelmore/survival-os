@@ -1,0 +1,43 @@
+{
+  "id": "cd3wd",
+  "title": "CD3WD Project",
+  "summary": "Over 900 technical documents covering topics related to sustainable development.",
+  "publisher": "-",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "cd3wdproject.org_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/cd3wdproject.org_en_all_2025-11.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/zimit/cd3wdproject.org_en_all_2025-11.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-11-12",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 581165229,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "f79a27413af0bd17d14adb3a556d282515a8bc1e127d791a5961c93ea9167b92",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "General appropriate technology, mostly food, water and shelter."
+}

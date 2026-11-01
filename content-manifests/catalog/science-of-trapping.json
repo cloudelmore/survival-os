@@ -1,0 +1,36 @@
+{
+  "id": "science-of-trapping",
+  "title": "Science of Trapping (1909)",
+  "summary": "Fur-bearing animals, trapping and handling skins. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "Elmer Harry Kreps",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/science-of-trapping.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/scienceoftrappin00kreprich/scienceoftrappin00kreprich.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "[c1909]",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 16753773,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "9321558156c237eb2e2df49435c8c0926e225f2d76340228ba70f1045118fdfa",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

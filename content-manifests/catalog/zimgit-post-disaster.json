@@ -1,0 +1,42 @@
+{
+  "id": "zimgit-post-disaster",
+  "title": "Post Disaster Resource Library",
+  "summary": "A collection of post-disaster resources.",
+  "publisher": "Zimgit",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "zimgit-post-disaster_en",
+    "flavour": ""
+  },
+  "destination": "zim/zimgit-post-disaster_en_2024-05.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/zimgit-post-disaster_en_2024-05.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2024-05-25",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 644665513,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "0ba9bb358b768b94eb0d7920752fe356bf097de514ee61843f3a4da6cce174f8",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

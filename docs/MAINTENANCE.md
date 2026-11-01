@@ -47,3 +47,19 @@ sudo installers/install.sh --disable
 
 `--uninstall` removes the services, users and `/opt/survival-os`. Settings stay in
 `/var/lib/survival-os`.
+
+## Flashing a Meshtastic device with no internet
+
+This has not been tested on a real device.
+
+1. In the Content Manager, install the firmware for your board and the Meshtastic Documentation.
+2. Enter maintenance mode and log in. Plug the device into a USB port.
+3. Copy the firmware somewhere readable and unpack it:
+
+       sudo cp /var/lib/survival-os/content/firmware/firmware-esp32-*.zip ~/
+       unzip ~/firmware-esp32-*.zip -d ~/firmware
+
+4. Search Library Search for "Flashing with the CLI", and follow the page for your board. `esptool`
+   and `meshtastic` are installed. Flashing the wrong board's firmware can leave a device unusable
+   until it is reflashed.
+5. Start the dashboard again with `sudo systemctl start survival-kiosk`.

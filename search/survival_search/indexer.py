@@ -95,7 +95,24 @@ def library_files(root: Path) -> dict[str, Path]:
     return found
 
 
-def add_document(db: sqlite3.Connection, relative: str, path: Path, digest: str) -> None:
+def catalog_title(state: Path, relative: str) -> str | None:
+    """Prefer the catalog's title: titles embedded in PDFs are often junk."""
+    database = state / "content" / "content.db"
+    if not database.exists():
+        return None
+    db = sqlite3.connect(f"file:{database}?mode=ro", uri=True, timeout=5)
+    try:
+        row = db.execute("SELECT title FROM installed WHERE path=?",
+                         (f"library/{relative}",)).fetchone()
+    except sqlite3.OperationalError:
+        return None
+    finally:
+        db.close()
+    return row[0] if row else None
+
+
+def add_document(db: sqlite3.Connection, relative: str, path: Path, digest: str,
+                 state_dir: Path | None = None) -> None:
     fmt = FORMATS[path.suffix.lower()]
     stats = path.stat()
     state, error, title, total = "pending", None, "", 0
@@ -106,7 +123,8 @@ def add_document(db: sqlite3.Connection, relative: str, path: Path, digest: str)
     db.execute(
         "INSERT INTO documents (path, title, format, category, size, mtime_ns, sha256, state,"
         " pages_total, error) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        (relative, title or path.stem, fmt, category_of(Path(relative)), stats.st_size,
+        (relative, (state_dir and catalog_title(state_dir, relative)) or title or path.stem, fmt,
+         category_of(Path(relative)), stats.st_size,
          stats.st_mtime_ns, digest, state, total, error),
     )
 
@@ -131,7 +149,7 @@ def scan(db: sqlite3.Connection, root: Path) -> int:
                            (stats.st_mtime_ns, row["id"]))
             else:
                 db.execute("DELETE FROM documents WHERE id=?", (row["id"],))
-                add_document(db, relative, path, digest)
+                add_document(db, relative, path, digest, root.parent)
         else:
             moved = next((old for old in gone.values() if old["sha256"] == digest), None)
             if moved:
@@ -139,7 +157,7 @@ def scan(db: sqlite3.Connection, root: Path) -> int:
                 db.execute("UPDATE documents SET path=?, category=?, mtime_ns=? WHERE id=?",
                            (relative, category_of(Path(relative)), stats.st_mtime_ns, moved["id"]))
             else:
-                add_document(db, relative, path, digest)
+                add_document(db, relative, path, digest, root.parent)
         db.commit()
         changes += 1
 

@@ -1,0 +1,36 @@
+{
+  "id": "usda-beef-processing",
+  "title": "Beef Slaughtering, Cutting, Preserving and Cooking on the Farm",
+  "summary": "USDA guide to processing beef at home.",
+  "publisher": "US Department of Agriculture",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/usda-beef-processing.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/CAT78693456/farmbul2263.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1977",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 64242470,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "65edb8f375c780a14904a6caf0be95a009b3c2016ab557775a4480a1bd9dde7d",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

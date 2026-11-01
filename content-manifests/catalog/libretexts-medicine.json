@@ -1,0 +1,43 @@
+{
+  "id": "libretexts-medicine",
+  "title": "Medicine LibreTexts",
+  "summary": "Medicine courses and bookshelves from LibreTexts.org",
+  "publisher": "LibreTexts",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "libretexts.org_en_med",
+    "flavour": ""
+  },
+  "destination": "zim/libretexts.org_en_med_2025-01.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/libretexts/libretexts.org_en_med_2025-01.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-01-16",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 1192567339,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "1def4fb3c76d347cfd2af9eabd8f8edefd24086cc17b476130f710214a5bbc1e",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Medical reference, not general coursework."
+}

@@ -1,0 +1,36 @@
+{
+  "id": "sere-fm-21-76-1",
+  "title": "Survival, Evasion and Recovery (FM 21-76-1)",
+  "summary": "Pocket multiservice survival reference.",
+  "publisher": "US Department of Defense",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/sere-fm-21-76-1.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/Fm21-76-1/Fm21-76-1.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1999-06-29",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 11484359,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "0c5075666199fa7cbe8ded1e0a6c1832d2b16ae0249230570d1c540b011687ab",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

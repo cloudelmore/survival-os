@@ -1,0 +1,9 @@
+[Unit]
+Description=SURVIVAL OS read-only USB drive for import
+
+# A unit, not a sudo call from the API: the API's private mount view would hide the drive.
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/survival-os/bin/survival-usb mount
+ExecStop=/opt/survival-os/bin/survival-usb unmount

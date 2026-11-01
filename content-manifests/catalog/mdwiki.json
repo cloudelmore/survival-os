@@ -1,0 +1,42 @@
+{
+  "id": "mdwiki",
+  "title": "MDWiki Medical Encyclopedia",
+  "summary": "Healthcare articles curated by WikiProjectMed",
+  "publisher": "Mdwiki",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "mdwiki_en_all",
+    "flavour": "maxi"
+  },
+  "destination": "zim/mdwiki_en_all_maxi_2025-11.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/mdwiki_en_all_maxi_2025-11.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-11-12",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 2302838768,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "ee51df7860dbcab8c628aad32cf9972726ab708d784cdaf3e217d596920edf80",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

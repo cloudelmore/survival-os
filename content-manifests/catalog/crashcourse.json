@@ -1,0 +1,43 @@
+{
+  "id": "crashcourse",
+  "title": "CrashCourse",
+  "summary": "At Crash Course, we believe that high-quality educational videos should be avai\u2026",
+  "publisher": "Youtube Channel \u201cCrashCourse\u201d",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "video",
+  "kiwix": {
+    "name": "crashcourse_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/crashcourse_en_all_2026-05.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/crashcourse_en_all_2026-05.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-05-28",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 23035094957,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "70e61e8ea1b1aa7f00d8c2a50ec8e84c22dfa27e9cb8823e7d9f691a1db67591",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "All video goes to Educational videos."
+}

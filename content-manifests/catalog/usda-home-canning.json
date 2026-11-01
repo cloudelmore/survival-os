@@ -1,0 +1,43 @@
+{
+  "id": "usda-home-canning",
+  "title": "USDA Guide to Home Canning",
+  "summary": "Research-based recommendations for canning safer and better quality food at home",
+  "publisher": "Various",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "usda-2015_en",
+    "flavour": ""
+  },
+  "destination": "zim/usda-2015_en_2025-04.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/usda-2015_en_2025-04.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-04-11",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 19787133,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "089738e934f54c3b0343a01b1d93364b953d9fd40f53f62d0656973340cc4081",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Food preservation."
+}

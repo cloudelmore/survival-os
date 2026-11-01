@@ -197,6 +197,21 @@ button:focus-visible, input:focus-visible {
   .power-dialog { width: 560px; }
 }
 
+/* Content manager and Kiwix */
+.content { display: flex; flex-direction: column; gap: 0.5rem; }
+.content h2 { color: var(--white); font-size: 0.8rem; margin-top: 0.4rem; }
+.meter-row { display: grid; gap: 0.1rem 0.6rem; grid-template-columns: 1fr auto; }
+.meter { background: var(--panel); border: 1px solid var(--purple-dim); grid-column: 1 / -1; height: 10px; }
+.meter > span { background: var(--green); display: block; height: 100%; }
+.meter > span.high { background: var(--orange); }
+.catalog-item { border: 2px solid var(--purple-dim); padding: 0.35rem 0.5rem; }
+.catalog-item h3 { color: var(--white); font: inherit; margin: 0; }
+.catalog-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.25rem; }
+.unverified { color: var(--orange); }
+.pin-prompt { display: flex; flex-direction: column; gap: 0.5rem; }
+.kiwix-screen { display: flex; flex-direction: column; height: 100%; }
+.kiwix-frame { background: #ffffff; border: 0; flex: 1; min-height: 0; width: 100%; }
+
 /* Library search */
 .library { display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-start; }
 

@@ -1,0 +1,43 @@
+{
+  "id": "canadian-prepper-food",
+  "title": "Canadian prepper",
+  "summary": "Prepping Food: Long-term food storage and survival meals Community source, not official guidance. Do not rely on it for medical, electrical or wild food decisions.",
+  "publisher": "Youtube Channel \u201cCanadian Prepper\u201d",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "video",
+  "kiwix": {
+    "name": "canadian-prepper_en_preppingfood",
+    "flavour": ""
+  },
+  "destination": "zim/canadian-prepper_en_preppingfood_2026-10.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/videos/canadian-prepper_en_preppingfood_2026-10.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-21",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 2194586332,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "cc73e413b61a9bf86c7dc2cb294c414c3f6ffbf9c3b8bedc50e6a327b447c8a1",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "All video goes to Educational videos."
+}

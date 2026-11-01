@@ -1,0 +1,36 @@
+{
+  "id": "usda-pork-processing",
+  "title": "Pork Slaughtering, Cutting, Preserving and Cooking on the Farm",
+  "summary": "USDA guide to processing pork at home.",
+  "publisher": "US Department of Agriculture",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/usda-pork-processing.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/CAT31108285/CAT31108285.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1983",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 9293143,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "1780e36fafc30086838500fefbb5b7bab76a83297107365b66349ce2c73f6db3",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

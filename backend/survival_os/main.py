@@ -1,5 +1,6 @@
 """FastAPI application: local REST API, plus the built dashboard when present."""
 
+import json
 import os
 from collections.abc import Callable
 from pathlib import Path
@@ -13,12 +14,28 @@ from pydantic import BaseModel, Field
 from survival_search import extract, query, render
 from survival_search.indexer import Paths
 
-from . import __version__, admin, telemetry
+from . import __version__, admin, content, removable, telemetry
 
 Pin = Field(pattern=r"^[0-9]{4,8}$")
 
 
 class PinRequest(BaseModel):
+    pin: str = Pin
+
+
+class PinOnly(BaseModel):
+    pin: str = Pin
+
+
+class ContentRequest(BaseModel):
+    action: Literal["install", "update", "remove", "validate"]
+    id: str = Field(max_length=200)
+    pin: str = Pin
+
+
+class ImportRequest(BaseModel):
+    path: str = Field(max_length=4096)
+    category: str = Field(max_length=40)
     pin: str = Pin
 
 
@@ -43,6 +60,9 @@ def create_app(
     collect: Callable[[], dict] = telemetry.collect,
     run_action: Callable[[str], bool] = admin.run_action,
     actions_enabled: bool | None = None,
+    catalog_dir: Path | None = None,
+    usb_helper: Callable[[str], bool] = removable.run_helper,
+    usb_root: Path = removable.MOUNT_ROOT,
 ) -> FastAPI:
     app = FastAPI(title="SURVIVAL OS", version=__version__, docs_url=None, redoc_url=None)
 
@@ -70,16 +90,19 @@ def create_app(
             raise HTTPException(409, "A PIN is already set")
         pins.set_pin(body.pin)
 
-    @app.post("/api/system/action", status_code=202, dependencies=[Depends(same_origin)])
-    def system_action(body: ActionRequest) -> dict[str, str]:
+    def require_pin(pin: str) -> None:
         if not pins.is_set():
             raise HTTPException(409, "Set a PIN first")
         try:
-            accepted = pins.verify(body.pin)
+            accepted = pins.verify(pin)
         except admin.PinLocked as locked:
             raise HTTPException(429, f"Too many attempts. Wait {locked.seconds} seconds.")
         if not accepted:
             raise HTTPException(403, "Wrong PIN")
+
+    @app.post("/api/system/action", status_code=202, dependencies=[Depends(same_origin)])
+    def system_action(body: ActionRequest) -> dict[str, str]:
+        require_pin(body.pin)
         if not actions_enabled:
             raise HTTPException(503, "System actions are disabled on this development server")
         if not run_action(body.action):
@@ -87,6 +110,88 @@ def create_app(
         return {"status": "accepted", "action": body.action}
 
     library = Paths(state_dir)
+    if catalog_dir is None:
+        catalog_dir = Path(os.environ.get("SURVIVAL_CATALOG_DIR", "content-manifests"))
+    stores = content.Paths(state_dir, catalog_dir)
+
+    def start_worker(job_id: int) -> dict[str, int]:
+        if not run_action("content"):
+            raise HTTPException(500, "The content worker could not start")
+        return {"job": job_id}
+
+    def queue(action: str, target: str) -> dict[str, int]:
+        db = content.connect(stores)
+        try:
+            job_id = content.enqueue(db, action, target)
+        finally:
+            db.close()
+        return start_worker(job_id)
+
+    @app.get("/api/content")
+    def content_overview() -> dict:
+        return {**content.overview(stores), "storage": content.summary(stores)}
+
+    @app.post("/api/content/action", status_code=202, dependencies=[Depends(same_origin)])
+    def content_action(body: ContentRequest) -> dict[str, int]:
+        require_pin(body.pin)
+        known = content.load_catalog(stores)
+        if body.action in ("install", "update") and body.id not in known:
+            raise HTTPException(404, "Not in the catalog")
+        if body.action == "install":
+            entry = known[body.id]
+            try:
+                content.check(stores, entry["budget_category"], entry["size_bytes"]["value"] or 0,
+                              entry["size_bytes"]["value"] or 0)
+            except content.Refused as refused:
+                raise HTTPException(507, str(refused))
+        return queue(body.action, body.id)
+
+    @app.post("/api/content/check-updates", status_code=202, dependencies=[Depends(same_origin)])
+    def content_updates(body: PinOnly) -> dict[str, int]:
+        require_pin(body.pin)
+        return queue("check-updates", "catalog")
+
+    @app.post("/api/content/jobs/{job_id}/cancel", status_code=202,
+              dependencies=[Depends(same_origin)])
+    def content_cancel(job_id: int) -> dict[str, str]:
+        db = content.connect(stores)
+        try:
+            db.execute("UPDATE jobs SET state=CASE state WHEN 'queued' THEN 'cancelled'"
+                       " ELSE 'cancelling' END WHERE id=? AND state IN ('queued', 'running')",
+                       (job_id,))
+            db.commit()
+        finally:
+            db.close()
+        return {"status": "accepted"}
+
+    @app.get("/api/content/kiwix")
+    def kiwix_books() -> dict:
+        db = content.connect(stores)
+        try:
+            rows = db.execute("SELECT id, title, category, path FROM installed"
+                              " WHERE format='zim' ORDER BY title").fetchall()
+        finally:
+            db.close()
+        return {"books": [{"id": row["id"], "title": row["title"], "category": row["category"],
+                           "name": Path(row["path"]).stem} for row in rows]}
+
+    @app.get("/api/content/usb")
+    def usb_files() -> dict:
+        return {"mounted": usb_root.is_dir() and any(usb_root.iterdir()),
+                "files": removable.scan(usb_root)}
+
+    @app.post("/api/content/usb/{action}", status_code=202, dependencies=[Depends(same_origin)])
+    def usb_mount(action: Literal["mount", "unmount"], body: PinOnly) -> dict[str, str]:
+        require_pin(body.pin)
+        if not usb_helper(action):
+            raise HTTPException(422, "No removable drive could be read" if action == "mount"
+                                else "The drive is busy")
+        return {"status": "accepted"}
+
+    @app.post("/api/content/import", status_code=202, dependencies=[Depends(same_origin)])
+    def usb_import(body: ImportRequest) -> dict[str, int]:
+        require_pin(body.pin)
+        return queue("import", json.dumps({"path": body.path, "category": body.category}))
 
     def stored_document(document_id: int) -> tuple[dict, Path]:
         doc = query.document(library, document_id)

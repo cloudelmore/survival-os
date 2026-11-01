@@ -1,0 +1,47 @@
+{
+  "id": "meshtastic-docs",
+  "title": "Meshtastic Documentation",
+  "summary": "Official Meshtastic setup, configuration and flashing documentation, as searchable text.",
+  "publisher": "Meshtastic",
+  "format": "markdown",
+  "budget_category": "radio",
+  "archive": {
+    "keep": [
+      "docs/*.md",
+      "docs/*.mdx",
+      "docs/**/*.md",
+      "docs/**/*.mdx",
+      "static/**/*.pdf",
+      "static/*.pdf"
+    ]
+  },
+  "destination": "radio/meshtastic-docs",
+  "source_url": {
+    "value": "https://codeload.github.com/meshtastic/meshtastic/zip/a9964102c19bc0e3f36795fe79963066dd35c9c8",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-11-01",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 106722095,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "f3e1058a81d6ada51bd39c772acb2f185e91bee2f07386dcb6817b035d89f08e",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. Only the documents are kept from the repository archive."
+  }
+}

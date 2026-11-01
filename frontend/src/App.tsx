@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Home } from "./Home";
+import { ContentManager } from "./ContentManager";
+import { closeKiwix, KiwixList, KiwixView } from "./Kiwix";
 import { LibrarySearch } from "./LibrarySearch";
 import { Page } from "./Page";
 import { PowerDialog } from "./PowerDialog";
@@ -38,7 +40,8 @@ export function App() {
     if (!current) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || document.querySelector("dialog[open]")) return;
-      if (current === "viewer") closeViewer();
+      if (current === "kiwix") closeKiwix();
+      else if (current === "viewer") closeViewer();
       else back();
     };
     window.addEventListener("keydown", onKey);
@@ -49,7 +52,9 @@ export function App() {
 
   return (
     <>
-      {current === "viewer" ? (
+      {current === "kiwix" ? (
+        <KiwixView key={window.location.hash} />
+      ) : current === "viewer" ? (
         <Viewer key={window.location.hash} onBack={closeViewer} />
       ) : section ? (
         <Page id={section.id} title={section.title} onBack={back}>
@@ -57,6 +62,10 @@ export function App() {
             <StatusPage onPower={openPower} />
           ) : section.id === "library-search" ? (
             <LibrarySearch />
+          ) : section.id === "content-manager" ? (
+            <ContentManager />
+          ) : section.phase === 5 ? (
+            <KiwixList section={section} />
           ) : (
             <>
               <p>{section.summary}</p>

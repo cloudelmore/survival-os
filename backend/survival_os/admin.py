@@ -19,6 +19,8 @@ SCRYPT = {"n": 2**14, "r": 8, "p": 1}
 ACTIONS = {
     "shutdown": ["/usr/bin/sudo", "-n", "/usr/bin/systemctl", "poweroff"],
     "reboot": ["/usr/bin/sudo", "-n", "/usr/bin/systemctl", "reboot"],
+    "content": ["/usr/bin/sudo", "-n", "/usr/bin/systemctl", "start", "--no-block",
+                "survival-content.service"],
     "maintenance": [
         "/usr/bin/sudo", "-n", "/usr/bin/systemctl", "start", "survival-maintenance.target",
     ],

@@ -1,0 +1,42 @@
+{
+  "id": "phet",
+  "title": "PhET Interactive Simulations",
+  "summary": "Interactive simulations for Science and Math",
+  "publisher": "University of Colorado",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "education",
+  "kiwix": {
+    "name": "phet_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/phet_en_all_2026-08.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/phet/phet_en_all_2026-08.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-08-25",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 108981169,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "b102abf8af1c982c498c167efe6a9099e3cb543df184b93c99421b2fdef7e1a0",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

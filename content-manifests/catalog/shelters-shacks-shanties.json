@@ -1,0 +1,36 @@
+{
+  "id": "shelters-shacks-shanties",
+  "title": "Shelters, Shacks and Shanties (1914)",
+  "summary": "Building shelters and cabins with hand tools. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "Daniel Carter Beard",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/shelters-shacks-shanties.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/sheltersshackssh00bear/sheltersshackssh00bear.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1914",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 16749539,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "c77e03261be7133891882809e82037acc87309b75ebb0d586b98f652ebfff27a",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

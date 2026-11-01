@@ -1,0 +1,36 @@
+{
+  "id": "usda-marketing-poultry",
+  "title": "Marketing Farm Poultry",
+  "summary": "USDA bulletin including poultry killing and dressing. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "US Department of Agriculture",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/usda-marketing-poultry.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/CAT87205529/farmbul2030rev1955.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1955",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 35362147,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "bab6aab2e76d31d5f8286ad0d672a4ab6434b2a69c0ea6e77cf899a45a44df0c",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "book-of-woodcraft",
+  "title": "The Book of Woodcraft (1912)",
+  "summary": "Woodcraft, camp skills and outdoor knowledge. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "Ernest Thompson Seton",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/book-of-woodcraft.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/bookofwoodcraft00seto/bookofwoodcraft00seto.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1912",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 27592271,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "a252bcb4b93f86df9d0dbae1d436a26dab0ee7e0d09d45fcf271e4086977a8ec",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

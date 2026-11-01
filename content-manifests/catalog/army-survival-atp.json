@@ -1,0 +1,36 @@
+{
+  "id": "army-survival-atp",
+  "title": "Survival (ATP 3-50.21, 2018)",
+  "summary": "Current US Army survival manual.",
+  "publisher": "US Army",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/army-survival-atp.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/survival-atp-3-50-21/Survival%20%28ATP%203-50-21%29.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2018-09",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 23749774,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "817746b13262e9e26e8ac7d25bf879790df369c2aa0a2600f69158ec4090461c",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

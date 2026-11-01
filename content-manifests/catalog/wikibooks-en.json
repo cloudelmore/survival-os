@@ -1,0 +1,42 @@
+{
+  "id": "wikibooks-en",
+  "title": "Wikibooks",
+  "summary": "The open-content textbooks collection",
+  "publisher": "Wikibooks",
+  "format": "zim",
+  "wikimedia_project": true,
+  "budget_category": "wikimedia_zim",
+  "kiwix": {
+    "name": "wikibooks_en_all",
+    "flavour": "maxi"
+  },
+  "destination": "zim/wikibooks_en_all_maxi_2026-10.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/wikibooks/wikibooks_en_all_maxi_2026-10.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-25",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 4739739728,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "835014cde2c385f80a6388847fb8962429966a3a64a03b58552f1684cc83e7c8",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

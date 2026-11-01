@@ -1,0 +1,43 @@
+{
+  "id": "zimgit-knots",
+  "title": "A Library of Knots",
+  "summary": "Illustrated resources on all types of knots, ladders, sutures, etc. ",
+  "publisher": "Various",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "zimgit-knots_en",
+    "flavour": ""
+  },
+  "destination": "zim/zimgit-knots_en_2024-08.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/zimgit-knots_en_2024-08.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2024-08-29",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 27945133,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "7c3120b19fc2dc190b5ebfee01af54150136643d7b9d29d7fa9a6ba29787a57b",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "General survival skill, so it stays with the field manuals."
+}

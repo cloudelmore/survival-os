@@ -1,0 +1,42 @@
+{
+  "id": "libretexts-physics",
+  "title": "Physics LibreTexts",
+  "summary": "Physics courses and bookshelves from LibreTexts.org",
+  "publisher": "LibreTexts",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "education",
+  "kiwix": {
+    "name": "libretexts.org_en_phys",
+    "flavour": ""
+  },
+  "destination": "zim/libretexts.org_en_phys_2026-01.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/libretexts/libretexts.org_en_phys_2026-01.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-01-16",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 559554453,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "ace498581e085093cc86383439342d9ff5a4604bd87f6b82448c019e1264830f",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

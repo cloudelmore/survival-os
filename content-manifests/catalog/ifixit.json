@@ -1,0 +1,42 @@
+{
+  "id": "ifixit",
+  "title": "iFixit in English",
+  "summary": "iFixit is a global community of people helping each other repair things. Let's \u2026",
+  "publisher": "iFixit",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "mechanical",
+  "kiwix": {
+    "name": "ifixit_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/ifixit_en_all_2025-12.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/ifixit/ifixit_en_all_2025-12.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-12-21",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 3570695757,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "9bb5f3408707fd0300c6ef47a425c3217187f144cd9154a928183816aa72eead",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "ted-medicine",
+  "title": "TED medicine",
+  "summary": "A collection of TED videos about medicine",
+  "publisher": "TED",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "video",
+  "kiwix": {
+    "name": "ted_mul_medicine",
+    "flavour": ""
+  },
+  "destination": "zim/ted_mul_medicine_2026-09.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/ted/ted_mul_medicine_2026-09.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-09-14",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 3607249475,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "17874a59d18f39accaf4f24c989218df6f677865b3c6759dd2fb302b6c4af282",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "All video goes to Educational videos."
+}

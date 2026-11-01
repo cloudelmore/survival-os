@@ -1,0 +1,37 @@
+{
+  "id": "usda-home-tanning",
+  "title": "Home Tanning of Leather and Small Fur Skins",
+  "summary": "USDA Farmers' Bulletin on tanning hides and furs. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "US Department of Agriculture",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/usda-home-tanning.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/CAT87206834/farmbul1334rev1962.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": "US government work, expected public domain",
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1962",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 1286679,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "55a9506ab8415b618a422551480c1f04b2a6c6bc70a84992985003b7778a6ada",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. Checksum computed from the Internet Archive file, whose published MD5 matched."
+  }
+}

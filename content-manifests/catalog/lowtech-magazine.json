@@ -1,0 +1,43 @@
+{
+  "id": "lowtech-magazine",
+  "title": "Solar Powered LowTech Magazine",
+  "summary": "Not every problem has a high-tech solution",
+  "publisher": "-",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "engineering",
+  "kiwix": {
+    "name": "solar.lowtechmagazine.com_mul_all",
+    "flavour": ""
+  },
+  "destination": "zim/solar.lowtechmagazine.com_mul_all_2025-01.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/zimit/solar.lowtechmagazine.com_mul_all_2025-01.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-01-02",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 700555670,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "0a21bde8e3be3b80b8b7dea13118fb2190a60274f2341a5b72715f89fd049740",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Solar and low-power systems."
+}

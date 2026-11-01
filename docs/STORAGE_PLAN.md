@@ -41,23 +41,26 @@ Takeaways:
   about 826 GB of room. Applied with `tune2fs -m 1` in Phase 1 Step 5; the
   installer and image builder do the same in Phases 8–9.
 
-## Budget categories (caps from spec §5)
+## Budget categories (spec §5, as changed by the user)
+
+The user moved 140 GB to medical and survival on 2026-10-31, to fit the Survivor Library. The total
+stays 800 GB.
 
 | Category | Cap (GB) | Manifest key |
 |---|---:|---|
-| OS, applications, system files | 45 | `os_apps` |
+| OS, applications, system files | 20 | `os_apps` |
 | Wikipedia / Kiwix (Wikimedia ZIMs) | 150 | `wikimedia_zim` |
 | Maps (all map data) | 85 | `maps` |
-| Medical and survival manuals | 110 | `medical_survival` |
-| Educational videos (all video) | 120 | `video` |
+| Medical and survival manuals | 250 | `medical_survival` |
+| Educational videos (all video) | 50 | `video` |
 | AI models and search indexes | 45 | `ai_indexes` |
 | Personal files, config, backups | 45 | `personal` |
-| Technical engineering | 35 | `engineering` |
+| Technical engineering | 25 | `engineering` |
 | Natural sciences / field guides | 25 | `natural_sciences` |
-| Radio communications | 20 | `radio` |
+| Radio communications | 10 | `radio` |
 | Mechanical repair | 35 | `mechanical` |
 | Navigation / weather / astronomy | 20 | `navigation_weather` |
-| Offline education (non-video) | 65 | `education` |
+| Offline education (non-video) | 40 | `education` |
 | **Total of ceilings** | **800** | |
 
 Assignment overrides, in order: video goes to `video`, map data goes to

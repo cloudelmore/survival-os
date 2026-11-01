@@ -3,18 +3,18 @@
   "note": "Per-category ceilings, not targets. The free-space floor always takes priority.",
   "free_space_floor_percent": 15,
   "categories": [
-    {"id": "os_apps", "name": "OS, applications, system files", "cap_gb": 45},
+    {"id": "os_apps", "name": "OS, applications, system files", "cap_gb": 20},
     {"id": "wikimedia_zim", "name": "Wikipedia / Kiwix", "cap_gb": 150},
     {"id": "maps", "name": "Maps", "cap_gb": 85},
-    {"id": "medical_survival", "name": "Medical and survival manuals", "cap_gb": 110},
-    {"id": "video", "name": "Educational videos", "cap_gb": 120},
+    {"id": "medical_survival", "name": "Medical and survival manuals", "cap_gb": 250},
+    {"id": "video", "name": "Educational videos", "cap_gb": 50},
     {"id": "ai_indexes", "name": "AI models and search indexes", "cap_gb": 45},
     {"id": "personal", "name": "Personal files, config, backups", "cap_gb": 45},
-    {"id": "engineering", "name": "Technical engineering", "cap_gb": 35},
+    {"id": "engineering", "name": "Technical engineering", "cap_gb": 25},
     {"id": "natural_sciences", "name": "Natural sciences / field guides", "cap_gb": 25},
-    {"id": "radio", "name": "Radio communications", "cap_gb": 20},
+    {"id": "radio", "name": "Radio communications", "cap_gb": 10},
     {"id": "mechanical", "name": "Mechanical repair", "cap_gb": 35},
     {"id": "navigation_weather", "name": "Navigation / weather / astronomy", "cap_gb": 20},
-    {"id": "education", "name": "Offline education", "cap_gb": 65}
+    {"id": "education", "name": "Offline education", "cap_gb": 40}
   ]
 }

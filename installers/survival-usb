@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+"""Mount or unmount one USB drive, read-only, for content import.
+
+Run by survival-usb.service, as root. The system disk on this Pi is itself a USB device, so it is
+refused by identity, and nothing here ever writes to a drive.
+"""
+
+import json
+import os
+import subprocess
+import sys
+
+ROOT = "/run/survival-usb"
+FILESYSTEMS = {"vfat", "exfat", "ext4", "ntfs", "ntfs3"}
+OPTIONS = "ro,nosuid,nodev,noexec"
+
+
+def has_mount(device: dict, mounts: set[str]) -> bool:
+    if device.get("mountpoint") in mounts:
+        return True
+    return any(has_mount(child, mounts) for child in device.get("children", []))
+
+
+def choose(devices: list[dict]) -> str | None:
+    """Return the first readable partition on a USB disk that holds no system mount."""
+    system = {"/", "/boot/firmware", "/boot"}
+    for disk in devices:
+        if disk.get("type") != "disk" or disk.get("tran") != "usb" or has_mount(disk, system):
+            continue
+        for item in [*disk.get("children", []), disk]:
+            if item.get("fstype") in FILESYSTEMS and not item.get("mountpoint"):
+                return item["path"]
+    return None
+
+
+def main() -> int:
+    action = sys.argv[1] if len(sys.argv) > 1 else ""
+    if action == "unmount":
+        if os.path.ismount(ROOT):
+            return subprocess.run(["umount", ROOT]).returncode
+        return 0
+    if action != "mount":
+        print("Usage: survival-usb mount|unmount", file=sys.stderr)
+        return 2
+    listing = subprocess.run(
+        ["lsblk", "-J", "-o", "PATH,TYPE,TRAN,FSTYPE,MOUNTPOINT"],
+        capture_output=True, text=True, check=True)
+    device = choose(json.loads(listing.stdout)["blockdevices"])
+    if device is None:
+        print("No USB drive found", file=sys.stderr)
+        return 1
+    os.makedirs(ROOT, exist_ok=True)
+    return subprocess.run(["mount", "-o", OPTIONS, device, ROOT]).returncode
+
+
+if __name__ == "__main__":
+    sys.exit(main())

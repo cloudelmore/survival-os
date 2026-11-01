@@ -1,0 +1,42 @@
+{
+  "id": "zimgit-water",
+  "title": "Water Treatment Library",
+  "summary": "Resources about water collection and purification",
+  "publisher": "Various",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "zimgit-water_en",
+    "flavour": ""
+  },
+  "destination": "zim/zimgit-water_en_2024-08.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/zimgit-water_en_2024-08.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2024-08-29",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 20924451,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "392c7bc970a44fddd61dd17f6eabf1f4e21936f2d5c27c83093e1dc475cb56b6",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

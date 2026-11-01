@@ -1,0 +1,42 @@
+{
+  "id": "wikisource-en",
+  "title": "Wikisource",
+  "summary": "Wikisource is an library of public domain texts",
+  "publisher": "Wikisource",
+  "format": "zim",
+  "wikimedia_project": true,
+  "budget_category": "wikimedia_zim",
+  "kiwix": {
+    "name": "wikisource_en_all",
+    "flavour": "nopic"
+  },
+  "destination": "zim/wikisource_en_all_nopic_2026-09.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/wikisource/wikisource_en_all_nopic_2026-09.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-09-08",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 3905588830,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "6180cd199142862fb0d276861ccc5b48a40f7bae427b8427b2b6a573796e2f98",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

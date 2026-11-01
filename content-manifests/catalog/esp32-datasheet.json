@@ -1,0 +1,36 @@
+{
+  "id": "esp32-datasheet",
+  "title": "ESP32 Datasheet",
+  "summary": "Pinouts, power and electrical characteristics.",
+  "publisher": "Espressif",
+  "format": "pdf",
+  "budget_category": "engineering",
+  "destination": "engineering/esp32-datasheet.pdf",
+  "source_url": {
+    "value": "https://documentation.espressif.com/esp32_datasheet_en.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 989523,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "a7917e6b47528c9dcab06837a49d452e582751335797db879f1cf2d17cd29adf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Checksum computed from the publisher's file. A rolling document may change and fail this check, so refresh it then."
+  }
+}

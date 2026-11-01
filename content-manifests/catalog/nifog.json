@@ -1,0 +1,36 @@
+{
+  "id": "nifog",
+  "title": "National Interoperability Field Operations Guide 2.01",
+  "summary": "Radio frequencies and interoperability reference for emergency communications.",
+  "publisher": "US DHS CISA",
+  "format": "pdf",
+  "budget_category": "radio",
+  "destination": "radio/nifog.pdf",
+  "source_url": {
+    "value": "https://www.cisa.gov/sites/default/files/2023-02/NIFOG%202.01%20508%20FINAL.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2.01",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 4371709,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "e2b5f2411f77545e21bfa9f9d009732a545b2ec83ade1f983f1234a045796ccf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. No checksum is published, so this one was computed from the publisher's file on the verified date."
+  }
+}

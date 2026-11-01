@@ -1,0 +1,43 @@
+{
+  "id": "ready-gov",
+  "title": "Ready.gov",
+  "summary": "Plan ahead for disasters (Weather, Fire, Makings plans, Building kits, etc.)",
+  "publisher": "-",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "ready.gov_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/ready.gov_en_all_2026-10.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/zimit/ready.gov_en_all_2026-10.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-14",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 2063895408,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "c88ce03db2a6dd855c1075d87abb6dceac678718e0dd3fa7912009469b9ca225",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "US government emergency preparedness."
+}

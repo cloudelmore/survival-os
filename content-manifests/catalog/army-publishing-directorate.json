@@ -1,0 +1,43 @@
+{
+  "id": "army-publishing-directorate",
+  "title": "Army Publishing Directorate",
+  "summary": "The United States Army's centralized publications and forms management resource",
+  "publisher": "-",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "armypubs_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/armypubs_en_all_2024-12.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/zimit/armypubs_en_all_2024-12.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2024-12-06",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 8232396997,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "f34f1bcb07ed2ad55abf7ba25d2c66c450e40d009f6c37d2f0b27382b2d11f04",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "General-purpose field manuals."
+}

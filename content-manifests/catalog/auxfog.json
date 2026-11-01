@@ -1,0 +1,37 @@
+{
+  "id": "auxfog",
+  "title": "Auxiliary Communications Field Operations Guide",
+  "summary": "Reference for trained volunteer auxiliary communicators.",
+  "publisher": "US DHS Office of Emergency Communications",
+  "format": "pdf",
+  "budget_category": "radio",
+  "destination": "radio/auxfog.pdf",
+  "source_url": {
+    "value": "https://www.cisa.gov/sites/default/files/publications/AUXFOG%20June%202016%20-%20508%20Reviewed%20-%20Final%20(2-16-17).pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2016-06",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 3427518,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "9dd33816afd6e3e388532186f876f43c80258eafb77fed75e596807116dc687f",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. No checksum is published, so this one was computed from the publisher's file on the verified date."
+  }
+}

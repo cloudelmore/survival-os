@@ -1,0 +1,42 @@
+{
+  "id": "wikipedia-en-all",
+  "title": "Wikipedia",
+  "summary": "The free encyclopedia",
+  "publisher": "Wikipedia",
+  "format": "zim",
+  "wikimedia_project": true,
+  "budget_category": "wikimedia_zim",
+  "kiwix": {
+    "name": "wikipedia_en_all",
+    "flavour": "maxi"
+  },
+  "destination": "zim/wikipedia_en_all_maxi_2026-08.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/wikipedia/wikipedia_en_all_maxi_2026-08.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-08-25",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 127418087648,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "34162d18b9f96f494eac48a73a309c72e0bc95d85f76be405d0f5de795854aa6",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

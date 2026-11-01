@@ -1,0 +1,43 @@
+{
+  "id": "libretexts-biology",
+  "title": "Biology LibreTexts",
+  "summary": "Biology courses and bookshelves from LibreTexts.org",
+  "publisher": "LibreTexts",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "natural_sciences",
+  "kiwix": {
+    "name": "libretexts.org_en_bio",
+    "flavour": ""
+  },
+  "destination": "zim/libretexts.org_en_bio_2025-01.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/libretexts/libretexts.org_en_bio_2025-01.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-01-16",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 2240946728,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "aa914c19a690429b5d41ccbc91ba8cf7bc2980211b998c8a4a82ef3a21375321",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "Biology reference."
+}

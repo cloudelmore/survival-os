@@ -1,0 +1,42 @@
+{
+  "id": "zimgit-food-preparation",
+  "title": "Food for Preppers",
+  "summary": "A collection of recipes and techniques for preparing food.",
+  "publisher": "Various",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "medical_survival",
+  "kiwix": {
+    "name": "zimgit-food-preparation_en",
+    "flavour": ""
+  },
+  "destination": "zim/zimgit-food-preparation_en_2025-04.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/other/zimgit-food-preparation_en_2025-04.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2025-04-11",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 97822565,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "db92c6c9dac14ff30f1cbc15aa834a7c012c6e87d4ff0519f33a0902ab6e732b",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  }
+}

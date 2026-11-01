@@ -1,0 +1,36 @@
+{
+  "id": "where-there-is-no-doctor",
+  "title": "Where There Is No Doctor",
+  "summary": "Village health care handbook for places without a clinic. Check against current medical guidance.",
+  "publisher": "David Werner, Hesperian",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/where-there-is-no-doctor.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/WhereThereIsNoDoctor-English-DavidWerner/14.DavidWerner-WhereThereIsNoDoctor.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 8686149,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "b3ec7264ad70f126b7cfbae964e7ed8411c46fbc81f9dec0c9d6af63d00285ec",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

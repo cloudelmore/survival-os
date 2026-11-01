@@ -131,6 +131,20 @@ def test_deleting_a_document_leaves_no_large_log(tmp_path):
     assert paths.database.with_name("library.db-wal").stat().st_size < 1024 * 1024
 
 
+def test_catalog_title_replaces_the_embedded_one(tmp_path):
+    paths = Paths(tmp_path / "state")
+    (paths.library / "radio").mkdir(parents=True)
+    write_pdf(paths.library / "radio" / "guide.pdf", ["Repeater offsets for the two metre band"])
+    (paths.state / "content").mkdir()
+    db = sqlite3.connect(paths.state / "content" / "content.db")
+    db.execute("CREATE TABLE installed (path TEXT, title TEXT)")
+    db.execute("INSERT INTO installed VALUES ('library/radio/guide.pdf', 'Field Guide')")
+    db.commit()
+    db.close()
+    Indexer(paths, pause_ratio=0).run_once()
+    assert top(paths, "repeater")["title"] == "Field Guide"
+
+
 def test_moved_file_keeps_its_index_and_takes_the_new_category(paths):
     before = top(paths, "generator")["document_id"]
     target = paths.library / "mechanical"

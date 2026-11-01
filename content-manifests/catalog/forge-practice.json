@@ -1,0 +1,38 @@
+{
+  "id": "forge-practice",
+  "title": "Forge-Practice (Elementary)",
+  "summary": "Textbook on forging iron and steel. Historic text: safety practice, chemicals and materials may be outdated.",
+  "publisher": "John Lord Bacon",
+  "format": "pdf",
+  "budget_category": "mechanical",
+  "destination": "mechanical/forge-practice.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/forgepracticeele00baco/forgepracticeele00baco.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": "No known US copyright restrictions: The Library of Congress is unaware of any copyright restrictions for this item.",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "publication_date": {
+    "value": "1908",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 14698214,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "a05121604bfbf8c5e0e3ebde773455e9b1debafdcf29e52cec40841b264c15e9",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. Checksum computed from the Internet Archive file, whose published MD5 matched."
+  }
+}

@@ -2,10 +2,100 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 4 (Search) complete. Phase 5 (Content) has not started.
-**Last updated:** 2026-10-31 (Phase 4 session)
+**Current phase:** 5 (Content), installed on the Pi. A large download, video playback and the remaining sources are outstanding.
+**Last updated:** 2026-11-01 (Phase 5 session)
 
 ## Completed work
+
+### Phase 5 (Content), in progress
+
+- Catalog of 97 entries, about 491 GB in total, mostly Kiwix collections from the live catalog through
+  `scripts/dev/refresh-catalog.py`, plus PDFs, Meshtastic docs and firmware. Sizes and SHA-256 are verified. Licenses
+  are not published per file, so 60 of 64 are marked unverified. The verified ones are the NWS guide and three Library
+  of Congress scans with no known copyright restrictions. PDF
+  checksums are computed from the publisher's file, because none is published.
+- Worker `survival-content.service`, started on request, exits when the queue is empty. It is the only
+  part that uses the network. Resumable downloads, live size and checksum check, update, validate,
+  remove, cancel.
+- Storage: 15% floor and category ceilings checked before every operation and during downloads.
+- Kiwix runs behind nginx on its own origin, port 8083, shown in an iframe with a Back bar.
+- USB import: read-only mount by `survival-usb.service`. The system disk is refused. Identical files
+  are skipped by SHA-256.
+- Content Manager screen, section lists, PIN for install, update, remove and USB, encyclopedia handoff.
+
+Passed on the dev machine: 137 Python tests, 24 frontend tests, type check, offline build check.
+
+Pi results, 2026-10-31, approved by the user. Added `kiwix-tools`, `libnginx-mod-http-subs-filter`,
+`survival-kiwix` enabled at boot, and on-demand `survival-content` and `survival-usb`.
+
+| Check | Result |
+|---|---|
+| Real download, Water Treatment Library, 20.9 MB | Pass: SHA-256 matches the published value |
+| SIGKILL of the worker at 2 MB | Pass: partial kept, second start finished. Range use is proven by tests, not by a Pi log |
+| Kiwix picks up the new book | Pass, by `--monitorLibrary`, no restart |
+| Book in the frame at 1024x600 | Pass: 28 requests, all to 127.0.0.1 |
+| PDF inside the ZIM | Pass: opens in the frame, in Chromium's viewer |
+| Previous page and Close | Pass |
+| Usage by category | Pass: 5.7 GB system, 21 MB medical |
+| Reboot | Pass: Kiwix and the book return, no failed units |
+| Network | Only 22 outward; 8080 to 8083 on loopback |
+
+Bugs found on the Pi and fixed: the empty library file lost its quotes, so Kiwix would not start.
+Links with `target=_blank` opened a window with no way back by touch, so an nginx filter now keeps
+links in the frame. Back was unreliable because of frame history, so it is now Close and Previous page.
+
+On-screen install: pass. The user installed A Library of Knots with the PIN at 22:08 on 2026-10-31.
+Worker started, checksum verified, book listed, `medical_survival` usage rose to 48.9 MB.
+
+USB import: not confirmed. The user reported the USB steps good, but since the 21:53 boot the kernel
+shows no new USB device, `survival-usb` never started, no import job exists, and the library is empty.
+The user then chose to skip this test on 2026-10-31, so USB import stays unverified on the device.
+
+Unverified: USB import has not been shown to work with a real drive. Automatic mount of exFAT and NTFS is untested.
+Update checks have not been run live. The kiosk has not been used by hand. Esc does not work while
+focus is inside the Kiwix frame; use Close. Some ZIMs have no full-text index (`_ftindex:no`), so
+Kiwix search finds titles only in them. No large ZIM has been tested. A fully offline run is Phase 10.
+
+Added at the user's request, text first: Practical Blacksmithing vol. 1, Forge-Practice, Kephart's
+Book of Camping and Woodcraft, USDA Home Tanning (1962), two deer handling guides, and Gutenberg
+libraries for agriculture, technology and recreation. Their contents were matched by Library of
+Congress class, not read. Old texts carry an outdated-practice warning. ATP 3-50.21 is not listed,
+because its host refused the check. Not yet found: skinning and butchering beyond deer, small game,
+and dedicated bushcraft manuals.
+
+On 2026-10-31 the user waived license checks and accepted unofficial copies, so the on-screen license
+label was removed. Sizes and SHA-256 are still pinned. Added from the Internet Archive: ATP 3-50.21, FM
+3-05.70, FM 21-76-1, Where There Is No Doctor, Red Cross first aid (1917), USDA beef, pork and lamb
+processing, Marketing Farm Poultry, Science of Trapping, Shelters Shacks and Shanties, The Book of
+Woodcraft, OpenStax Concepts of Biology and University Physics. Lending-only scans cannot be used.
+A commercial-looking upload of Red Cross Wilderness and Remote First Aid was left out.
+
+Tech survival added at the user's request: ESP32 and ESP32-S3 datasheets, ESP32 reference manual, ESP-IDF
+guide, MicroPython docs, Reticulum manual, Arduino and Raspberry Pi Q&A, OpenWrt, ArchWiki, Unix Q&A.
+The ESP-IDF PDF was not found.
+
+Adopted by the user: medical and survival 250 GB, video 50, OS 20, education 40, engineering 25, radio
+10, total 800. The user approved 240 and 60; a test showed the full catalog needs about 246 GB, so
+medical became 250 and video 50. Added Survivor Library (220 GB), Army Publishing Directorate, Wikisource
+and Wikispecies. Survivor Library's contents are not confirmed, and it may be partial.
+
+Meshtastic on the Pi: documentation installed from a verified repository archive, keeping 44 MB of
+text and PDFs, 372 documents searchable. RP2040 firmware 2.7.26 installed, checksum published by GitHub.
+ESP32, S3 and nRF52840 firmware are in the catalog. `esptool` and `meshtastic` added. Flashing from the
+console is documented in MAINTENANCE.md and is untested on a real device. Dashboard flashing is not built.
+A repository archive may change its bytes if GitHub regenerates it, which would fail the checksum.
+ The
+
+Catalog gaps: WHO, FAO, a modern Red Cross manual, Kolibri, offline dictionaries other than
+Wiktionary, regional field guides, and North Carolina and southeastern references. The user then allowed a limited number of reputable
+prepper channels. Added Canadian Prepper (winter, food), Learning Self-Reliance and True Prepper, each
+labelled as a community source. Evidence of reputation is thin, and who runs Learning Self-Reliance
+is unconfirmed. Left out S2 Underground (off-scope), Urban Prepper (nothing found either way) and the
+Canadian Prepper bug-out sets. Video playback inside a ZIM is untested. NIFOG 2.02 is reported but not located, so 2.01 is listed.
+
+Real PDF install on the Pi: AUXFOG, 3.4 MB, pass. Pinned checksum, stored under `library/radio`, indexed
+into 159 passages, searchable. Its result shows the embedded PDF title, "[Add Logo Here]": PDF metadata
+titles can be junk, and catalog titles do not yet override them.
 
 ### Phase 4 (Search), in progress
 
@@ -351,7 +441,8 @@ built yet. This refines the brief's dark field-computer look:
 
 ## Next steps
 
-1. Phase 5 (Content) starts when the user says so.
+1. User tests USB import and the kiosk.
+2. Expand the catalog source by source, starting with medical and survival references.
 
 Dropped by the user, 2026-10-31: the cold boot baseline and the EEPROM change (`BOOT_ORDER=0xf14`,
 removing `PCIE_PROBE=1`). The expected gain was seconds at most. The EEPROM is unchanged. Any future

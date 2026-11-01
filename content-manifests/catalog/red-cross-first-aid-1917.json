@@ -1,0 +1,36 @@
+{
+  "id": "red-cross-first-aid-1917",
+  "title": "American Red Cross Abridged Textbook on First Aid (1917)",
+  "summary": "Short first aid manual. Historic text: safety practice, chemicals and materials may be outdated. Check against current medical guidance.",
+  "publisher": "American Red Cross",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/red-cross-first-aid-1917.pdf",
+  "source_url": {
+    "value": "https://archive.org/download/americanredcross00lync/americanredcross00lync.pdf",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "1917",
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 7652139,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "d580e8de93d5974a12c9d4be2d242fe95e7548d26ee3e22bca910ab0322b93ee",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Internet Archive copy. Checksum computed from the file."
+  }
+}

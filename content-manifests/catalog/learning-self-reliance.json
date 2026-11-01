@@ -1,0 +1,43 @@
+{
+  "id": "learning-self-reliance",
+  "title": "Learning Self-Reliance",
+  "summary": "A Youtube channel about prepping, survival, and bee keeping Community source, not official guidance. Do not rely on it for medical, electrical or wild food decisions.",
+  "publisher": "Youtube Channel \u201cLearning Self-Reliance\u201d",
+  "format": "zim",
+  "wikimedia_project": false,
+  "budget_category": "video",
+  "kiwix": {
+    "name": "lrnselfreliance_en_all",
+    "flavour": ""
+  },
+  "destination": "zim/lrnselfreliance_en_all_2026-09.zim",
+  "source_url": {
+    "value": "https://lb.download.kiwix.org/zim/videos/lrnselfreliance_en_all_2026-09.zim.meta4",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-09-26",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 3974043902,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "e5b6cb51a65c4d4d97f1f4eadbe4752891ba54ab03b70a4aa18c9f63e024897c",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Large dataset. Downloaded separately, never in the base image."
+  },
+  "category_reason": "All video goes to Educational videos."
+}

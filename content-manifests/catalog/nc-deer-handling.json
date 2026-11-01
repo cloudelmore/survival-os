@@ -1,0 +1,36 @@
+{
+  "id": "nc-deer-handling",
+  "title": "Precautions for Handling and Processing Deer",
+  "summary": "North Carolina guidance on field dressing and home processing.",
+  "publisher": "NC Wildlife Resources Commission",
+  "format": "pdf",
+  "budget_category": "medical_survival",
+  "destination": "medical_survival/nc-deer-handling.pdf",
+  "source_url": {
+    "value": "https://www.ncwildlife.gov/deer-handling-and-processing-flyerpdf/download",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 1317868,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "2e71bebfc2e4877c79213d631e4d7b959750c1c9dc0e4c8a6a919355030e7046",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately. No checksum is published, so this one was computed from the publisher's file."
+  }
+}
