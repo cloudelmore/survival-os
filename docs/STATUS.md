@@ -2,7 +2,7 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 4 (Search), installed on the Pi and passing remote tests. Device check outstanding.
+**Current phase:** 4 (Search) complete. Phase 5 (Content) has not started.
 **Last updated:** 2026-10-31 (Phase 4 session)
 
 ## Completed work
@@ -44,8 +44,10 @@ Bugs found on the Pi and fixed: the first scan waited until five minutes of upti
 compared with the monotonic clock. Removing a large document left a 168 MB write-ahead log. The
 EPUB `<title>` showed as body text. PDFs had a horizontal scrollbar.
 
-Unverified: the viewer has been driven only in headless Chromium, not by hand on the kiosk. Touch has
-not been tried on these screens. PDFs with JPEG 2000 or JBIG2 images, which need the wasm decoders,
+Kiosk check, 2026-10-31: the user reported "all good on the kiosk", with no itemised results. The
+logs cannot show viewer use, so this rests on that report.
+
+Unverified: PDFs with JPEG 2000 or JBIG2 images, which need the wasm decoders,
 are untested. OCR has not been run. Power loss during indexing is untested; only SIGKILL was tested.
 A real library at 800 GB scale is unmeasured, and the largest test was one 96 MB PDF.
 
@@ -55,8 +57,10 @@ Links inside documents are removed. Relative images in HTML files are dropped; E
 database file does not shrink after deletes, but SQLite reuses the space. USB import from the screen
 is Phase 5.
 
-Eight test documents remain in the Pi's library for the device check. Their text is test data, not
-guidance, and they should be removed before real use.
+The eight test documents were removed from the Pi at the user's request and the index was compacted.
+The library is empty.
+Deleted text stays in the FTS5 segments until later merges, so the index does not shrink right away
+after a delete. Here it was rebuilt by hand. Nothing does this automatically yet.
 
 ### Phase 3 (Dashboard)
 
@@ -347,8 +351,7 @@ built yet. This refines the brief's dark field-computer look:
 
 ## Next steps
 
-1. User checks Library Search and the viewers on the kiosk, by keyboard, trackpad and touch.
-2. Remove the test documents from the Pi.
+1. Phase 5 (Content) starts when the user says so.
 
 Dropped by the user, 2026-10-31: the cold boot baseline and the EEPROM change (`BOOT_ORDER=0xf14`,
 removing `PCIE_PROBE=1`). The expected gain was seconds at most. The EEPROM is unchanged. Any future
