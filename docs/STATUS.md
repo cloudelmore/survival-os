@@ -2,8 +2,8 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 3 (Dashboard), installed and booting. Device checks are outstanding.
-**Last updated:** 2026-10-30 (Phase 3 session)
+**Current phase:** 3 (Dashboard) complete. Phase 4 (Search) has not started.
+**Last updated:** 2026-10-31 (Phase 3 session)
 
 ## Completed work
 
@@ -48,10 +48,43 @@ User report, 2026-10-31: "all good", with no itemised results. The Pi's logs sho
 set, maintenance mode was not entered, and no shutdown occurred after the 00:14 reboot, so those
 checks were not run. The user then confirmed that keyboard and touch work on the device.
 
-Maintenance, PIN and reboot passed in remote API tests only. They still need testing on the device.
+Device checks, 2026-10-31: the PIN was set and maintenance mode was entered from the screen at
+09:35:53. The user logged in at tty1 and restarted the kiosk with `sudo systemctl start
+survival-kiosk` at 20:01:43, and it came back. The user reported about two seconds for that return.
 
-Not tested: PIN entry and the power dialog on screen, maintenance mode from the screen, shutdown
-and power-on, trackpad (swapped out), the `survival.maintenance=1` boot flag, the repeated-crash fallback, `--uninstall`, and power loss.
+The user reported steps 1 to 4 complete, but the journal shows no shutdown and no new boot, so the
+shutdown step did not run. The user then decided the shutdown timing and EEPROM comparison were not
+necessary.
+
+The user then asked to finish the remaining checks. Results from 2026-10-31, over SSH:
+
+| Check | Result |
+|---|---|
+| Single browser crash | Pass after fix: restarts, no maintenance trigger, no console on tty1 |
+| Repeated crashes | Pass after fix: 10 crashes inside 120 s, one trigger, ends in maintenance |
+| Recovery from that | Pass: `reset-failed`, then start |
+| `--uninstall` | Pass after fix: exit 0, all units, users and files gone, only SSH listening |
+| Saved PIN across reinstall | Pass: file kept, API reports `pin_set` |
+| Reinstall and `--enable` | Pass, kiosk started by hand; not yet proven by a boot |
+
+Two bugs were found and fixed. `OnFailure` fired on every crash, showing a console on tty1 for about
+2 s each time, so the earlier "back in 3 s" hid that; `RestartMode=direct` fixes it. `--uninstall`
+stopped at `userdel kiosk` because the session manager was still running, leaving `nginx` masked.
+
+Device results, 2026-10-31, evening. The user reported steps 1 to 5 good and a 1 min 10 s cold boot:
+
+- Shutdown from the dialog: pass. Logged 20:13:51, clean journal stop at 20:13:53.
+- Cold boot on the current install: pass, unattended to the dashboard, `throttled=0x0`, no failed
+  units. User's stopwatch 1 min 10 s; kernel start 20:15:00. Linux 32.1 s, kiosk 24.7 s after kernel.
+- Ctrl+Alt+F2 and F1, power dialog fit: pass, by user report. The logs cannot show these.
+
+- Power loss: pass. After the cold boot, a boot ended with no clean shutdown. The next boot found
+  the FAT dirty bit set on `/dev/sda1` and cleared it, ext4 was clean, and the kiosk started unattended.
+- `survival.maintenance=1`: pass. With the flag added temporarily, the Pi booted to the maintenance
+  target with getty on tty1 and no kiosk. `cmdline.txt` was restored (checksum matched), the backup
+  removed, and a further boot reached the kiosk normally.
+- Trackpad: pass. Detected as USB `1915:1025` with keyboard and mouse inputs; the user confirmed
+  that it works.
 
 ### Phase 2 (Foundation)
 
@@ -263,10 +296,8 @@ built yet. This refines the brief's dark field-computer look:
 
 ## Next steps
 
-1. User runs the device checks: PIN, maintenance mode and return, Ctrl+Alt+F2 and F1, shutdown
-   and power-on. Shutdown also gives the first real cold-boot time.
-2. EEPROM: approved by the user 2026-10-31, to apply after the shutdown test gives a baseline. Set
-   `BOOT_ORDER=0xf14` (USB, then SD), remove `PCIE_PROBE=1`, reboot, and compare cold boot times.
-   Expected gain is seconds at most, within the first 12.2 s. It will not touch the 68 s gap.
-3. Phase 4 (Search) starts after Phase 3 closes and the user says so.
-4. Test the trackpad when it is reconnected.
+1. Phase 4 (Search) starts when the user says so.
+
+Dropped by the user, 2026-10-31: the cold boot baseline and the EEPROM change (`BOOT_ORDER=0xf14`,
+removing `PCIE_PROBE=1`). The expected gain was seconds at most. The EEPROM is unchanged. Any future
+EEPROM change needs fresh approval.

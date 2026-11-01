@@ -28,6 +28,8 @@ ExecStartPre=/usr/bin/chvt 1
 # -s keeps Ctrl+Alt+F2 working, the way out to a text console.
 ExecStart=/usr/bin/cage -s -- /usr/bin/chromium --ozone-platform=wayland --kiosk --no-first-run --no-default-browser-check --noerrdialogs --disable-translate --password-store=basic --user-data-dir=/run/survival-kiosk/profile http://127.0.0.1:8080/
 Restart=always
+# Without this, OnFailure fires on every crash, not only once the start limit is hit.
+RestartMode=direct
 RestartSec=2
 
 [Install]

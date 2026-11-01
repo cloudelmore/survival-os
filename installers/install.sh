@@ -95,6 +95,8 @@ uninstall() {
   run systemctl daemon-reload
   run systemctl start getty@tty1.service
   run userdel survival
+  # The kiosk session manager outlives the service and blocks userdel.
+  id kiosk >/dev/null 2>&1 && run systemctl stop "user@$(id -u kiosk).service"
   run userdel --remove kiosk
   run systemctl unmask nginx.service
   echo "Removed. Saved settings remain in /var/lib/survival-os."
