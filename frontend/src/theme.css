@@ -1,4 +1,4 @@
-/* Original Apple II-style theme. Long reference text will use a separate readable font. */
+/* Original Apple II-style theme. Long reference text uses a separate readable font. */
 :root {
   --black: #000000;
   --panel: #101410;
@@ -10,6 +10,7 @@
   --white: #ffffff;
   --title: "Press Start 2P", monospace;
   --body: "VT323", monospace;
+  --reading: "Atkinson Hyperlegible", sans-serif;
   font-size: 22px;
 }
 
@@ -195,3 +196,96 @@ button:focus-visible, input:focus-visible {
   :root { font-size: 27px; }
   .power-dialog { width: 560px; }
 }
+
+/* Library search */
+.library { display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-start; }
+
+.search-form { display: flex; flex-wrap: wrap; gap: 0.4rem; width: 100%; }
+
+.search-form input, .search-form select {
+  background: var(--panel);
+  border: 2px solid var(--purple);
+  border-radius: 0;
+  color: var(--white);
+  font: inherit;
+  min-height: 44px;
+  padding: 0 0.4rem;
+}
+
+.search-form input { flex: 1 1 100%; }
+.search-form select { flex: 1 1 8rem; }
+
+.page-body .library-state, .page-body .library-scope { margin: 0; }
+.library-scope { color: var(--blue); }
+
+.results { display: flex; flex-direction: column; gap: 0.4rem; list-style: none; margin: 0; padding: 0; width: 100%; }
+
+.result {
+  border: 2px solid var(--purple-dim);
+  color: inherit;
+  display: block;
+  padding: 0.35rem 0.5rem;
+  text-decoration: none;
+}
+
+.result:hover, .result:focus { border-color: var(--orange); outline: none; }
+.result-title { color: var(--white); display: block; }
+.result-where { color: var(--blue); display: block; }
+
+.result-snippet {
+  color: #e8e8e8;
+  display: block;
+  font-family: var(--reading);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin-top: 0.2rem;
+}
+
+mark { background: #ffe066; color: #000000; }
+
+/* Reader: plain and readable, whatever the source. */
+.reader { display: flex; flex-direction: column; height: 100%; }
+
+.reader-bar {
+  align-items: center;
+  border-bottom: 2px solid var(--purple);
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.reader-bar h1 {
+  color: var(--white);
+  flex: 1;
+  font-family: var(--body);
+  font-size: 1rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reader-group { align-items: center; display: flex; gap: 0.3rem; white-space: nowrap; }
+.reader-body { background: #f7f5ef; flex: 1; min-height: 0; outline: none; overflow-x: auto; overflow-y: scroll; }
+
+.reader-text {
+  color: #1a1a1a;
+  font-family: var(--reading);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 44rem;
+  padding: 0.8rem 1rem 3rem;
+}
+
+.reader-text h1, .reader-text h2 { color: #000000; font-family: var(--reading); font-weight: 700; margin: 1rem 0 0.5rem; }
+.reader-text pre { font-family: var(--reading); margin: 0; white-space: pre-wrap; word-break: break-word; }
+.reader-text img { height: auto; max-width: 100%; }
+.reader-text table { border-collapse: collapse; }
+.reader-text td, .reader-text th { border: 1px solid #888888; padding: 0.2rem 0.4rem; }
+mark.current { background: #ff9a3c; }
+
+.pdf-page { background: #ffffff; margin: 0 auto; max-width: 100%; position: relative; width: 100%; }
+.pdf-page canvas { display: block; }
+.pdf-page mark { background: rgba(255, 200, 0, 0.45); color: transparent; }
+.pdf-page mark.current { background: rgba(255, 120, 0, 0.5); }

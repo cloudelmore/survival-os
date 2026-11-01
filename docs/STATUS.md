@@ -2,10 +2,61 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 3 (Dashboard) complete. Phase 4 (Search) has not started.
-**Last updated:** 2026-10-31 (Phase 3 session)
+**Current phase:** 4 (Search), installed on the Pi and passing remote tests. Device check outstanding.
+**Last updated:** 2026-10-31 (Phase 4 session)
 
 ## Completed work
+
+### Phase 4 (Search), in progress
+
+- `search/` package: extraction for PDF, EPUB, TXT, Markdown and HTML, FTS5 index, background
+  indexer, `survival-library` import, rescan and status commands. Optional OCR hook.
+- Indexing is incremental, resumable and throttled. Bad files fail alone, and a file that keeps
+  killing the indexer is skipped after three attempts. Import and indexing respect the 15% floor.
+- API: search with snippets and filters, status, rescan, document views, EPUB images, PDF file with
+  range requests. Library HTML is sanitised with nh3, with no links, styles, scripts or remote images.
+- Frontend: Library Search screen, reader for TXT, Markdown, HTML and EPUB, pdf.js viewer that opens
+  at the page, hit highlighting and stepping. Reference text uses Atkinson Hyperlegible.
+- `survival-indexer.service`, enabled by the installer: nice 19, idle I/O, no network, 768 MB cap.
+- nginx: `mjs` and `wasm` types, `wasm-unsafe-eval` for pdf.js, `data:` fonts and `blob:` images.
+
+Passed on the dev machine: 109 Python tests, 18 frontend tests, type check, offline build check.
+
+Pi results, 2026-10-31, approved by the user: `survival-indexer` installed and enabled.
+
+| Check | Result |
+|---|---|
+| Test corpus across all five formats | Pass: right document and location for each search |
+| PDF viewer in Chromium at 1024x600 | Pass: opens at the page, no console or CSP errors, highlight aligned |
+| Real PDFs (19 and 7 pages) | Pass: indexed, opened at page 18 of 19 |
+| Page 250 of a 500-page PDF | Pass, through range requests |
+| EPUB reader | Pass: right chapter, highlight, hit stepping present |
+| SIGKILL during indexing of 20,000 dense pages (about 3,000 characters each) | Pass: restarted itself, 20,000 of 20,000 pages, 60,000 passages, no duplicates, integrity ok |
+| Indexing rate, throttled | 107 pages per second; 14% CPU, 91 MB RSS, 50.5 C, `throttled=0x0` |
+| Latency during indexing | Dashboard 0.3 ms, status 127 ms, rare word 3 ms, common word 52 to 65 ms |
+| Latency on the full 165 MB index | Rare word 3 ms, common word 0.26 to 0.36 s |
+| Reboots | Pass: all services up, no failed units, kiosk 25.9 s after the kernel, first scan runs at once |
+| Network | Only 22 outward; 8080 and 8081 on loopback |
+
+An earlier 20,000-page run is not counted: its text ran off the page, so it held little text.
+
+Bugs found on the Pi and fixed: the first scan waited until five minutes of uptime, because it was
+compared with the monotonic clock. Removing a large document left a 168 MB write-ahead log. The
+EPUB `<title>` showed as body text. PDFs had a horizontal scrollbar.
+
+Unverified: the viewer has been driven only in headless Chromium, not by hand on the kiosk. Touch has
+not been tried on these screens. PDFs with JPEG 2000 or JBIG2 images, which need the wasm decoders,
+are untested. OCR has not been run. Power loss during indexing is untested; only SIGKILL was tested.
+A real library at 800 GB scale is unmeasured, and the largest test was one 96 MB PDF.
+
+Known limits: search matches document text, not titles. Common words stop at 5,000 matches, so the
+"places found" count is then too low. There is no on-screen keyboard, so searching needs a keyboard.
+Links inside documents are removed. Relative images in HTML files are dropped; EPUB images work. The
+database file does not shrink after deletes, but SQLite reuses the space. USB import from the screen
+is Phase 5.
+
+Eight test documents remain in the Pi's library for the device check. Their text is test data, not
+guidance, and they should be removed before real use.
 
 ### Phase 3 (Dashboard)
 
@@ -296,7 +347,8 @@ built yet. This refines the brief's dark field-computer look:
 
 ## Next steps
 
-1. Phase 4 (Search) starts when the user says so.
+1. User checks Library Search and the viewers on the kiosk, by keyboard, trackpad and touch.
+2. Remove the test documents from the Pi.
 
 Dropped by the user, 2026-10-31: the cold boot baseline and the EEPROM change (`BOOT_ORDER=0xf14`,
 removing `PCIE_PROBE=1`). The expected gain was seconds at most. The EEPROM is unchanged. Any future

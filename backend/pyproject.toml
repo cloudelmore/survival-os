@@ -8,6 +8,7 @@ version = "0.0.1"
 description = "Backend for SURVIVAL OS, an offline knowledge platform"
 requires-python = ">=3.13"
 dependencies = [
+    "survival-search",
     "fastapi>=0.115",
     "uvicorn>=0.30",
     "jsonschema>=4.23",

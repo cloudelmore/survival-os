@@ -43,3 +43,53 @@ export const getAdminState = () => load<AdminState>("/api/admin/state");
 export const setPin = (pin: string) => send("/api/admin/pin", { pin });
 export const runAction = (action: Action, pin: string) =>
   send("/api/system/action", { action, pin });
+
+export type SnippetPart = { text: string; hit: boolean };
+export type SearchResult = {
+  document_id: number;
+  title: string;
+  format: string;
+  category: string;
+  path: string;
+  page: number;
+  label: string;
+  pages_total: number;
+  snippet: SnippetPart[];
+  hits: string[];
+};
+export type SearchResponse = { results: SearchResult[]; total: number; more: boolean };
+export type LibraryStatus = {
+  documents: number;
+  passages: number;
+  pages_total: number;
+  pages_done: number;
+  pending: number;
+  failed: { path: string; error: string }[];
+  no_text: { path: string; pages_no_text: number }[];
+  formats: Record<string, number>;
+  categories: Record<string, number>;
+  indexer: { state: string; detail: string };
+};
+export type LibraryDocument = {
+  id: number;
+  title: string;
+  format: string;
+  category: string;
+  pages_total: number;
+};
+export type DocumentView =
+  | { kind: "text"; text: string }
+  | { kind: "html"; html: string }
+  | { kind: "pdf" };
+
+export const getLibraryStatus = () => load<LibraryStatus>("/api/library/status");
+export const searchLibrary = (query: string, format: string, category: string, offset: number) => {
+  const params = new URLSearchParams({ q: query, offset: String(offset) });
+  if (format) params.set("format", format);
+  if (category) params.set("category", category);
+  return load<SearchResponse>(`/api/library/search?${params}`);
+};
+export const getDocument = (id: number) => load<LibraryDocument>(`/api/library/documents/${id}`);
+export const getDocumentView = (id: number, page: number) =>
+  load<DocumentView>(`/api/library/documents/${id}/view?page=${page}`);
+export const rescanLibrary = () => send("/api/library/rescan", {});

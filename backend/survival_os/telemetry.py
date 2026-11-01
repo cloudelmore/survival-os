@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 FREE_SPACE_FLOOR = 0.15
-SERVICES = ("survival-api", "survival-web", "survival-kiosk")
+SERVICES = ("survival-api", "survival-web", "survival-kiosk", "survival-indexer")
 
 THROTTLE_FLAGS = {
     0: "under_voltage",

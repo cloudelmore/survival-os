@@ -5,7 +5,7 @@ PY := $(VENV)/bin/python
 
 setup:
 	python3 -m venv $(VENV)
-	$(PY) -m pip install -q -e 'backend[dev]'
+	$(PY) -m pip install -q -e search -e 'backend[dev]'
 	cd frontend && npm ci
 
 test: test-backend test-frontend validate

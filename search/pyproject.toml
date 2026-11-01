@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "survival-search"
+version = "0.0.1"
+description = "Library import, extraction and full-text index for SURVIVAL OS"
+requires-python = ">=3.13"
+dependencies = [
+    "markdown-it-py>=4.0",
+    "nh3>=0.3",
+    "pillow>=11",
+    "pypdfium2>=5.0",
+]
+
+[project.scripts]
+survival-indexer = "survival_search.indexer:main"
+survival-library = "survival_search.cli:main"
+
+[tool.setuptools]
+packages = ["survival_search"]

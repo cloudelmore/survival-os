@@ -8,4 +8,10 @@ are not part of this source distribution. Each keeps its own license, recorded
 in content-manifests/ and shown in the dashboard's attribution page.
 
 Bundled fonts, under the SIL Open Font License 1.1 (see docs/licenses/):
-Press Start 2P and VT323, packaged by Fontsource.
+Press Start 2P, VT323 and Atkinson Hyperlegible, packaged by Fontsource.
+
+The built dashboard bundles pdf.js (Mozilla, Apache License 2.0, see docs/licenses/), including its
+wasm decoders, whose licenses ship beside them in the pdfjs folder of the build.
+
+The Pi installs these Python packages: pypdfium2 (BSD-3-Clause, Apache-2.0), nh3 (MIT),
+markdown-it-py (MIT) and Pillow (MIT-CMU).

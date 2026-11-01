@@ -16,9 +16,9 @@ APP=/opt/survival-os
 ETC=/etc/systemd/system
 SUDOERS=/etc/sudoers.d/survival-os
 UNITS=(survival-api.service survival-web.service survival-kiosk.service
-       survival-maintenance.target survival-maintenance-boot.service)
+       survival-indexer.service survival-maintenance.target survival-maintenance-boot.service)
 BOOT_UNITS=(survival-api.service survival-web.service survival-kiosk.service
-            survival-maintenance-boot.service)
+            survival-indexer.service survival-maintenance-boot.service)
 PACKAGES=(nginx-light cage chromium python3-venv)
 
 MODE="${1:---dry-run}"
@@ -58,10 +58,12 @@ apply() {
   run mkdir -p "$APP"
   run rsync -a --delete --exclude .venv --exclude __pycache__ --exclude '*.egg-info' \
     "$SRC/backend/" "$APP/backend/"
+  run rsync -a --delete --exclude .venv --exclude __pycache__ --exclude '*.egg-info' \
+    "$SRC/search/" "$APP/search/"
   run rsync -a --delete "$SRC/frontend/dist/" "$APP/frontend/"
   run install -m 644 "$SRC/systemd/nginx.conf" "$APP/nginx.conf"
   [ -x "$APP/venv/bin/python" ] || run python3 -m venv "$APP/venv"
-  run "$APP/venv/bin/python" -m pip install -q --disable-pip-version-check "$APP/backend"
+  run "$APP/venv/bin/python" -m pip install -q --disable-pip-version-check "$APP/search" "$APP/backend"
   for unit in "${UNITS[@]}"; do
     run install -m 644 "$SRC/systemd/$unit" "$ETC/$unit"
   done
@@ -69,6 +71,7 @@ apply() {
   run install -m 440 "$SRC/systemd/survival-os.sudoers" "$SUDOERS"
   run systemctl daemon-reload
   run systemctl restart survival-api.service survival-web.service
+  run systemctl try-restart survival-indexer.service
   echo "Installed. Nothing starts at boot until --enable."
 }
 
@@ -86,7 +89,8 @@ disable() {
 
 uninstall() {
   disable
-  run systemctl stop survival-kiosk.service survival-web.service survival-api.service
+  run systemctl stop survival-kiosk.service survival-indexer.service survival-web.service \
+    survival-api.service
   for unit in "${UNITS[@]}"; do
     run rm -f "$ETC/$unit"
   done
