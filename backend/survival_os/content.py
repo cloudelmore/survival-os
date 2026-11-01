@@ -182,8 +182,8 @@ def destination(paths: Paths, entry: dict) -> Path:
     relative = PurePosixPath(entry["destination"])
     if entry["format"] == "zim":
         return paths.zim / relative.name
-    if entry["format"] == "firmware":
-        return paths.content / "firmware" / relative.name
+    if entry["format"] in ("firmware", "software"):
+        return paths.content / entry["format"] / relative.name
     return paths.library / entry["budget_category"] / relative.name
 
 

@@ -1,0 +1,36 @@
+{
+  "id": "software-debian-dvd",
+  "title": "Debian DVD 1 (PC, 64-bit)",
+  "summary": "Full offline Debian installer for PCs.",
+  "publisher": "Debian",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/debian-13.7.0-amd64-DVD-1.iso",
+  "source_url": {
+    "value": "https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd/debian-13.7.0-amd64-DVD-1.iso",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 3992977408,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "347b6c67a3cc0b7ddb60b178f683470c4e2b7ac426c996d9337a2ff36c1a32d2",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}

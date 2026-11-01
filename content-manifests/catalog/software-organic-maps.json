@@ -1,0 +1,37 @@
+{
+  "id": "software-organic-maps",
+  "title": "Organic Maps for Android",
+  "summary": "Offline maps on a phone.",
+  "publisher": "organicmaps",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/OrganicMaps-26092932-web-release.apk",
+  "source_url": {
+    "value": "https://github.com/organicmaps/organicmaps/releases/download/2026.09.29-32-android/OrganicMaps-26092932-web-release.apk",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-09-29",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 63888223,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "d7dbdfc3cbfdbcce6d437f11147f2cd15384c03052d2b4594fd8c1c7777dd497",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}

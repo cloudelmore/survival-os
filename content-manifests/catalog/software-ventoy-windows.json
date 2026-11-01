@@ -1,0 +1,37 @@
+{
+  "id": "software-ventoy-windows",
+  "title": "Ventoy for Windows",
+  "summary": "Makes a USB stick that boots many ISO files.",
+  "publisher": "ventoy",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/ventoy-1.1.18-windows.zip",
+  "source_url": {
+    "value": "https://github.com/ventoy/Ventoy/releases/download/v1.1.18/ventoy-1.1.18-windows.zip",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-09",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 16680699,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "082c478e8c432e1ac653899fcf50e3a4077a2851bc6112b5ddd30545962164a9",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}

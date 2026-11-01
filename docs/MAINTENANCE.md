@@ -63,3 +63,16 @@ This has not been tested on a real device.
    and `meshtastic` are installed. Flashing the wrong board's firmware can leave a device unusable
    until it is reflashed.
 5. Start the dashboard again with `sudo systemctl start survival-kiosk`.
+
+## Using the software shelf
+
+Installed files are in `/var/lib/survival-os/content/software`. To copy one to a USB stick, enter
+maintenance mode, log in, and mount the stick yourself. `survival-usb` is read-only, for imports only.
+Check the device name with `lsblk` first, because the system disk is also a USB device:
+
+    lsblk
+    sudo mount /dev/sdXN /mnt
+    sudo cp /var/lib/survival-os/content/software/FILE /mnt/
+    sudo umount /mnt
+
+This has not been tested.

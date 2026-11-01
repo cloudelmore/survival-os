@@ -9,7 +9,7 @@ Read this first at the start of every session.
 
 ### Phase 5 (Content), in progress
 
-- Catalog of 97 entries, about 491 GB in total, mostly Kiwix collections from the live catalog through
+- Catalog of 110 entries, about 504 GB in total, mostly Kiwix collections from the live catalog through
   `scripts/dev/refresh-catalog.py`, plus PDFs, Meshtastic docs and firmware. Sizes and SHA-256 are verified. Licenses
   are not published per file, so 60 of 64 are marked unverified. The verified ones are the NWS guide and three Library
   of Congress scans with no known copyright restrictions. PDF
@@ -85,6 +85,12 @@ ESP32, S3 and nRF52840 firmware are in the catalog. `esptool` and `meshtastic` a
 console is documented in MAINTENANCE.md and is untested on a real device. Dashboard flashing is not built.
 A repository archive may change its bytes if GitHub regenerates it, which would fail the checksum.
  The
+
+Software shelf added at the user's request, 13.3 GB from `scripts/dev/refresh-software.py`: Debian, Raspberry
+Pi OS, Ventoy, Rufus, 7-Zip, and Android apps for Meshtastic, Kiwix and Organic Maps. Stored in
+`content/software`. Rufus installed on the Pi as a real test. Copying to a USB stick is a manual console
+step and is untested. Files are not reachable from the dashboard. Ubuntu 26.04 LTS was added at the user's request as a
+plain download. SURVIVAL OS still does not support it.
 
 Catalog gaps: WHO, FAO, a modern Red Cross manual, Kolibri, offline dictionaries other than
 Wiktionary, regional field guides, and North Carolina and southeastern references. The user then allowed a limited number of reputable
@@ -440,6 +446,9 @@ built yet. This refines the brief's dark field-computer look:
 - Any pixel font must have a license that allows bundling, and ships locally.
 
 ## Next steps
+
+Final task, at the end of Phase 10: add the finished `survival-os` repository to the content catalog,
+as the user asked on 2026-10-31, so the system can be rebuilt offline.
 
 1. User tests USB import and the kiosk.
 2. Expand the catalog source by source, starting with medical and survival references.

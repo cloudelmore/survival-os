@@ -1,0 +1,37 @@
+{
+  "id": "software-ventoy-linux",
+  "title": "Ventoy for Linux",
+  "summary": "Makes a USB stick that boots many ISO files.",
+  "publisher": "ventoy",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/ventoy-1.1.18-linux.tar.gz",
+  "source_url": {
+    "value": "https://github.com/ventoy/Ventoy/releases/download/v1.1.18/ventoy-1.1.18-linux.tar.gz",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-09",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 20320548,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "d86ff9de63d94c8b8f1f6b14d23c55af4b88e8207bf2893890892a6a97b1ad54",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}

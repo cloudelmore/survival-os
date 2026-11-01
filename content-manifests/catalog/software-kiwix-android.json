@@ -1,0 +1,37 @@
+{
+  "id": "software-kiwix-android",
+  "title": "Kiwix for Android",
+  "summary": "Reads these ZIM libraries on a phone.",
+  "publisher": "kiwix",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/v3.14.1-arm64-v8a-standalone.apk",
+  "source_url": {
+    "value": "https://github.com/kiwix/kiwix-android/releases/download/v3.14.1/v3.14.1-arm64-v8a-standalone.apk",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-05-14",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 70366062,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "62a9910be260030e642465c17d642537e6ee4ee5f2d4596c248267c2766a88b8",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}

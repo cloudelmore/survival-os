@@ -1,0 +1,37 @@
+{
+  "id": "software-rufus",
+  "title": "Rufus for Windows",
+  "summary": "Writes ISO files to USB sticks.",
+  "publisher": "pbatard",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/rufus-4.15.exe",
+  "source_url": {
+    "value": "https://github.com/pbatard/rufus/releases/download/v4.15/rufus-4.15.exe",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-06-30",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 1989992,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "84c8a437f8af89257524478489e5c85f1edf25f761d299e2bcde46ac0afbe106",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}

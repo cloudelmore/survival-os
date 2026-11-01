@@ -1,0 +1,36 @@
+{
+  "id": "software-ubuntu-desktop",
+  "title": "Ubuntu 26.04 LTS Desktop (PC, 64-bit)",
+  "summary": "Plain download for PCs. SURVIVAL OS itself does not run on Ubuntu.",
+  "publisher": "Canonical",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/ubuntu-26.04.1-desktop-amd64.iso",
+  "source_url": {
+    "value": "https://releases.ubuntu.com/26.04/ubuntu-26.04.1-desktop-amd64.iso",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": null,
+    "status": "unverified"
+  },
+  "size_bytes": {
+    "value": 6482409472,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "601e30fbf5d97759367c632e2c33630665039b7e2158fd068403da3ccf1bda1f",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}

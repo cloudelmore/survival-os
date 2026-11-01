@@ -13,7 +13,7 @@
     "publisher": {"type": "string", "minLength": 1},
     "format": {
       "enum": ["zim", "pdf", "epub", "html", "text", "markdown", "pmtiles", "map-data",
-               "video", "kolibri-video", "kolibri", "model", "firmware", "mixed"]
+               "video", "kolibri-video", "kolibri", "model", "firmware", "software", "mixed"]
     },
     "wikimedia_project": {"type": "boolean"},
     "summary": {"type": "string"},

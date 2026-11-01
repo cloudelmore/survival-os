@@ -1,0 +1,37 @@
+{
+  "id": "software-pi-os-desktop",
+  "title": "Raspberry Pi OS with Desktop (64-bit)",
+  "summary": "A full desktop for a spare Raspberry Pi.",
+  "publisher": "Raspberry Pi",
+  "format": "software",
+  "budget_category": "os_apps",
+  "destination": "software/2026-10-06-raspios-trixie-arm64.img.xz",
+  "source_url": {
+    "value": "https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2026-10-06/2026-10-06-raspios-trixie-arm64.img.xz",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "license": {
+    "value": null,
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "2026-10-06",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "size_bytes": {
+    "value": 1364720984,
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "sha256": {
+    "value": "976766570bee2aaf3047dd78649cfe82abb8fe9687b7f15030cd533ba4e9f7a9",
+    "status": "verified",
+    "verified_at": "2026-10-31"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Downloaded separately."
+  }
+}
