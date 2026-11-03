@@ -14,9 +14,12 @@ from pydantic import BaseModel, Field
 from survival_search import extract, query, render
 from survival_search.indexer import Paths
 
-from . import __version__, admin, content, removable, telemetry
+from . import __version__, admin, content, navigation, pmtiles, removable, telemetry
 
 Pin = Field(pattern=r"^[0-9]{4,8}$")
+# An archive's tile type says what it is: photos are JPEG, terrain is WebP, streets are vectors.
+MAP_KINDS = {pmtiles.JPEG: "imagery", pmtiles.WEBP: "terrain"}
+TILE_TYPES = {pmtiles.JPEG: "image/jpeg", pmtiles.WEBP: "image/webp"}
 
 
 class PinRequest(BaseModel):
@@ -37,6 +40,17 @@ class ImportRequest(BaseModel):
     path: str = Field(max_length=4096)
     category: str = Field(max_length=40)
     pin: str = Pin
+
+
+class WaypointRequest(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
+    notes: str = Field("", max_length=2000)
+
+
+class GpxImportRequest(BaseModel):
+    path: str = Field(max_length=4096)
 
 
 class ActionRequest(BaseModel):
@@ -192,6 +206,124 @@ def create_app(
     def usb_import(body: ImportRequest) -> dict[str, int]:
         require_pin(body.pin)
         return queue("import", json.dumps({"path": body.path, "category": body.category}))
+
+    navigation_db = state_dir / "personal" / "navigation.db"
+
+    def nav():
+        db = navigation.connect(navigation_db)
+        try:
+            yield db
+        finally:
+            db.close()
+
+    def map_rows() -> dict[str, Path]:
+        db = content.connect(stores)
+        try:
+            rows = db.execute("SELECT id, path FROM installed WHERE format='pmtiles'"
+                              " ORDER BY bytes DESC").fetchall()
+        finally:
+            db.close()
+        return {row["id"]: state_dir / row["path"] for row in rows}
+
+    @app.get("/api/maps")
+    def maps() -> dict:
+        db = content.connect(stores)
+        try:
+            titles = {row["id"]: dict(row) for row in db.execute(
+                "SELECT id, title, version FROM installed WHERE format='pmtiles'")}
+        finally:
+            db.close()
+        found = []
+        for key, path in map_rows().items():
+            if not path.is_file():
+                continue
+            with path.open("rb") as handle:
+                header = pmtiles.parse_header(handle.read(pmtiles.HEADER_BYTES))
+            found.append({**titles[key], "kind": MAP_KINDS.get(header.tile_type, "base"),
+                          "bbox": [value / 10_000_000 for value in header.bounds],
+                          "max_zoom": header.max_zoom})
+        return {"maps": found}
+
+    tile_files: dict[str, pmtiles.TileFile] = {}
+
+    @app.get("/api/maps/{item}/tile/{z}/{x}/{y}")
+    def map_tile(item: str, z: int, x: int, y: int) -> Response:
+        path = map_rows().get(item)
+        if path is None or not path.is_file():
+            raise HTTPException(404, "Map not found")
+        reader = tile_files.get(item)
+        if reader is None or reader.stamp != path.stat().st_mtime_ns:
+            reader = tile_files[item] = pmtiles.TileFile(path)
+        data = reader.tile(z, x, y) if 0 <= x < 1 << z and 0 <= y < 1 << z else None
+        if data is None:
+            raise HTTPException(404, "No tile there")
+        return Response(data, media_type=TILE_TYPES.get(reader.header.tile_type,
+                                                        "application/octet-stream"))
+
+    @app.get("/api/maps/{item}/file")
+    def map_file(item: str) -> FileResponse:
+        db = content.connect(stores)
+        try:
+            row = db.execute("SELECT path FROM installed WHERE id=? AND format='pmtiles'",
+                             (item,)).fetchone()
+        finally:
+            db.close()
+        path = state_dir / row["path"] if row else None
+        if path is None or not path.is_file():
+            raise HTTPException(404, "Map not found")
+        return FileResponse(path, media_type="application/octet-stream")
+
+    @app.get("/api/navigation")
+    def navigation_overview(db=Depends(nav)) -> dict:
+        return navigation.overview(db)
+
+    @app.post("/api/navigation/waypoints", status_code=201, dependencies=[Depends(same_origin)])
+    def waypoint_add(body: WaypointRequest, db=Depends(nav)) -> dict[str, int]:
+        return {"id": navigation.add_waypoint(db, body.name, body.lat, body.lon, notes=body.notes)}
+
+    @app.delete("/api/navigation/waypoints/{item}", status_code=204,
+                dependencies=[Depends(same_origin)])
+    def waypoint_delete(item: int, db=Depends(nav)) -> None:
+        db.execute("DELETE FROM waypoints WHERE id=?", (item,))
+        db.commit()
+
+    @app.delete("/api/navigation/routes/{item}", status_code=204,
+                dependencies=[Depends(same_origin)])
+    def route_delete(item: int, db=Depends(nav)) -> None:
+        db.execute("DELETE FROM routes WHERE id=?", (item,))
+        db.commit()
+
+    @app.get("/api/navigation/export.gpx")
+    def gpx_export(db=Depends(nav)) -> Response:
+        return Response(navigation.export_gpx(db), media_type="application/gpx+xml", headers={
+            "Content-Disposition": 'attachment; filename="survival-os-navigation.gpx"'})
+
+    @app.get("/api/navigation/usb")
+    def gpx_files() -> dict:
+        found = sorted(usb_root.rglob("*.[gG][pP][xX]")) if usb_root.is_dir() else []
+        return {"files": [path.relative_to(usb_root).as_posix() for path in found
+                          if path.is_file() and not path.is_symlink()]}
+
+    @app.post("/api/navigation/import", dependencies=[Depends(same_origin)])
+    def gpx_import(body: GpxImportRequest, db=Depends(nav)) -> dict[str, int]:
+        path = (usb_root / body.path).resolve()
+        if not path.is_relative_to(usb_root.resolve()) or not path.is_file():
+            raise HTTPException(404, "That file is no longer on the drive")
+        if path.stat().st_size > navigation.MAX_GPX_BYTES:
+            raise HTTPException(422, "This GPX file is too large")
+        try:
+            return navigation.import_gpx(db, path.read_bytes())
+        except navigation.BadGpx as error:
+            raise HTTPException(422, str(error))
+
+    @app.post("/api/navigation/export-usb", status_code=202, dependencies=[Depends(same_origin)])
+    def gpx_to_usb(body: PinOnly, db=Depends(nav)) -> dict[str, str]:
+        require_pin(body.pin)
+        outbox = state_dir / "personal" / "outbox.gpx"
+        outbox.write_bytes(navigation.export_gpx(db))
+        if not usb_helper("export"):
+            raise HTTPException(422, "The file could not be written to the drive")
+        return {"status": "accepted"}
 
     def stored_document(document_id: int) -> tuple[dict, Path]:
         doc = query.document(library, document_id)

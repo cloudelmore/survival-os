@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Home } from "./Home";
 import { ContentManager } from "./ContentManager";
 import { closeKiwix, KiwixList, KiwixView } from "./Kiwix";
@@ -8,6 +8,9 @@ import { PowerDialog } from "./PowerDialog";
 import { SECTIONS } from "./sections";
 import { StatusPage } from "./StatusPage";
 import { Viewer } from "./Viewer";
+
+// MapLibre is large, so only this screen loads it.
+const Navigation = lazy(() => import("./Navigation"));
 
 const sectionFromHash = () =>
   window.location.hash.replace(/^#\/?/, "").split("?")[0].split("/")[0] || null;
@@ -64,6 +67,8 @@ export function App() {
             <LibrarySearch />
           ) : section.id === "content-manager" ? (
             <ContentManager />
+          ) : section.id === "navigation" ? (
+            <Suspense fallback={<p>Loading the map.</p>}><Navigation /></Suspense>
           ) : section.phase === 5 ? (
             <KiwixList section={section} />
           ) : (

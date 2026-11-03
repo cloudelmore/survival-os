@@ -106,12 +106,16 @@ def test_verified_needs_a_value_and_date(name):
 @pytest.mark.parametrize("fields, required", [
     ({"format": "video"}, "video"),
     ({"format": "kolibri-video"}, "video"),
-    ({"format": "pmtiles"}, "maps"),
+    ({"format": "pmtiles", "extract": {"bbox": [0, 0, 1, 1], "max_zoom": 8}}, "maps"),
     ({"format": "zim", "wikimedia_project": True}, "wikimedia_zim"),
 ])
 def test_format_overrides(fields, required):
     assert manifests.check_entry(entry(**fields))
     assert manifests.check_entry(entry(budget_category=required, **fields)) == []
+
+
+def test_map_needs_a_region():
+    assert manifests.check_entry(entry(format="pmtiles", budget_category="maps"))
 
 
 def test_non_wikimedia_zim_goes_by_subject():

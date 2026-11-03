@@ -18,9 +18,10 @@ BLOCK = 1024 * 1024
 
 
 def run_helper(action: str) -> bool:
-    verb = "start" if action == "mount" else "stop"
-    result = subprocess.run([*SERVICE, verb, "survival-usb.service"], capture_output=True,
-                            timeout=60)
+    command = {"mount": ["start", "survival-usb.service"],
+               "unmount": ["stop", "survival-usb.service"],
+               "export": ["start", "survival-usb-export.service"]}[action]
+    result = subprocess.run([*SERVICE, *command], capture_output=True, timeout=60)
     return result.returncode == 0
 
 

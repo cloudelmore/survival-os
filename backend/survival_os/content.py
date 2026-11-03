@@ -81,6 +81,10 @@ class Paths:
         return self.content / "zim"
 
     @property
+    def maps(self) -> Path:
+        return self.state / "maps"
+
+    @property
     def library(self) -> Path:
         return self.state / "library"
 
@@ -184,6 +188,8 @@ def destination(paths: Paths, entry: dict) -> Path:
         return paths.zim / relative.name
     if entry["format"] in ("firmware", "software"):
         return paths.content / entry["format"] / relative.name
+    if entry["format"] == "pmtiles":
+        return paths.maps / relative.name
     return paths.library / entry["budget_category"] / relative.name
 
 

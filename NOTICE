@@ -13,5 +13,10 @@ Press Start 2P, VT323 and Atkinson Hyperlegible, packaged by Fontsource.
 The built dashboard bundles pdf.js (Mozilla, Apache License 2.0, see docs/licenses/), including its
 wasm decoders, whose licenses ship beside them in the pdfjs folder of the build.
 
+The Navigation screen bundles MapLibre GL JS (BSD-3-Clause), maplibre-contour (BSD-3-Clause),
+pmtiles (BSD-3-Clause), the Protomaps
+basemap style and sprites (BSD-3-Clause), and Latin glyphs of Noto Sans (SIL Open Font License 1.1,
+see docs/licenses/Noto-Sans-OFL.txt). Map data is OpenStreetMap, under the ODbL, credited on the map.
+
 The Pi installs these Python packages: pypdfium2 (BSD-3-Clause, Apache-2.0), nh3 (MIT),
 markdown-it-py (MIT) and Pillow (MIT-CMU).

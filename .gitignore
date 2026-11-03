@@ -11,7 +11,7 @@
 *.iso
 *.part
 reports/
-content/
+/content/
 data/
 .env
 *.pem

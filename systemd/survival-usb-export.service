@@ -1,0 +1,8 @@
+[Unit]
+Description=SURVIVAL OS GPX export to the mounted USB drive
+Requisite=survival-usb.service
+After=survival-usb.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/survival-os/bin/survival-usb export

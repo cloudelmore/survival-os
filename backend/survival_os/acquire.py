@@ -8,6 +8,7 @@ bytes included, is checked against the published SHA-256 before it is installed.
 import hashlib
 import http.client
 import fnmatch
+import json
 import logging
 import os
 import re
@@ -21,8 +22,9 @@ import xml.etree.ElementTree as ET
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
+from urllib.parse import urlsplit
 
-from . import content
+from . import content, pmtiles
 from .content import Paths, Refused
 
 log = logging.getLogger("survival-content")
@@ -37,6 +39,10 @@ MAX_UNPACKED_FILE = 64 * 1024 * 1024
 METALINK = {"m": "urn:ietf:params:xml:ns:metalink"}
 OPDS = {"a": "http://www.w3.org/2005/Atom"}
 CATALOG_URL = "https://opds.library.kiwix.org/catalog/v2/entries"
+MAP_BUILDS_URL = "https://build-metadata.protomaps.dev/builds.json"
+MAP_BUILD_BASE = "https://build.protomaps.com/"
+# The bundled map style reads this version of the tile layout.
+MAP_SCHEMA_MAJOR = "4"
 
 
 class Stop(Exception):
@@ -54,6 +60,65 @@ class Source:
 def fetch(url: str, headers: dict | None = None):
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, **(headers or {})})
     return urllib.request.urlopen(request, timeout=TIMEOUT)
+
+
+class RangeReader:
+    """Byte ranges over one kept-alive connection. A region needs hundreds of them."""
+
+    def __init__(self, url: str) -> None:
+        parts = urlsplit(url)
+        self.host, self.path = parts.netloc, parts.path
+        self.secure = parts.scheme == "https"
+        self.connection: http.client.HTTPConnection | None = None
+
+    def _connect(self) -> http.client.HTTPConnection:
+        kind = http.client.HTTPSConnection if self.secure else http.client.HTTPConnection
+        return kind(self.host, timeout=TIMEOUT)
+
+    def read(self, offset: int, length: int) -> bytes:
+        failure: Exception | None = None
+        for attempt in range(RETRIES):
+            if attempt:
+                time.sleep(RETRY_WAIT)
+            try:
+                self.connection = self.connection or self._connect()
+                self.connection.request("GET", self.path, headers={
+                    "User-Agent": USER_AGENT, "Range": f"bytes={offset}-{offset + length - 1}"})
+                response = self.connection.getresponse()
+                data = response.read()
+                if response.status == 206 and len(data) == length:
+                    return data
+                failure = ConnectionError(f"Map server answered {response.status}")
+            except (http.client.HTTPException, OSError) as error:
+                failure = error
+            log.warning("Map range attempt %d failed: %s", attempt + 1, failure)
+            if self.connection:
+                self.connection.close()
+            self.connection = None
+        raise ConnectionError(f"The map server kept failing: {failure}")
+
+
+def latest_map_build() -> dict:
+    """The newest world build. Old ones are deleted within days, so none can be pinned."""
+    with fetch(MAP_BUILDS_URL) as response:
+        builds = json.loads(response.read())
+    usable = [item for item in builds
+              if item["key"].endswith(".pmtiles")
+              and str(item.get("version", "")).split(".")[0] == MAP_SCHEMA_MAJOR]
+    if not usable:
+        raise Refused("No world map build matches this version of SURVIVAL OS")
+    newest = max(usable, key=lambda item: item["key"])
+    return {"version": newest["key"].removesuffix(".pmtiles"),
+            "url": MAP_BUILD_BASE + newest["key"]}
+
+
+def latest_extract(entry: dict) -> dict:
+    """Where a map region comes from: a named archive, or else the newest daily build."""
+    source = entry["extract"].get("source")
+    if not source:
+        return latest_map_build()
+    with fetch(entry["extract"]["version_url"]) as response:
+        return {"version": str(json.loads(response.read())["version"]), "url": source}
 
 
 def resolve_source(entry: dict) -> Source:
@@ -147,6 +212,9 @@ class Worker:
     def install(self, job_id: int, entry: dict, version: str | None = None,
                 url: str | None = None) -> None:
         category = entry["budget_category"]
+        if entry.get("extract"):
+            self.install_map(job_id, entry, version, url)
+            return
         if url:
             entry = {**entry, "source_url": {**entry["source_url"], "value": url}}
         self.update_job(job_id, phase="checking source")
@@ -185,6 +253,73 @@ class Worker:
         self.db.commit()
         self.refresh_kiwix()
 
+    def install_map(self, job_id: int, entry: dict, version: str | None,
+                    url: str | None) -> None:
+        """Cut one region out of the newest world build, resuming from the part file."""
+        category = entry["budget_category"]
+        bbox = tuple(entry["extract"]["bbox"])
+        max_zoom = entry["extract"]["max_zoom"]
+        self.update_job(job_id, phase="finding the newest map")
+        final = content.destination(self.paths, entry)
+        part = self.paths.partial / f"{final.name}.part"
+        note = part.with_suffix(".json")
+        part.parent.mkdir(parents=True, exist_ok=True)
+        # A part file holds tiles from one build, so finish that build while it still exists.
+        saved = json.loads(note.read_text()) if note.exists() and part.exists() else None
+        chosen = saved if saved else (
+            {"version": version, "url": url} if url else latest_extract(entry))
+        self.update_job(job_id, phase="reading the world index")
+        reader = RangeReader(chosen["url"])
+        try:
+            plan = pmtiles.make_plan(reader, bbox, max_zoom)
+        except ConnectionError:
+            if not saved:
+                raise
+            # That build has gone, and its tiles cannot be mixed with another.
+            part.unlink()
+            note.unlink()
+            chosen = latest_extract(entry)
+            saved = None
+            reader = RangeReader(chosen["url"])
+            plan = pmtiles.make_plan(reader, bbox, max_zoom)
+        total = plan.tile_bytes
+        done = pmtiles.tile_edge(plan, max(part.stat().st_size - pmtiles.ROOT_BYTES, 0)) \
+            if saved else 0
+        replaced = self.current_bytes(entry["id"])
+        content.check(self.paths, category, total - done, max(total - replaced, 0))
+        if not saved:
+            with part.open("wb") as output:
+                output.write(bytes(pmtiles.ROOT_BYTES))
+            note.write_text(json.dumps(chosen))
+
+        self.update_job(job_id, phase="downloading", bytes_total=total, bytes_done=done)
+
+        def progress(written: int) -> None:
+            self.update_job(job_id, bytes_done=written)
+            if self.stopped(job_id):
+                raise Stop
+            if total - written > content.capacity(self.paths.state)["headroom"]:
+                raise Refused("Stopped at the 15% free floor. Free some space and"
+                              " install again to resume")
+
+        with part.open("r+b") as output:
+            output.truncate(pmtiles.ROOT_BYTES + done)
+            output.seek(pmtiles.ROOT_BYTES + done)
+            pmtiles.download_tiles(reader, plan, output, done, progress)
+
+        self.update_job(job_id, phase="verifying")
+        pmtiles.finish(plan, part, bbox, max_zoom)
+        pmtiles.check_archive(part)
+        digest = sha256_file(part)
+        final.parent.mkdir(parents=True, exist_ok=True)
+        self.update_job(job_id, phase="installing")
+        os.replace(part, final)
+        note.unlink()
+        self.record(entry["id"], entry["title"], entry["format"], category, final, digest,
+                    chosen["version"], chosen["url"], "tiles checked, computed after download")
+        self.db.execute("DELETE FROM updates WHERE id=?", (entry["id"],))
+        self.db.commit()
+
     def current_bytes(self, entry_id: str) -> int:
         row = self.db.execute("SELECT bytes FROM installed WHERE id=?", (entry_id,)).fetchone()
         return row["bytes"] if row else 0
@@ -210,6 +345,7 @@ class Worker:
         for part in self.paths.partial.glob("*.part") if self.paths.partial.is_dir() else ():
             if part.name == f"{Path(row['path']).name}.part":
                 part.unlink()
+                part.with_suffix(".json").unlink(missing_ok=True)
         self.refresh_kiwix()
 
     def validate(self, job_id: int, entry_id: str) -> None:
@@ -228,9 +364,12 @@ class Worker:
         for key, entry in content.load_catalog(self.paths).items():
             source = entry.get("kiwix")
             row = self.db.execute("SELECT version FROM installed WHERE id=?", (key,)).fetchone()
-            if not source or row is None:
+            if row is None or not (source or entry.get("extract")):
                 continue
-            found = latest_kiwix(source["name"], source.get("flavour", ""))
+            if source:
+                found = latest_kiwix(source["name"], source.get("flavour", ""))
+            else:
+                found = {**latest_extract(entry), "bytes": entry["size_bytes"]["value"] or 0}
             if found and found["version"] > row["version"]:
                 self.db.execute("INSERT OR REPLACE INTO updates VALUES (?, ?, ?, ?)",
                                 (key, found["version"], found["url"], found["bytes"]))

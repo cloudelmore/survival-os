@@ -14,7 +14,8 @@ ExecStart=/opt/survival-os/venv/bin/python -m survival_os.acquire
 Nice=10
 IOSchedulingClass=best-effort
 IOSchedulingPriority=7
-MemoryMax=512M
+# The directory plan for a large map region holds a few million tile records.
+MemoryMax=1536M
 StateDirectory=survival-os
 StateDirectoryMode=0700
 ProtectSystem=strict

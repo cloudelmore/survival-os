@@ -25,7 +25,7 @@ flowchart LR
   W -->|/| FE["React/TS dashboard<br/>pdf.js, epub.js, MapLibre<br/>all assets bundled"]
   W -->|/api| API["FastAPI backend (uvicorn)<br/>search, content mgr, status, power"]
   W -->|/kiwix| KX["kiwix-serve<br/>ZIM archives"]
-  W -->|/tiles| PM["PMTiles files<br/>HTTP range requests"]
+  W -->|/api/maps| PM["PMTiles files<br/>HTTP range requests"]
   API --> DB[("SQLite<br/>FTS5 index + catalog<br/>WAL mode")]
   IDX["Indexer worker<br/>nice 19, idle I/O"] --> DB
   API -.optional, off by default.-> LLM["llama.cpp server<br/>1B-3B quantized"]
@@ -120,7 +120,7 @@ See [MAINTENANCE.md](MAINTENANCE.md).
 | Backend | Python 3.13 (trixie), FastAPI, uvicorn, SQLite FTS5 | fixed by spec |
 | Frontend | React + TypeScript + Vite, pdf.js, epub.js, MapLibre GL JS | fixed by spec |
 | ZIM | `kiwix-tools` (Debian package or upstream ARM64 build) | Phase 5; verify version |
-| Maps | PMTiles v3, Protomaps basemap schema, regional extracts | Phase 6; verify sources live |
+| Maps | PMTiles v3, Protomaps basemap schema v4, regions cut from the newest daily world build by `backend/survival_os/pmtiles.py` | Tested on the Pi in Phase 6 |
 | AI | llama.cpp `llama-server`, GGUF 1B–3B | Phase 7 |
 | Image builder | `rpi-image-gen` (new official tool) vs `pi-gen` | Phase 9; confirm the current supported tool first |
 

@@ -75,6 +75,11 @@ def check_entry(entry: dict[str, Any]) -> list[str]:
             if not field.get("verified_at"):
                 errors.append(f"{label}: {name} is verified but has no verified_at")
 
+    if entry.get("extract") and entry["format"] != "pmtiles":
+        errors.append(f"{label}: only pmtiles entries can be extracts")
+    if entry["format"] == "pmtiles" and not entry.get("extract"):
+        errors.append(f"{label}: a pmtiles entry needs an extract region")
+
     destination = PurePosixPath(entry["destination"])
     if destination.is_absolute() or ".." in destination.parts:
         errors.append(f"{label}: destination must be relative with no '..'")

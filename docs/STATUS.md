@@ -2,10 +2,98 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 5 (Content), installed on the Pi. A large download, video playback and the remaining sources are outstanding.
-**Last updated:** 2026-11-01 (Phase 5 session)
+**Current phase:** 6 (Maps), built and tested on the Pi. The user reported the kiosk check good; review and push are open. Phase 5 still has a large
+download test, video playback and remaining sources outstanding.
+**Last updated:** 2026-11-01 (Phase 6 session)
 
 ## Completed work
+
+### Phase 6 (Maps)
+
+- `backend/survival_os/pmtiles.py`, a native PMTiles v3 extractor, run by the content worker. A region is
+  cut from the newest Protomaps daily world build (139 GB, schema 4) by HTTP range requests. No third-party
+  binary reaches the Pi. The `pmtiles` command-line tool was not used: running the downloaded binary was
+  blocked by the permission system on the dev machine, and native code suited the worker better anyway.
+- Integrity: daily builds vanish within days and no checksum exists for a cut. Each tile's gzip CRC is
+  checked on arrival, every directory entry is walked afterwards, and SHA-256 is computed locally for later
+  validation. The result has no publisher's checksum, so the catalog marks it unverified.
+- Resume: tiles go straight into the part file, directories last, so no second copy is needed.
+- Catalog: World overview (zoom 6), North Carolina and Southeast US (zoom 15), 113 entries in all.
+- Navigation screen with MapLibre, Protomaps light style, bundled Latin Noto Sans glyphs and sprites,
+  loaded only on this screen. Scale in miles, OpenStreetMap credit, center position, region picker.
+- Waypoints and routes in `personal/navigation.db`. MARK CENTER needs no keyboard. Deleting takes two presses.
+- GPX 1.0 and 1.1 import, GPX 1.1 export. DOCTYPE and entities refused, 8 MB limit.
+- Map files are served by the API with range requests, because the state folder is private to `survival`.
+- `survival-usb-export.service` (on demand, not enabled, PIN required) writes one fixed file to the drive,
+  then returns it to read-only. This is the first write to a removable drive.
+- Worker memory cap raised from 512 MB to 1.5 GB for the large directory plan.
+
+Passed on the dev machine: 165 Python tests, 28 frontend tests, type check, offline build check, catalog 0 errors.
+
+Pi results, 2026-11-01. No packages added and nothing new enabled at boot:
+
+| Check | Result |
+|---|---|
+| Real installs through the worker | Pass: World 45 MB, North Carolina 795 MB, Southeast US 5.29 GB; maps use 6.1 of 85 GB |
+| Southeast install health | Pass: no out-of-memory, `throttled=0x0`, 52.7 C |
+| Tile contents from the real build | Pass, on a Triangle cut: Raleigh and Durham, roads, buildings |
+| Map in Chromium at 1024x600 | Pass: state and street zoom, labels, sprites, scale, no CSP errors |
+| Map with the network down | Pass: wlan0 and eth0 down, ping unreachable, map drew, 24 requests all to 127.0.0.1, 0 errors |
+| Waypoint from the screen | Pass, through the page, stored in the API |
+| GPX export on the Pi | Pass: escaped name and coordinates, valid XML |
+| GPX round trip | Pass in tests: lossless, byte-identical second export, tracks become routes |
+| Map read speed through the API | 447 range reads per second |
+| Network | Only 22 outward |
+
+Bugs found and fixed: PMTiles header layout, attribution text green on a light map. An offline run first
+failed with THE MAP COULD NOT BE DRAWN because that test browser lacked GL flags; the flags were restored
+and the run above was otherwise identical. That message is what a kiosk with no working WebGL would show.
+
+Kiosk check, 2026-11-01: the user reported "everything works", with no itemised results. The logs cannot
+show touch use, so this rests on that report.
+
+Contours and aerial photos, added at the user's request, 2026-11-01:
+
+- Terrain: `map-terrain-southeast`, 2.82 GB, zoom 12, cut by the worker from the Mapterhorn world archive
+  (356 GB, version 0.0.13). WebP has no CRC by default, so each tile's RIFF header and length are checked.
+- Contours are drawn in the browser by `maplibre-contour` 0.1.1, in feet, with shaded relief, behind a
+  CONTOURS switch. It needs plain tile URLs, so the API has `/api/maps/{id}/tile/{z}/{x}/{y}`.
+- Pi check near Asheville: pass. 2,200 ft label downtown, steep lines east, French Broad valley low. All
+  requests local. Source detail is about 30 m, so lines above zoom 12 are smoothed, not extra detail.
+- Photos, one-county test: Wake County, 0.37 GB, 22,687 tiles, about 2.4 m per pixel at zoom 16, from the
+  USGS NAIP Plus image service through `scripts/dev/build-imagery.py`. 306 blocks took 59 minutes at two
+  requests at a time, and building took 1 minute. Pi check in downtown Raleigh: pass, with labels and contours on top.
+- Photos are copied to the Pi by hand and have no catalog entry, so they cannot be installed, updated or
+  removed from the Content Manager. They show under "Imported from USB". They are not cut by the worker.
+- Scaling from the test area of about 4,000 km2: North Carolina at the same detail is about 11 GB and about 30
+  hours of download. Not tested. The image date varies by area and was not read.
+- Contour lines are faint over dark photos.
+- Photos, full set: Davie, the 20 nearest counties by Census centroid (Yadkin, Rowan, Iredell, Davidson,
+  Forsyth, Surry, Stokes, Alexander, Cabarrus, Wilkes, Catawba, Guilford, Randolph, Stanly, Lincoln,
+  Mecklenburg, Alleghany, Rockingham, Patrick VA, Caldwell), and Wake, at the user's request. 3.23 GB,
+  189,692 tiles, zooms to 16. The 1,916 new blocks took 5 hours at two requests at a time, on top of the 306
+  from Wake, with 149 retries and no failures, and building took 10 minutes. Hash matched on the Pi. Installed as `map-imagery-piedmont`,
+  replacing `map-imagery-wake`. Pi render check through the Navigation page with the Pi's own tiles:
+  Mocksville, Charlotte, Raleigh and Mount Airy pass. Coverage follows county bounding boxes, so some edges
+  of neighbouring counties are included; each county's whole area inside its box was requested, but
+  not every county was viewed. Maps now use about 12.2 of 85 GB.
+- `/api/maps/{id}/tile` labelled every tile WebP. It now sends the archive's real type, and JPEG was confirmed on the Pi.
+- Frontend test "offers overlays as switches" failed once in a `make test` that started with the map
+  build, then passed every later run: 9 full suites, 7 of them under CPU overload, and 6 runs of that file. Not reproduced, cause not proven; likely timing.
+
+The Pi went unreachable twice on 2026-11-01, with journals ending at 11:17 and 15:56 and an orphan cleanup at
+16:14. The user confirmed these were their own power cycles, so they are not a fault. Power is best cut after a
+clean shutdown from the dashboard.
+
+Unverified: frame rate on the V3D GPU has not been measured. USB import and export of
+GPX have not run with a real drive; tests cover import only, and the write path has never run. Resume is
+proven by tests and not on a real interrupted Pi install. A map update has not run live. Routes from a real
+GPS device file are untested.
+
+Known limits: one map shows at a time, and Southeast US opens first as the largest. It already includes North
+Carolina, so that package is only useful alone. Glyphs are Latin only, so labels in other scripts are blank in
+the world overview. There are no contour lines, no routing, no place search and no GPS. Roads are as OpenStreetMap
+holds them, so verify before relying on them. Map credit is on the map, and the catalog records ODbL.
 
 ### Phase 5 (Content), in progress
 
@@ -84,7 +172,6 @@ text and PDFs, 372 documents searchable. RP2040 firmware 2.7.26 installed, check
 ESP32, S3 and nRF52840 firmware are in the catalog. `esptool` and `meshtastic` added. Flashing from the
 console is documented in MAINTENANCE.md and is untested on a real device. Dashboard flashing is not built.
 A repository archive may change its bytes if GitHub regenerates it, which would fail the checksum.
- The
 
 Software shelf added at the user's request, 13.3 GB from `scripts/dev/refresh-software.py`: Debian, Raspberry
 Pi OS, Ventoy, Rufus, 7-Zip, and Android apps for Meshtastic, Kiwix and Organic Maps. Stored in
@@ -450,8 +537,9 @@ built yet. This refines the brief's dark field-computer look:
 Final task, at the end of Phase 10: add the finished `survival-os` repository to the content catalog,
 as the user asked on 2026-10-31, so the system can be rebuilt offline.
 
-1. User tests USB import and the kiosk.
-2. Expand the catalog source by source, starting with medical and survival references.
+1. User reviews Phase 6. Commit and push wait for the user's go-ahead.
+2. Phase 5 leftovers: install Army Publishing Directorate (8.2 GB), then Survivor Library, and close the gaps.
+3. Phase 7 (AI) when the user says so.
 
 Dropped by the user, 2026-10-31: the cold boot baseline and the EEPROM change (`BOOT_ORDER=0xf14`,
 removing `PCIE_PROBE=1`). The expected gain was seconds at most. The EEPROM is unchanged. Any future

@@ -64,6 +64,23 @@ This has not been tested on a real device.
    until it is reflashed.
 5. Start the dashboard again with `sudo systemctl start survival-kiosk`.
 
+## Maps and GPX
+
+Install maps from the Content Manager. A map is cut from the newest Protomaps world build, so its size
+can differ a little from the listed figure. Old builds disappear within days, so an interrupted install
+finishes from the same build if it still exists and starts over if it does not. CHECK FOR UPDATES offers
+a newer build. The old map stays in use until the new one is complete, so an update needs room for both.
+
+CONTOURS and PHOTOS appear in Navigation once terrain or aerial photos are installed. Photos are built
+on a development machine with `scripts/dev/build-imagery.py`, then copied to `/var/lib/survival-os/maps`.
+
+Navigation shows one street map at a time. MARK CENTER saves the point under the cross, and a name is optional,
+so no keyboard is needed. Waypoints and routes are in `/var/lib/survival-os/personal/navigation.db`.
+
+To move GPX files, press USB DRIVE, enter the PIN, then IMPORT a file or SAVE TO USB. Saving writes
+`survival-os-navigation.gpx` to the top of the drive, replacing an earlier copy, and returns the drive to
+read-only. Press RELEASE DRIVE before pulling it out.
+
 ## Using the software shelf
 
 Installed files are in `/var/lib/survival-os/content/software`. To copy one to a USB stick, enter

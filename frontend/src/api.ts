@@ -84,6 +84,38 @@ export const usbAction = (action: "mount" | "unmount", pin: string) =>
 export const importFile = (path: string, category: string, pin: string) =>
   send("/api/content/import", { path, category, pin });
 
+export type MapInfo = {
+  id: string; title: string; version: string; kind: "base" | "terrain" | "imagery"; bbox: number[];
+  max_zoom: number;
+};
+export type Waypoint = { id: number; name: string; lat: number; lon: number; notes: string };
+export type Route = { id: number; name: string; points: [number, number][] };
+export type NavigationData = { waypoints: Waypoint[]; routes: Route[] };
+
+async function remove(path: string): Promise<void> {
+  const response = await fetch(path, { method: "DELETE" });
+  if (!response.ok) throw new Error("Request failed");
+}
+
+export const getMaps = () => load<{ maps: MapInfo[] }>("/api/maps");
+export const getNavigation = () => load<NavigationData>("/api/navigation");
+export const addWaypoint = (name: string, lat: number, lon: number) =>
+  send("/api/navigation/waypoints", { name, lat, lon });
+export const deleteWaypoint = (id: number) => remove(`/api/navigation/waypoints/${id}`);
+export const deleteRoute = (id: number) => remove(`/api/navigation/routes/${id}`);
+export const getGpxFiles = () => load<{ files: string[] }>("/api/navigation/usb");
+export const exportGpxToUsb = (pin: string) => send("/api/navigation/export-usb", { pin });
+export async function importGpx(path: string): Promise<{ waypoints: number; routes: number }> {
+  const response = await fetch("/api/navigation/import", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ path }),
+  });
+  const data = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(typeof data?.detail === "string" ? data.detail : "Import failed");
+  return data;
+}
+
 export type SnippetPart = { text: string; hit: boolean };
 export type SearchResult = {
   document_id: number;

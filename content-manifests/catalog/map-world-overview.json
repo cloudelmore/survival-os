@@ -1,0 +1,46 @@
+{
+  "id": "map-world-overview",
+  "title": "World overview map",
+  "publisher": "Protomaps, from OpenStreetMap",
+  "format": "pmtiles",
+  "summary": "Countries, major cities and main roads. No street detail.",
+  "extract": {
+    "bbox": [
+      -180,
+      -85,
+      180,
+      85
+    ],
+    "max_zoom": 6
+  },
+  "budget_category": "maps",
+  "destination": "maps/world-overview.pmtiles",
+  "source_url": {
+    "value": "https://build.protomaps.com/",
+    "status": "verified",
+    "verified_at": "2026-11-01"
+  },
+  "license": {
+    "value": "ODbL-1.0 (OpenStreetMap data)",
+    "status": "verified",
+    "verified_at": "2026-11-01"
+  },
+  "publication_date": {
+    "value": "2026-11-01",
+    "status": "verified",
+    "verified_at": "2026-11-01"
+  },
+  "size_bytes": {
+    "value": 45102253,
+    "status": "verified",
+    "verified_at": "2026-11-01"
+  },
+  "sha256": {
+    "value": null,
+    "status": "unverified"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Cut from the newest daily build at install, so size changes slightly. Credit OpenStreetMap on the map."
+  }
+}

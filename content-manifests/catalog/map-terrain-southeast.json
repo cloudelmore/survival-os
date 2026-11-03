@@ -1,0 +1,47 @@
+{
+  "id": "map-terrain-southeast",
+  "title": "Southeast US terrain and contours",
+  "publisher": "Mapterhorn",
+  "format": "pmtiles",
+  "summary": "Elevation for contour lines and shaded relief across the Southeast. Works with any street map. About 30 m detail, so small features do not show.",
+  "extract": {
+    "bbox": [
+      -92.0,
+      24.4,
+      -75.2,
+      40.7
+    ],
+    "max_zoom": 12,
+    "source": "https://download.mapterhorn.com/planet.pmtiles",
+    "version_url": "https://download.mapterhorn.com/download_urls.json"
+  },
+  "budget_category": "maps",
+  "destination": "maps/terrain-southeast.pmtiles",
+  "source_url": {
+    "value": "https://mapterhorn.com/data-access",
+    "status": "verified",
+    "verified_at": "2026-11-01"
+  },
+  "license": {
+    "value": "See mapterhorn.com attribution",
+    "status": "unverified"
+  },
+  "publication_date": {
+    "value": "0.0.13",
+    "status": "verified",
+    "verified_at": "2026-11-01"
+  },
+  "size_bytes": {
+    "value": 2824308088,
+    "status": "verified",
+    "verified_at": "2026-11-01"
+  },
+  "sha256": {
+    "value": null,
+    "status": "unverified"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Cut from the published world terrain archive at install."
+  }
+}

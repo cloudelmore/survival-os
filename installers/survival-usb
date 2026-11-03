@@ -1,18 +1,22 @@
 #!/usr/bin/python3
-"""Mount or unmount one USB drive, read-only, for content import.
+"""Mount or unmount one USB drive, read-only, for content import, or save the GPX export to it.
 
-Run by survival-usb.service, as root. The system disk on this Pi is itself a USB device, so it is
-refused by identity, and nothing here ever writes to a drive.
+Run by survival-usb.service and survival-usb-export.service, as root. The system disk on this Pi is
+itself a USB device, so it is refused by identity. Export is the only write: one fixed file, to one
+fixed name, on the drive already chosen by mount, which returns to read-only afterwards.
 """
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 
 ROOT = "/run/survival-usb"
 FILESYSTEMS = {"vfat", "exfat", "ext4", "ntfs", "ntfs3"}
 OPTIONS = "ro,nosuid,nodev,noexec"
+OUTBOX = "/var/lib/survival-os/personal/outbox.gpx"
+EXPORT_NAME = "survival-os-navigation.gpx"
 
 
 def has_mount(device: dict, mounts: set[str]) -> bool:
@@ -33,14 +37,33 @@ def choose(devices: list[dict]) -> str | None:
     return None
 
 
+def export() -> int:
+    if not os.path.ismount(ROOT):
+        print("Mount the drive first", file=sys.stderr)
+        return 1
+    if subprocess.run(["mount", "-o", "remount,rw", ROOT]).returncode != 0:
+        return 1
+    try:
+        target = os.path.join(ROOT, EXPORT_NAME)
+        if os.path.islink(target):
+            os.unlink(target)
+        shutil.copyfile(OUTBOX, target)
+        os.sync()
+    finally:
+        subprocess.run(["mount", "-o", "remount,ro", ROOT])
+    return 0
+
+
 def main() -> int:
     action = sys.argv[1] if len(sys.argv) > 1 else ""
+    if action == "export":
+        return export()
     if action == "unmount":
         if os.path.ismount(ROOT):
             return subprocess.run(["umount", ROOT]).returncode
         return 0
     if action != "mount":
-        print("Usage: survival-usb mount|unmount", file=sys.stderr)
+        print("Usage: survival-usb mount|unmount|export", file=sys.stderr)
         return 2
     listing = subprocess.run(
         ["lsblk", "-J", "-o", "PATH,TYPE,TRAN,FSTYPE,MOUNTPOINT"],

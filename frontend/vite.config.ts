@@ -13,8 +13,18 @@ const pdfjsAssets = () => ({
   },
 });
 
+// MapLibre starts its worker from a URL, so the worker file is copied beside the build.
+const maplibreWorker = () => ({
+  name: "maplibre-worker",
+  apply: "build" as const,
+  async closeBundle() {
+    await cp("node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs",
+      "dist/maplibre/maplibre-gl-worker.mjs");
+  },
+});
+
 export default defineConfig({
-  plugins: [react(), pdfjsAssets()],
+  plugins: [react(), pdfjsAssets(), maplibreWorker()],
   server: { proxy: { "/api": "http://127.0.0.1:8080" } },
   test: { environment: "jsdom", globals: true, setupFiles: "./src/test-setup.ts" },
 });
