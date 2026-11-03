@@ -1,0 +1,44 @@
+{
+  "budget_category": "ai_indexes",
+  "format": "model",
+  "id": "ai-llama-cpp",
+  "title": "Local AI runtime (llama.cpp)",
+  "publisher": "ggml-org llama.cpp",
+  "summary": "Runs the local AI model. Needed with the AI model. Optional, and the library works without it.",
+  "archive": {
+    "keep": [
+      "llama-server",
+      "lib*.so*"
+    ]
+  },
+  "destination": "ai/llama-cpp",
+  "source_url": {
+    "value": "https://github.com/ggml-org/llama.cpp/releases/download/b12061/llama-b12061-bin-ubuntu-arm64.tar.gz",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "license": {
+    "value": "MIT",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "publication_date": {
+    "value": "2026-11-02",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "size_bytes": {
+    "value": 18609836,
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "sha256": {
+    "value": "c4dad78ffd0000aa4d817fa9cbdd05dc658b73ab90b27f7143bd5c5542d57f9c",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Optional install. Pinned to one upstream build. Checksum from GitHub's published asset digest."
+  }
+}

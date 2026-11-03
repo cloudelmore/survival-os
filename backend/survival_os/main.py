@@ -8,13 +8,13 @@ from typing import Literal
 from urllib.parse import urlsplit
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from survival_search import extract, query, render
 from survival_search.indexer import Paths
 
-from . import __version__, admin, content, navigation, pmtiles, removable, telemetry
+from . import __version__, admin, assistant, content, navigation, pmtiles, removable, telemetry
 
 Pin = Field(pattern=r"^[0-9]{4,8}$")
 # An archive's tile type says what it is: photos are JPEG, terrain is WebP, streets are vectors.
@@ -51,6 +51,10 @@ class WaypointRequest(BaseModel):
 
 class GpxImportRequest(BaseModel):
     path: str = Field(max_length=4096)
+
+
+class QuestionRequest(BaseModel):
+    question: str = Field(min_length=1, max_length=500)
 
 
 class ActionRequest(BaseModel):
@@ -158,6 +162,9 @@ def create_app(
                               entry["size_bytes"]["value"] or 0)
             except content.Refused as refused:
                 raise HTTPException(507, str(refused))
+        # Replacing or deleting the model must not happen beneath a running server.
+        if body.id in assistant.PACKAGES and body.action in ("update", "remove") and actions_enabled:
+            run_action("ai-stop")
         return queue(body.action, body.id)
 
     @app.post("/api/content/check-updates", status_code=202, dependencies=[Depends(same_origin)])
@@ -331,6 +338,37 @@ def create_app(
         if doc is None or not path.is_file():
             raise HTTPException(404, "Document not found")
         return doc, path
+
+    model_gate = assistant.Gate()
+
+    @app.get("/api/ai/status")
+    def ai_status() -> dict:
+        return assistant.status(stores)
+
+    def switch_model(action: str, pin: str) -> None:
+        require_pin(pin)
+        if not actions_enabled:
+            raise HTTPException(503, "System actions are disabled on this development server")
+        if not run_action(action):
+            raise HTTPException(500, "The system refused the action")
+
+    @app.post("/api/ai/start", status_code=202, dependencies=[Depends(same_origin)])
+    def ai_start(body: PinOnly) -> None:
+        if len(assistant.installed(stores)) != len(assistant.PACKAGES):
+            raise HTTPException(409, "Install the AI runtime and model first")
+        switch_model("ai-start", body.pin)
+
+    @app.post("/api/ai/stop", status_code=202, dependencies=[Depends(same_origin)])
+    def ai_stop(body: PinOnly) -> None:
+        switch_model("ai-stop", body.pin)
+
+    @app.post("/api/ai/ask", dependencies=[Depends(same_origin)])
+    def ai_ask(body: QuestionRequest) -> StreamingResponse:
+        events = assistant.ask(library, body.question, assistant.model_ready())
+        try:
+            return StreamingResponse(model_gate.stream(events), media_type="application/x-ndjson")
+        except assistant.Busy:
+            raise HTTPException(429, "The model is answering another question")
 
     @app.get("/api/library/search")
     def library_search(

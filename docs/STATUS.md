@@ -2,11 +2,60 @@
 
 Read this first at the start of every session.
 
-**Current phase:** 6 (Maps), built and tested on the Pi. The user reported the kiosk check good; review and push are open. Phase 5 still has a large
+**Current phase:** 7 (AI), built and tested on the Pi with Llama 3.2 3B. Waiting for the user's review. Phase 5 still has a large
 download test, video playback and remaining sources outstanding.
-**Last updated:** 2026-11-01 (Phase 6 session)
+**Last updated:** 2026-11-02 (Phase 7 session)
 
 ## Completed work
+
+### Phase 7 (AI)
+
+- Offline AI screen, `backend/survival_os/assistant.py`, `/api/ai/*`, and on-demand `survival-llm.service` on
+  127.0.0.1:8084. The unit has no install section (`static`), so it never starts at boot. It has a 4 GB memory cap,
+  leaves one core free, and blocks all outside addresses. Start and stop need the PIN.
+- Catalog: `ai-llama-cpp` (upstream build b12061, 18.6 MB, MIT) and `ai-model-llama-3b` (Llama 3.2 3B Instruct
+  Q4_K_M, 2.02 GB, Llama 3.2 Community License). Sizes and hashes are pinned from GitHub and Hugging Face. The user
+  chose Llama 3.2 3B over Qwen2.5 1.5B on 2026-11-02, after both were tried on the Pi.
+- Retrieval: FTS5, any question word may match, and a passage must share more than half of the question's words.
+  Up to four passages of 900 characters, at most one per page.
+- Answers are checked before display, not streamed. Grammar holds the model to one sentence. The server, not the
+  model, picks the citation: every number and at least 60% of the words must appear in one passage, or the answer
+  is withheld. The small model chose the wrong passage number nearly every time when asked to cite.
+- Safety: a question with a medical, wild food or electrical word never reaches the model, and the reader gets
+  the sourced passages. The same applies when a passage has a medical, wild food or electrical danger word.
+  Everyday electronics words in passages, such as voltage and circuit, are allowed, because radio manuals are full
+  of them. An answer is stopped the moment it turns to those topics. This is a keyword filter, so it can miss
+  wording it does not list.
+
+| Pi check, 2026-11-02 | Result |
+|---|---|
+| Install runtime and model through the content worker | Pass, hashes checked |
+| Service `static`, starts by the sudoers rule, listens on 127.0.0.1:8084 only | Pass |
+| Model ready after start | 22 s |
+| Answer time (Llama 3.2 3B, 3 threads) | 52 to 58 s, about 16 prompt and 4.7 answer tokens per second |
+| Memory under an enforced cgroup | Peak 3.45 GB, no swap. 4.4 GB still available. Kiosk page answered in under 1 ms |
+| Grounded answers, radio library | LoRa region, channel name and US power limit correct, each cited and checked |
+| France, prompt injection | Nothing found, and withheld |
+| Burn, mushroom and inverter wiring questions | Passages only, model never called |
+| Screen: warning, sources, citation link opens the page in the viewer | Pass, headless on the Pi. Link colour fixed after |
+| Removal through the worker | Pass: `state/ai` gone, no llama or gguf file left outside home, search still works, AI shows passages, service refuses to start |
+| Heat | 81 to 83 C during answers, soft temperature limit reached, `throttled=0x80000`. Two small fans fitted (user); none is on the Pi 5 fan header, so the Pi cannot see or control them |
+
+Not tested: the touch screen by a person, the PIN prompt on screen, AI and indexer running together, a long
+answer session, and the real question mix the user will ask. The library holds only 374 documents, mostly
+radio, so retrieval quality on medical and survival books is unknown. A wrong but grounded answer can still pass:
+the check proves the words came from the source, not that the sentence means what the source means. In the trial,
+Qwen2.5 1.5B produced several of these. Llama 3.2 3B also gave one, 156.450 MHz as the national calling channel,
+which was not verified.
+
+Boot change, approved by the user on 2026-11-02: Raspberry Pi OS ships `cgroup_disable=memory`, so no memory cap
+in any SURVIVAL OS unit worked before this, including the indexer (768 MB) and content worker (1.5 GB) caps from
+Phases 4 and 5. `cgroup_enable=memory` was appended to `/boot/firmware/cmdline.txt`. The backup is
+`cmdline.txt.before-memory-cgroup`. After a reboot, the memory controller is active and all services came back.
+The installer and image do not set this yet; that is open for Phase 9.
+
+User reported on 2026-11-02 that the Phase 6 touch checks tested good. CONTOURS and PHOTOS are confirmed on the real screen.
+The user also reported frame rate good on the real screen. That is by eye, not a measurement.
 
 ### Phase 6 (Maps)
 
@@ -79,13 +128,16 @@ Contours and aerial photos, added at the user's request, 2026-11-01:
   not every county was viewed. Maps now use about 12.2 of 85 GB.
 - `/api/maps/{id}/tile` labelled every tile WebP. It now sends the archive's real type, and JPEG was confirmed on the Pi.
 - Frontend test "offers overlays as switches" failed once in a `make test` that started with the map
-  build, then passed every later run: 9 full suites, 7 of them under CPU overload, and 6 runs of that file. Not reproduced, cause not proven; likely timing.
+  build, then passed every later run: 9 full suites, 7 of them under CPU overload, and 6 runs of that file. Not reproduced, cause not proven; likely timing. It failed again on 2026-11-02 in 1.56 s, just over the 1 s wait limit, then passed 30 runs including cold caches. The wait limit is now 5 s.
 
 The Pi went unreachable twice on 2026-11-01, with journals ending at 11:17 and 15:56 and an orphan cleanup at
 16:14. The user confirmed these were their own power cycles, so they are not a fault. Power is best cut after a
 clean shutdown from the dashboard.
 
-Unverified: frame rate on the V3D GPU has not been measured. USB import and export of
+Decided by the user, 2026-11-02: USB GPX import and export will not be tested, so they stay unverified.
+The interrupted download test is postponed and stays unverified until it runs.
+
+Unverified: USB import and export of
 GPX have not run with a real drive; tests cover import only, and the write path has never run. Resume is
 proven by tests and not on a real interrupted Pi install. A map update has not run live. Routes from a real
 GPS device file are untested.
@@ -537,9 +589,10 @@ built yet. This refines the brief's dark field-computer look:
 Final task, at the end of Phase 10: add the finished `survival-os` repository to the content catalog,
 as the user asked on 2026-10-31, so the system can be rebuilt offline.
 
-1. User reviews Phase 6. Commit and push wait for the user's go-ahead.
-2. Phase 5 leftovers: install Army Publishing Directorate (8.2 GB), then Survivor Library, and close the gaps.
-3. Phase 7 (AI) when the user says so.
+1. User reviews Phase 7 on the real screen: START AI with the PIN, a question, a citation tap, STOP AI.
+2. Heat: the two fans are not on the fan header, so they probably run at a fixed speed from the GPIO 5 V pins (not checked). The Pi still reaches the soft temperature limit under AI load. Check that both spin and that air reaches the SoC.
+3. Phase 5 leftovers: install Army Publishing Directorate (8.2 GB), then Survivor Library, and close the gaps.
+4. Phase 8 after the user reviews Phase 7.
 
 Dropped by the user, 2026-10-31: the cold boot baseline and the EEPROM change (`BOOT_ORDER=0xf14`,
 removing `PCIE_PROBE=1`). The expected gain was seconds at most. The EEPROM is unchanged. Any future

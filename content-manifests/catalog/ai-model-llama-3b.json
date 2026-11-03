@@ -1,0 +1,38 @@
+{
+  "budget_category": "ai_indexes",
+  "format": "model",
+  "id": "ai-model-llama-3b",
+  "title": "Local AI model (Llama 3.2 3B)",
+  "publisher": "Meta, quantized by bartowski",
+  "summary": "Small quantized model for answers cited from your library. Needs the AI runtime. About a minute per answer on the Pi.",
+  "destination": "ai/model.gguf",
+  "source_url": {
+    "value": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/5ab33fa94d1d04e903623ae72c95d1696f09f9e8/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "license": {
+    "value": "Llama 3.2 Community License",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "publication_date": {
+    "value": "2024-10-08",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "size_bytes": {
+    "value": 2019377696,
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "sha256": {
+    "value": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff",
+    "status": "verified",
+    "verified_at": "2026-11-02"
+  },
+  "redistribution": {
+    "base_image_allowed": false,
+    "notes": "Model weights stay out of Git and the base image. Checksum from Hugging Face LFS metadata for this pinned revision."
+  }
+}

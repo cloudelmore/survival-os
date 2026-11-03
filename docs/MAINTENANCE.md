@@ -93,3 +93,17 @@ Check the device name with `lsblk` first, because the system disk is also a USB 
     sudo umount /mnt
 
 This has not been tested.
+
+## Offline AI
+
+Install "Local AI runtime (llama.cpp)" and "Local AI model (Llama 3.2 3B)" from the Content Manager, then
+press START AI on the Offline AI screen and enter the PIN. The model takes about 20 seconds to load, and each
+answer about a minute. Press STOP AI when finished, because it holds about 3.5 GB of memory and heats the Pi.
+
+The AI never answers medical, wild food or electrical questions. It shows the sourced passages instead.
+
+Memory caps need `cgroup_enable=memory` in `/boot/firmware/cmdline.txt`. Raspberry Pi OS turns memory
+control off by default. Check with `cat /sys/fs/cgroup/cgroup.controllers`, which must list `memory`.
+
+Removing both AI items from the Content Manager stops the model and deletes `/var/lib/survival-os/ai`.
+The disabled `survival-llm.service` unit stays, and it cannot start without those files.

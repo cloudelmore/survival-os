@@ -43,7 +43,7 @@ journald logs, and the least privileges it needs.
 | `survival-api.service` | FastAPI app as `survival` user | enabled |
 | `survival-indexer.service` | Background, throttled, resumable indexing | enabled |
 | `kiwix-serve.service` | ZIM library on 127.0.0.1 | enabled once a ZIM is installed |
-| `survival-llm.service` | llama.cpp server | **disabled** |
+| `survival-llm.service` | llama.cpp server on 127.0.0.1:8084, started with the PIN, 4 GB cap | **static**, never at boot |
 | `survival-share.service` | Wi-Fi hotspot / LAN exposure via NetworkManager | **disabled** |
 | `survival-maintenance.target` | Stops the kiosk and gives tty1 a login prompt | on demand |
 
@@ -121,7 +121,7 @@ See [MAINTENANCE.md](MAINTENANCE.md).
 | Frontend | React + TypeScript + Vite, pdf.js, epub.js, MapLibre GL JS | fixed by spec |
 | ZIM | `kiwix-tools` (Debian package or upstream ARM64 build) | Phase 5; verify version |
 | Maps | PMTiles v3, Protomaps basemap schema v4, regions cut from the newest daily world build by `backend/survival_os/pmtiles.py` | Tested on the Pi in Phase 6 |
-| AI | llama.cpp `llama-server`, GGUF 1B–3B | Phase 7 |
+| AI | llama.cpp `llama-server`, Llama 3.2 3B Q4_K_M, server-side citation check | Phase 7 |
 | Image builder | `rpi-image-gen` (new official tool) vs `pi-gen` | Phase 9; confirm the current supported tool first |
 
 ## Repository tree (target)

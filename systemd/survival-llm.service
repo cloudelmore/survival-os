@@ -1,0 +1,27 @@
+# Optional, and never starts at boot: no install section, and it starts only with the admin PIN.
+[Unit]
+Description=SURVIVAL OS local AI model (llama.cpp)
+ConditionPathExists=/var/lib/survival-os/ai/llama-cpp/llama-server
+ConditionPathExists=/var/lib/survival-os/ai/model.gguf
+
+[Service]
+User=survival
+Group=survival
+WorkingDirectory=/var/lib/survival-os/ai/llama-cpp
+Environment=LD_LIBRARY_PATH=/var/lib/survival-os/ai/llama-cpp
+ExecStart=/var/lib/survival-os/ai/llama-cpp/llama-server --model /var/lib/survival-os/ai/model.gguf --host 127.0.0.1 --port 8084 --ctx-size 4096 --threads 3 --parallel 1 --no-webui
+Restart=no
+# One core stays free, and the dashboard keeps priority. Llama 3.2 3B peaked at 3.45 GB on the Pi.
+Nice=5
+CPUQuota=300%
+MemoryMax=4G
+MemorySwapMax=0
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+# The API needs loopback, so PrivateNetwork would cut it off. Nothing else is reachable.
+IPAddressAllow=localhost
+IPAddressDeny=any
+RestrictAddressFamilies=AF_INET AF_UNIX

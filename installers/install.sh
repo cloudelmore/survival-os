@@ -17,7 +17,7 @@ ETC=/etc/systemd/system
 SUDOERS=/etc/sudoers.d/survival-os
 UNITS=(survival-api.service survival-web.service survival-kiosk.service
        survival-indexer.service survival-kiwix.service survival-content.service
-       survival-usb.service survival-usb-export.service survival-maintenance.target survival-maintenance-boot.service)
+       survival-usb.service survival-usb-export.service survival-llm.service survival-maintenance.target survival-maintenance-boot.service)
 BOOT_UNITS=(survival-api.service survival-web.service survival-kiosk.service
             survival-indexer.service survival-kiwix.service
             survival-maintenance-boot.service)

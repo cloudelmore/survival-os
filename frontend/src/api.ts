@@ -116,6 +116,47 @@ export async function importGpx(path: string): Promise<{ waypoints: number; rout
   return data;
 }
 
+export type AiStatus = { runtime_installed: boolean; model_installed: boolean; ready: boolean };
+export type AiSource = {
+  number: number;
+  document_id: number;
+  title: string;
+  page: number;
+  label: string | null;
+  text: string;
+};
+export type AiMode = "answer" | "restricted" | "off" | "empty";
+export type AiEvent =
+  | { type: "sources"; mode: AiMode; sources: AiSource[] }
+  | { type: "text"; text: string }
+  | { type: "withheld"; reason: "restricted" | "uncited" }
+  | { type: "failed" }
+  | { type: "done" };
+
+export const getAiStatus = () => load<AiStatus>("/api/ai/status");
+export const startAi = (pin: string) => send("/api/ai/start", { pin });
+export const stopAi = (pin: string) => send("/api/ai/stop", { pin });
+export async function askLibrary(question: string, onEvent: (event: AiEvent) => void,
+                                 signal: AbortSignal) {
+  const response = await fetch("/api/ai/ask", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question }),
+    signal,
+  });
+  if (!response.ok || !response.body) throw new Error(String(response.status));
+  const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+  let buffer = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) return;
+    buffer += value;
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+    lines.filter(Boolean).forEach((line) => onEvent(JSON.parse(line)));
+  }
+}
+
 export type SnippetPart = { text: string; hit: boolean };
 export type SearchResult = {
   document_id: number;

@@ -327,3 +327,22 @@ mark.current { background: #ff9a3c; }
 .nav-item { align-items: center; display: flex; justify-content: space-between; gap: 0.5rem; }
 .nav-item > :first-child { overflow-wrap: anywhere; text-align: left; }
 .maplibregl-ctrl-attrib, .maplibregl-ctrl-scale { color: #000000; font-family: var(--reading); }
+
+.ai-form {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.ai-form input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ai-answer {
+  white-space: pre-wrap;
+}
+
+.ai-answer a {
+  color: var(--blue);
+}

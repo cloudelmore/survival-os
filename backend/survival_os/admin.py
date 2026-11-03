@@ -24,6 +24,10 @@ ACTIONS = {
     "maintenance": [
         "/usr/bin/sudo", "-n", "/usr/bin/systemctl", "start", "survival-maintenance.target",
     ],
+    "ai-start": ["/usr/bin/sudo", "-n", "/usr/bin/systemctl", "start", "--no-block",
+                 "survival-llm.service"],
+    "ai-stop": ["/usr/bin/sudo", "-n", "/usr/bin/systemctl", "stop", "--no-block",
+                "survival-llm.service"],
 }
 
 

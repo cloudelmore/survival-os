@@ -15,6 +15,7 @@ import re
 import shutil
 import sqlite3
 import subprocess
+import tarfile
 import time
 import urllib.error
 import urllib.request
@@ -24,7 +25,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 
-from . import content, pmtiles
+from . import assistant, content, pmtiles
 from .content import Paths, Refused
 
 log = logging.getLogger("survival-content")
@@ -240,7 +241,8 @@ class Worker:
         self.update_job(job_id, phase="installing")
         old = self.db.execute("SELECT path FROM installed WHERE id=?", (entry["id"],)).fetchone()
         if entry.get("archive"):
-            unpack(part, final, entry["archive"]["keep"])
+            (unpack_tar if tarfile.is_tarfile(part) else unpack)(
+                part, final, entry["archive"]["keep"])
             part.unlink()
         else:
             os.replace(part, final)
@@ -339,6 +341,7 @@ class Worker:
         if row is None:
             raise Refused("That collection is not installed")
         delete_path(self.paths.state / row["path"])
+        assistant.clear_empty(self.paths.ai)
         self.db.execute("DELETE FROM installed WHERE id=?", (entry_id,))
         self.db.execute("DELETE FROM updates WHERE id=?", (entry_id,))
         self.db.commit()
@@ -469,6 +472,25 @@ def unpack(archive: Path, target: Path, keep: list[str]) -> None:
                 output.write_text(tidy_markdown(data.decode("utf-8", "replace")))
             else:
                 output.write_bytes(data)
+    delete_path(target)
+    temporary.replace(target)
+
+
+def unpack_tar(archive: Path, target: Path, keep: list[str]) -> None:
+    """Extract wanted programs. Unlike a repository archive, these keep modes and library links."""
+    temporary = target.with_name(f".{target.name}.new")
+    delete_path(temporary)
+    temporary.mkdir(parents=True)
+    with tarfile.open(archive) as bundle:
+        for member in bundle.getmembers():
+            parts = PurePosixPath(member.name).parts[1:]
+            name = "/".join(parts)
+            if not (member.isfile() or member.issym()) \
+                    or not any(fnmatch.fnmatch(name, pattern) for pattern in keep):
+                continue
+            member.name = name
+            # The data filter refuses absolute paths and links that leave the folder.
+            bundle.extract(member, temporary, filter="data")
     delete_path(target)
     temporary.replace(target)
 

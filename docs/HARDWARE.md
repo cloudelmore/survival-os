@@ -61,3 +61,5 @@ implementation prompt, this file wins.
   root filesystem. The power-loss-safety rules in ARCHITECTURE.md apply.
 - **Filesystem:** single ext4 root with reserved blocks lowered to 1%
   (decision 2026-10-22; see STORAGE_PLAN.md).
+
+Cooling: two small fans (user, 2026-11-02). Neither is on the Pi 5 fan header: the Pi shows no fan or cooling device, so the fans cannot follow temperature. Under AI load the Pi reached 81 to 83 C and the soft temperature limit.

@@ -3,6 +3,7 @@ import { Home } from "./Home";
 import { ContentManager } from "./ContentManager";
 import { closeKiwix, KiwixList, KiwixView } from "./Kiwix";
 import { LibrarySearch } from "./LibrarySearch";
+import { OfflineAi } from "./OfflineAi";
 import { Page } from "./Page";
 import { PowerDialog } from "./PowerDialog";
 import { SECTIONS } from "./sections";
@@ -65,6 +66,8 @@ export function App() {
             <StatusPage onPower={openPower} />
           ) : section.id === "library-search" ? (
             <LibrarySearch />
+          ) : section.id === "offline-ai" ? (
+            <OfflineAi />
           ) : section.id === "content-manager" ? (
             <ContentManager />
           ) : section.id === "navigation" ? (

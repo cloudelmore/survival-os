@@ -11,6 +11,14 @@ HIT_START, HIT_END = "", ""
 MAX_TERMS = 12
 # Enough to rank well without letting a very common word scan the whole library on the Pi.
 MAX_MATCHES = 5000
+PASSAGE_CHARS = 900
+# Enough of a word to match its plural or verb form.
+STEM = 6
+QUESTION_WORDS = frozenset("""
+a about after all am an and any are as at be been but by can could did do does for from get had has
+have how i if in into is it its me my no not of on or our should so some than that the their them
+then there these they this to us was we were what when where which who why will with would you your
+""".split())
 TERM = re.compile(r'"([^"]+)"|(\S+)')
 WORD = re.compile(r"\w+")
 
@@ -100,6 +108,48 @@ def search(paths: Paths, text: str, fmt: str | None = None, category: str | None
             "hits": sorted({s["text"].lower() for s in segments if s["hit"]}),
         })
     return {"results": results, "total": total, "more": offset + len(results) < total}
+
+
+def query_words(text: str) -> list[str]:
+    words = dict.fromkeys(word for word in WORD.findall(text.lower())
+                          if word not in QUESTION_WORDS)
+    return list(words)[:MAX_TERMS]
+
+
+def question_expression(text: str) -> str | None:
+    """Any word may match, unlike a search, because a question holds words no passage repeats."""
+    return " OR ".join(f'"{word}"' for word in query_words(text)) or None
+
+
+def passages(paths: Paths, text: str, limit: int = 4) -> list[dict]:
+    """The best passages for a question, in full, at most one per page."""
+    expression = question_expression(text)
+    db = store.connect_readonly(paths.database)
+    if expression is None or db is None:
+        return []
+    with db:
+        rows = db.execute(
+            """
+            SELECT p.page, p.label, p.text, d.id AS document_id, d.title, d.format, d.category
+            FROM (SELECT rowid AS id, rank AS score FROM passages_fts
+                  WHERE passages_fts MATCH ? ORDER BY rank LIMIT 200) m
+            JOIN passages p ON p.id = m.id
+            JOIN documents d ON d.id = p.document_id
+            ORDER BY m.score
+            """, (expression,)).fetchall()
+    words = query_words(text)
+    found, seen = [], set()
+    for row in rows:
+        location = (row["document_id"], row["page"])
+        if location in seen:
+            continue
+        seen.add(location)
+        lowered = row["text"].lower()
+        matched = sum(word[:STEM] in lowered for word in words)
+        if matched * 2 > len(words):
+            found.append((-matched, len(found), {**dict(row), "text": row["text"][:PASSAGE_CHARS]}))
+    # Passages that share most of the question come first, then the search engine's order.
+    return [row for _, _, row in sorted(found, key=lambda item: item[:2])[:limit]]
 
 
 def status(paths: Paths) -> dict:
